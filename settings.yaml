@@ -60,6 +60,12 @@ directory_structure:
 
 # 首次引导配置
 onboarding:
+  # 是否已完成的标记（由系统自动管理）
+  completed: false
+  
+  # 引导文件位置
+  prompt_file: "prompts/onboarding.md"
+  
   # 是否显示平台选择
   show_platform_selection: true
   
@@ -68,6 +74,9 @@ onboarding:
   
   # 是否询问存储位置偏好
   ask_storage_preference: false
+  
+  # 是否提供新手实操示例
+  offer_tutorial: true
 
 # 复杂任务检测规则
 complex_task_detection:

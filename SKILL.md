@@ -2,8 +2,13 @@
 name: myknowledge
 description: |
   当用户需要创建知识库、管理项目文档、记录需求、整理个人知识时使用。
-  自动检测任务复杂度，支持静默创建知识库和记录需求。
-  适用于项目开发、个人学习、团队协作等场景。
+  
+  ⚠️ 重要：使用本 Skill 前，请先检查初始化状态：
+  1. 检查 skill-state.yaml 是否存在
+  2. 如果不存在 → 执行首次引导（prompts/onboarding.md）
+  3. 如果存在 → 直接执行用户请求（prompts/main.md）
+  
+  首次引导只执行一次，之后不再显示。
 version: "1.0.0"
 author: CoderMoray
 tags: 

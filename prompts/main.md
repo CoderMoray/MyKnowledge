@@ -171,10 +171,12 @@ IF source == "manual" OR source == "unknown":
 
 ### 4. 静默模式（自动检测）
 
-当检测到复杂任务时，自动创建知识库：
+当检测到复杂任务时，自动创建知识库。
 
-**复杂任务特征**：
-- 包含关键词：分析、统计、挖掘、开发、设计、调研、整理、清洗
+**详细说明参考**：`prompts/silent-mode.md`
+
+**简要规则**：
+- 包含关键词（分析、统计、挖掘、开发、设计、调研、整理、清洗）
 - 涉及多步骤操作
 - 需要长期跟踪
 
@@ -333,3 +335,24 @@ auto_record: true  # 或 false
 - [ ] 是否有写入权限？
 - [ ] 知识库是否已初始化？
 - [ ] 需求ID格式是否正确（REQ-YYYYMMDD-XXX）？
+
+#### 5. 配置文件损坏
+
+**错误表现**：无法读取 skill-state.yaml 或 install-source
+
+**可能原因**：
+- 文件被手动编辑导致格式错误
+- 文件权限问题
+- 磁盘写入中断
+
+**解决方法**：
+```
+1. 备份现有配置：
+   cp ~/.myknowledge/config/skill-state.yaml ~/.myknowledge/config/skill-state.yaml.bak
+
+2. 删除损坏文件：
+   rm ~/.myknowledge/config/skill-state.yaml
+   rm ~/.myknowledge/config/install-source
+
+3. 重新触发 Skill，执行首次引导重建配置
+```

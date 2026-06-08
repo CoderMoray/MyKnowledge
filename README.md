@@ -26,6 +26,16 @@
    openclaw hooks enable myknowledge
    ```
 
+## 快速验证
+
+安装后，对 AI 说以下指令验证功能：
+
+```
+创建知识库          → 应询问创建全局还是项目知识库
+创建一个测试需求     → 应创建 REQ-YYYYMMDD-XXX 目录
+查看项目状态        → 应显示 PROJECT-STATUS.md 内容
+```
+
 ## 使用
 
 ### 主动使用

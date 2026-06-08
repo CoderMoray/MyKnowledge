@@ -6,15 +6,15 @@
 
 ---
 
-## [1.0.0] - 2026-06-08
+## [1.0.17] - 2026-06-08
 
-### 🎉 初始发布
+### 🎉 初始发布（累积 17 次迭代）
 
 #### 新增
-- **核心功能**: 知识库创建和管理
+- **核心功能**: 知识库创建与管理
   - 支持全局知识库（~/MyKnowledge/global/）
   - 支持项目知识库（{project}/.myknowledge/）
-  
+
 - **需求管理**: 完整的需求生命周期管理
   - 创建需求（REQ-{date}-{seq} 格式）
   - 状态流转（Created → In Progress → Review → Done）
@@ -22,7 +22,7 @@
 
 - **静默模式**: 自动检测复杂任务
   - 关键词检测（分析、统计、开发等）
-  - 自动创建知识库和记录需求
+  - 自动创建知识库并记录需求
   - 可配置的检测规则
 
 - **平台适配**: 支持三大 AI 平台
@@ -30,7 +30,7 @@
   - WorkBuddy（意图识别模式）
   - OpenClaw（Hook + 意图识别）
 
-- **首次引导**: 智能的平台检测和引导流程
+- **首次引导**: 智能平台检测与引导流程
   - 自动检测当前平台
   - 针对性的配置引导
   - 状态持久化（skill-state.yaml）
@@ -40,19 +40,19 @@
   - 恢复任务上下文
 
 #### 文档
-- README.md - 项目概述
-- SKILL.md - Skill 主入口
-- settings.yaml - 配置说明
-- INSTALL.md - 安装指南
-- USAGE.md - 使用指南
-- TEST-PLAN.md - 测试计划
+- README.md — 项目概述
+- SKILL.md — Skill 主入口
+- settings.yaml — 配置说明
+- INSTALL.md — 安装指南
+- USAGE.md — 使用指南
+- TEST-PLAN.md — 测试计划
 - 模板文件（PROJECT-STATUS、需求 README、设计文档）
 
 #### 技术特性
 - 纯 Prompt + YAML 配置实现
 - 可选的 OpenClaw Hook 支持
 - 跨平台兼容
-- 无外部依赖
+- 零外部依赖
 
 ---
 

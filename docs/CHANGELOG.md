@@ -6,53 +6,55 @@
 
 ---
 
-## [1.0.0] - 2026-06-08
+## [1.0.0] - 2026-06-09
 
 ### 🎉 初始发布
 
-#### 新增
-- **核心功能**: 知识库创建和管理
-  - 支持全局知识库（~/MyKnowledge/global/）
-  - 支持项目知识库（{project}/.myknowledge/）
-  
-- **需求管理**: 完整的需求生命周期管理
+#### 核心功能
+- **知识库管理**: 创建标准化的知识库目录结构
+  - 全局知识库（~/MyKnowledge/global/）
+  - 项目知识库（{project}/.myknowledge/）
+  - 自动初始化 README、PROJECT-STATUS.md 等文件
+
+- **需求生命周期管理**: 完整跟踪需求状态
   - 创建需求（REQ-{date}-{seq} 格式）
-  - 状态流转（Created → In Progress → Review → Done）
-  - 自动更新 PROJECT-STATUS.md
+  - 状态流转（Created → In Progress → Review → Done → Cancelled）
+  - 自动归档已完成需求
 
-- **静默模式**: 自动检测复杂任务
-  - 关键词检测（分析、统计、开发等）
-  - 自动创建知识库和记录需求
-  - 可配置的检测规则
+- **静默模式**: 智能检测复杂任务
+  - 关键词匹配（分析、统计、开发等 10+ 关键词）
+  - 可配置敏感度（min_keyword_count）
+  - 首次触发时询问用户偏好
 
-- **平台适配**: 支持三大 AI 平台
-  - CodeBuddy（意图识别模式）
-  - WorkBuddy（意图识别模式）
-  - OpenClaw（Hook + 意图识别）
+#### 跨平台支持
+- **CodeBuddy**: 意图识别模式
+- **WorkBuddy**: 意图识别模式
+- **OpenClaw**: Hook + 意图识别（支持真静默）
 
-- **首次引导**: 智能的平台检测和引导流程
-  - 自动检测当前平台
-  - 针对性的配置引导
-  - 状态持久化（skill-state.yaml）
+#### 安装与更新
+- **6种安装源支持**: SkillHub(Web/CLI)、ClawHub、GitHub(ZIP/Clone)、手动安装
+- **安装源自动检测**: 环境变量、目录标记、用户确认
+- **安装源变更检测**: 自动检测或用户主动告知
+- **用户数据分离**: 配置存储在 ~/.myknowledge/config/，Skill 更新不丢失
 
-- **会话恢复**: 从文件恢复项目状态
-  - 读取 PROJECT-STATUS.md
-  - 恢复任务上下文
+#### 首次引导
+- 平台自动检测（CodeBuddy/WorkBuddy/OpenClaw）
+- 安装源自动识别
+- 自动记录偏好设置
+- 可选新手实操教程
+- 引导完成后不再显示
 
-#### 文档
-- README.md - 项目概述
-- SKILL.md - Skill 主入口
-- settings.yaml - 配置说明
-- INSTALL.md - 安装指南
-- USAGE.md - 使用指南
-- TEST-PLAN.md - 测试计划
-- 模板文件（PROJECT-STATUS、需求 README、设计文档）
+#### 文档与模板
+- 完整的用户文档（README、QUICKSTART、USAGE、FAQ、INSTALL）
+- 3种文档模板（项目状态、需求文档、设计文档）
+- 开发文档（DEVELOPMENT、helpers/）
+- 测试套件（test/）
 
 #### 技术特性
-- 纯 Prompt + YAML 配置实现
-- 可选的 OpenClaw Hook 支持
-- 跨平台兼容
-- 无外部依赖
+- 懒加载设计：onboarding 只加载一次
+- 上下文优化：正常使用约 9K tokens
+- 身份不冲突：能力声明式 Prompt，不覆盖 Agent 角色
+- 无外部依赖：纯 Prompt + YAML 实现
 
 ---
 

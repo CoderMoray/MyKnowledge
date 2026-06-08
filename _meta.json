@@ -34,6 +34,5 @@
     "url": "https://github.com/CoderMoray/MyKnowledge/issues"
   },
   "entry": "SKILL.md",
-  "config": "settings.yaml",
-  "icon": "icon.png"
+  "config": "settings.yaml"
 }

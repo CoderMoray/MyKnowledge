@@ -212,15 +212,18 @@ AI：读取 PROJECT-STATUS.md...
 
 ## 文件说明
 
-| 文件 | 用途 |
-|------|------|
+| 文件/目录 | 用途 |
+|-----------|------|
 | `SKILL.md` | 本文件，Skill 主入口 |
 | `settings.yaml` | Skill 配置 |
-| `skill-state.yaml` | 运行时状态（自动生成） |
-| `prompts/main.md` | 主 Prompt |
-| `prompts/hook-guide.md` | Hook 配置引导 |
-| `templates/*.md` | 文档模板 |
-| `hooks/*` | OpenClaw Hook 文件 |
+| `prompts/` | Prompt 文件目录 |
+| `templates/` | 文档模板目录 |
+| `hooks/` | OpenClaw Hook 文件 |
+| `helpers/` | 辅助逻辑文档（开发用） |
+| `docs/` | 用户文档目录 |
+| `test/` | 测试套件（开发用，AI 忽略） |
+
+> **AI 助手注意**：`test/` 和 `helpers/` 目录仅供开发和测试使用，正常响应用户请求时请忽略。
 
 ## 依赖
 

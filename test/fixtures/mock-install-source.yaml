@@ -1,0 +1,58 @@
+# 测试 fixtures：模拟 install-source 文件
+# 用于测试不同安装源场景
+
+# 场景 1: SkillHub Web 安装
+skillhub_web:
+  source: "skillhub_web"
+  detected_by: "env_var"
+  installed_at: "2026-06-09"
+  installed_version: "1.0.0"
+  skill_path: "~/.codebuddy/skills/myknowledge"
+
+# 场景 2: SkillHub CLI 安装
+skillhub_cli:
+  source: "skillhub_cli"
+  detected_by: "dir_marker"
+  installed_at: "2026-06-09"
+  installed_version: "1.0.0"
+  skill_path: "~/.codebuddy/skills/myknowledge"
+
+# 场景 3: GitHub ZIP 安装
+github_zip:
+  source: "github_zip"
+  detected_by: "user_input"
+  installed_at: "2026-06-09"
+  installed_version: "1.0.0"
+  skill_path: "~/.codebuddy/skills/myknowledge"
+
+# 场景 4: GitHub Clone 安装
+github_clone:
+  source: "github_clone"
+  detected_by: "git_dir"
+  installed_at: "2026-06-09"
+  installed_version: "1.0.0"
+  skill_path: "~/.codebuddy/skills/myknowledge"
+
+# 场景 5: 手动安装
+manual:
+  source: "manual"
+  detected_by: "user_input"
+  installed_at: "2026-06-09"
+  installed_version: "1.0.0"
+  skill_path: "~/.codebuddy/skills/myknowledge"
+
+# 场景 6: 未知/损坏
+unknown:
+  source: "unknown"
+  detected_by: ""
+  installed_at: ""
+  installed_version: ""
+
+# 场景 7: SkillHub → GitHub 变更后
+cross_sh_to_gh:
+  source: "github_clone"
+  detected_by: "git_dir"
+  installed_at: "2026-06-01"
+  updated_at: "2026-06-09"
+  installed_version: "1.0.0"
+  previous_source: "skillhub_web"

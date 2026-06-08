@@ -5,65 +5,9 @@ skill:
   version: "1.0.0"
   description: "通用知识库管理 Skill"
 
-# 安装源配置（首次运行时自动检测或手动设置）
-install_source:
-  # 可能的值:
-  # - skillhub_web    : 通过 Skill Hub 网页/IDE 插件安装（有自动更新）
-  # - skillhub_cli    : 通过 SkillHub CLI 手动安装（需手动检查更新）
-  # - clawhub         : 通过 ClawHub 安装
-  # - github_zip      : 通过 GitHub ZIP 下载安装
-  # - github_clone    : 通过 GitHub git clone 安装
-  # - manual          : 手动复制安装
-  # - unknown         : 未知来源
-  source: "unknown"
-  
-  # 检测方式（由 onboarding 设置）
-  detected_by: ""
-  
-  # 各安装源的更新策略
-  update_strategy:
-    skillhub_web:
-      # Skill Hub 网页/IDE 插件安装
-      # 特点：Skill Hub 会自动推送更新通知
-      auto_notify: true
-      user_action: "点击更新按钮"
-      preserve_config: true
-      
-    skillhub_cli:
-      # SkillHub CLI 手动安装
-      # 特点：需要手动运行 CLI 命令检查更新
-      auto_notify: false
-      check_command: "skillhub check-update myknowledge"
-      update_command: "skillhub update myknowledge"
-      check_interval_days: 7
-      
-    clawhub:
-      # ClawHub 安装
-      # 特点：使用 clawhub CLI 管理
-      auto_notify: false
-      check_command: "clawhub list --outdated"
-      update_command: "clawhub update myknowledge"
-      
-    github_zip:
-      # GitHub ZIP 下载
-      # 特点：完全手动，需重新下载 ZIP
-      auto_notify: false
-      check_url: "https://api.github.com/repos/CoderMoray/MyKnowledge/releases/latest"
-      download_url: "https://github.com/CoderMoray/MyKnowledge/releases"
-      check_interval_days: 7
-      
-    github_clone:
-      # GitHub git clone
-      # 特点：可用 git pull 更新
-      auto_notify: false
-      check_command: "cd /path/to/skill && git fetch origin"
-      update_command: "cd /path/to/skill && git pull origin main"
-      
-    manual:
-      # 手动复制
-      # 特点：完全手动，需重新复制文件
-      auto_notify: false
-      check_url: "https://github.com/CoderMoray/MyKnowledge/releases"
+# 安装源配置（首次运行时自动检测，写入 ~/.myknowledge/config/install-source）
+# 可能的值: skillhub_web | skillhub_cli | clawhub | github_zip | github_clone | manual | unknown
+install_source: "unknown"
 
 # 用户数据目录（与 Skill 文件分离，更新时保留）
 user_data:
@@ -209,45 +153,7 @@ templates:
   requirement_readme: "templates/requirement-readme-template.md"
   design_doc: "templates/design-doc-template.md"
 
-# 更新检查配置
+# 更新检查配置（策略定义在 prompts/main.md 中，此处仅开关）
 update_check:
   enabled: true
-  
-  # 根据安装源使用不同策略
-  strategies:
-    # SkillHub 网页/IDE 安装 - 依赖 SkillHub 通知
-    skillhub_web:
-      type: "external"
-      message: "Skill Hub 会自动通知更新，请关注通知"
-    
-    # SkillHub CLI 安装 - 手动检查
-    skillhub_cli:
-      type: "manual_cli"
-      check_command: "skillhub check-update myknowledge"
-      update_command: "skillhub update myknowledge"
-      interval_days: 7
-    
-    # ClawHub 安装 - 手动检查
-    clawhub:
-      type: "manual_cli"
-      check_command: "clawhub list --outdated"
-      update_command: "clawhub update myknowledge"
-    
-    # GitHub ZIP - 手动下载
-    github_zip:
-      type: "manual_url"
-      check_url: "https://api.github.com/repos/CoderMoray/MyKnowledge/releases/latest"
-      download_url: "https://github.com/CoderMoray/MyKnowledge/releases"
-      interval_days: 7
-    
-    # GitHub Clone - git pull
-    github_clone:
-      type: "git"
-      check_command: "git fetch origin && git log HEAD..origin/main --oneline"
-      update_command: "git pull origin main"
-    
-    # 手动安装 - 查看 releases
-    manual:
-      type: "manual_url"
-      check_url: "https://github.com/CoderMoray/MyKnowledge/releases"
-      interval_days: 30
+  interval_days: 7

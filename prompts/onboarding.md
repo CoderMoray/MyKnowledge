@@ -34,8 +34,9 @@
    - CLAWHUB_INSTALL=true → clawhub
 
 2. 检查目录特征
-   - .skillhub 目录存在 → skillhub_web
    - .clawhub 目录存在 → clawhub
+   - package.json 存在且包含 "clawhub" → clawhub
+   - .skillhub 目录存在 → skillhub_web
    - .git 目录存在 → github_clone
 
 3. 询问用户确认

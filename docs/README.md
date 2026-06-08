@@ -53,34 +53,30 @@ AI：（自动检测到复杂任务，创建知识库并记录）
     已自动创建知识库并记录需求 REQ-20260608-001
 ```
 
-## 文档
-
-| 文档 | 说明 |
-|------|------|
-| [QUICKSTART.md](docs/QUICKSTART.md) | 快速入门指南（非技术用户推荐） |
-| [USAGE.md](docs/USAGE.md) | 详细使用说明 |
-| [INSTALL.md](docs/INSTALL.md) | 安装指南 |
-| [FAQ.md](docs/FAQ.md) | 常见问题解答 |
-| [CHANGELOG.md](docs/CHANGELOG.md) | 版本变更日志 |
-
 ## 目录结构
 
 ```
 MyKnowledge/
 ├── SKILL.md              # Skill 主入口
 ├── settings.yaml         # Skill 配置
-├── prompts/              # Prompt 文件
-│   ├── main.md           # 主逻辑
-│   ├── onboarding.md     # 首次引导
-│   └── hook-guide.md     # Hook 配置引导
+├── prompts/
+│   ├── main.md           # 主 Prompt
+│   ├── onboarding.md     # 首次引导（仅首次加载）
+│   └── hook-guide.md     # Hook 配置引导（OpenClaw）
 ├── templates/            # 文档模板
-├── helpers/              # 辅助逻辑文档
-├── docs/                 # 用户文档
-├── test/                 # 测试套件（开发用）
+│   ├── project-status-template.md
+│   ├── requirement-readme-template.md
+│   └── design-doc-template.md
+├── test/                 # 测试套件（开发用，AI 忽略）
+│   ├── README.md
+│   ├── scenarios/        # 测试场景
+│   └── fixtures/         # 测试数据
 └── hooks/                # OpenClaw Hook（可选）
+    ├── HOOK.md
+    └── handler.ts
 ```
 
-> **AI 助手注意**：`test/` 目录仅供开发和测试使用，正常使用时请忽略。
+> **注意**：`test/` 目录包含 Skill 内部测试方案，仅供开发和测试使用，AI 助手正常使用时请忽略此目录。
 
 ## 支持的存储位置
 
@@ -94,10 +90,6 @@ MyKnowledge/
 | CodeBuddy | 意图识别 | 伪静默（AI 自动判断） |
 | WorkBuddy | 意图识别 | 伪静默（AI 自动判断） |
 | OpenClaw | Hook + 意图识别 | 真静默（事件驱动） |
-
-## 开发
-
-开发者请参考 [DEVELOPMENT.md](DEVELOPMENT.md)。
 
 ## 许可证
 

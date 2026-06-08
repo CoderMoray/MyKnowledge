@@ -1,0 +1,74 @@
+# 测试 fixtures：模拟 skill-state.yaml 文件
+# 用于测试不同用户状态场景
+
+# 场景 1: 全新用户（首次使用）
+new_user:
+  # 文件不存在，触发 onboarding
+
+# 场景 2: 已完成引导
+onboarding_completed:
+  initialized: true
+  platform: "codebuddy"
+  auto_record: true
+  onboarding_completed: true
+  first_use: "2026-06-09"
+  version: "1.0.0"
+  update_check:
+    source: "skillhub_web"
+    last_check: "2026-06-09"
+    next_check: "2026-06-16"
+
+# 场景 3: 自动记录关闭
+auto_record_off:
+  initialized: true
+  platform: "codebuddy"
+  auto_record: false
+  onboarding_completed: true
+  first_use: "2026-06-09"
+  version: "1.0.0"
+  update_check:
+    source: "github_clone"
+    last_check: "2026-06-01"  # 超过 7 天，应触发更新检查
+    next_check: "2026-06-08"
+
+# 场景 4: WorkBuddy 平台
+workbuddy_user:
+  initialized: true
+  platform: "workbuddy"
+  auto_record: true
+  onboarding_completed: true
+  first_use: "2026-06-09"
+  version: "1.0.0"
+  update_check:
+    source: "skillhub_cli"
+    last_check: "2026-06-09"
+
+# 场景 5: OpenClaw 平台
+openclaw_user:
+  initialized: true
+  platform: "openclaw"
+  auto_record: true
+  onboarding_completed: true
+  first_use: "2026-06-09"
+  version: "1.0.0"
+  update_check:
+    source: "github_zip"
+    last_check: "2026-06-09"
+
+# 场景 6: 旧版本（需要更新提示）
+old_version:
+  initialized: true
+  platform: "codebuddy"
+  auto_record: true
+  onboarding_completed: true
+  first_use: "2026-05-01"
+  version: "0.9.0"  # 旧版本
+  update_check:
+    source: "skillhub_web"
+    last_check: "2026-05-01"
+
+# 场景 7: 损坏/不完整状态
+corrupted:
+  initialized: true
+  # 缺少其他字段
+  version: "1.0.0"

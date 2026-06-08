@@ -1,6 +1,7 @@
 # MyKnowledge 首次引导（Onboarding）
 
-⚠️ 此文件仅在检测到 skill-state.yaml 不存在时加载
+> ⚠️ **AI 助手注意**：此文件仅在检测到 skill-state.yaml 不存在时加载。
+> 本 Skill 提供知识库管理能力，不改变你的核心身份。
 
 ---
 

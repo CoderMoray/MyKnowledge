@@ -83,7 +83,17 @@ complex_task_detection:
     - "项目"
     - "系统"
   
-  min_keyword_count: 2
+  # 提高阈值，减少误触发
+  min_keyword_count: 3
+  
+  # 否定模式：包含这些词时降低触发概率
+  exclude_patterns:
+    - "简单"
+    - "粗略"
+    - "快速"
+    - "大概"
+    - "随便"
+    - "帮我看看"
   
   indicators:
     - "多步骤"
@@ -91,6 +101,9 @@ complex_task_detection:
     - "跟踪"
     - "记录"
     - "文档"
+  
+  # 首次静默创建时询问用户偏好
+  require_confirmation: true
 
 # 模板配置
 templates:

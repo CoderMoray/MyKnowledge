@@ -27,15 +27,35 @@
 
 ### 1. 检测安装源变更
 
+**方式一：自动检测（如果 AI 有文件系统访问权限）**
+
 ```
 读取 ~/.myknowledge/config/install-source 中的记录
-检测当前 Skill 实际安装方式：
+尝试检测当前 Skill 实际安装方式：
   - 检查 Skill 目录是否有 .git 目录 → github_clone
   - 检查 Skill 目录是否有 .skillhub 标记 → skillhub_web/cli
   - 检查 Skill 目录是否有 .clawhub 标记 → clawhub
   - 检查 Skill 目录是否有 package.json 且包含 "clawhub" → clawhub
-  - 对比记录 source 与实际检测结果
 
+IF 能访问 Skill 目录且检测到变更:
+   按下方"变更处理逻辑"执行
+```
+
+**方式二：用户主动告知（推荐，更可靠）**
+
+```
+IF 用户说以下任一指令:
+   - "我改用 GitHub 更新了"
+   - "切换安装源到 github"
+   - "我用 skillhub 安装了"
+   - "安装源是 clawhub"
+   
+   → 直接更新 install-source，无需文件检测
+```
+
+**变更处理逻辑**
+
+```
 IF 记录 source IN ["skillhub_web", "skillhub_cli"] 但检测到 .clawhub 标记:
    ⚠️ "检测到安装源变更："
    "你原本通过 Skill Hub 安装，但现在检测到 ClawHub 标记。"

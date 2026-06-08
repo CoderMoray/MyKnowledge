@@ -1,0 +1,192 @@
+---
+name: myknowledge
+description: |
+  当用户需要创建知识库、管理项目文档、记录需求、整理个人知识时使用。
+  自动检测任务复杂度，支持静默创建知识库和记录需求。
+  适用于项目开发、个人学习、团队协作等场景。
+version: "1.0.0"
+author: CoderMoray
+---
+
+# MyKnowledge Skill
+
+## 概述
+
+MyKnowledge 是一个通用的知识库管理 Skill，帮助用户：
+- 创建标准化的知识库目录结构
+- 管理需求生命周期（创建、更新、归档）
+- 维护 PROJECT-STATUS.md 项目状态快照
+- 支持个人知识管理和项目文档管理
+
+## 首次使用引导
+
+### 1. 检测平台
+
+加载本 Skill 时，首先检测当前平台：
+
+```
+检查目录存在性：
+- ~/.openclaw/ 存在 → 可能是 OpenClaw
+- ~/.codebuddy/ 存在 → 可能是 CodeBuddy
+- ~/.workbuddy/ 存在 → 可能是 WorkBuddy
+```
+
+### 2. 检查是否已初始化
+
+检查 `skill-state.yaml` 是否存在：
+- **存在** → 跳过引导，正常使用
+- **不存在** → 执行首次引导
+
+### 3. 首次引导流程
+
+**步骤 1：确认平台**
+
+```
+AI：首次使用 MyKnowledge。
+
+     检测到您可能使用以下平台：
+     - CodeBuddy
+     - WorkBuddy
+     
+     您当前正在使用哪个？
+     [CodeBuddy] [WorkBuddy] [OpenClaw] [其他/不确定]
+```
+
+**步骤 2：根据平台显示对应引导**
+
+- **OpenClaw** → 显示 Hook 配置引导
+- **CodeBuddy/WorkBuddy** → 启用意图识别模式
+- **其他/不确定** → 启用意图识别模式
+
+**步骤 3：创建 skill-state.yaml**
+
+记录用户选择和配置，避免重复引导。
+
+## 使用模式
+
+### 模式 1：主动使用
+
+用户显式请求创建知识库：
+
+```
+用户：创建知识库
+AI：请选择类型：
+     [全局知识库] - 位于 ~/MyKnowledge/global/
+     [项目知识库] - 位于当前项目目录
+```
+
+### 模式 2：静默使用（自动检测）
+
+AI 自动检测复杂任务，静默创建知识库：
+
+```
+用户：帮我分析这个销售数据
+AI：（自动检测为复杂任务）
+     已自动创建知识库并记录需求 REQ-20260608-001
+```
+
+**复杂任务检测规则**：
+- 包含数据分析、统计、挖掘等关键词
+- 涉及多步骤操作
+- 需要长期跟踪的任务
+
+## 知识库结构
+
+### 全局知识库
+
+```
+~/MyKnowledge/global/
+├── README.md
+├── requirements/
+├── public/
+├── archive/
+└── PROJECT-STATUS.md
+```
+
+### 项目知识库
+
+```
+{project-path}/.myknowledge/
+├── README.md
+├── requirements/
+├── public/
+├── archive/
+└── PROJECT-STATUS.md
+```
+
+## 核心功能
+
+### 1. 创建知识库
+
+```
+输入：
+- 类型（全局/项目）
+- 名称（可选）
+
+输出：
+- 完整的知识库目录结构
+- 初始化的 PROJECT-STATUS.md
+```
+
+### 2. 创建需求
+
+```
+输入：
+- 需求标题
+- 需求描述
+
+输出：
+- 需求目录 requirements/REQ-YYYYMMDD-XXX/
+- 需求文档 README.md
+- 更新的 PROJECT-STATUS.md
+```
+
+### 3. 更新需求状态
+
+支持状态流转：
+- Created → In Progress → Review → Done
+- Created → Cancelled
+
+### 4. 会话恢复
+
+```
+用户：继续 xxx 项目
+AI：读取 PROJECT-STATUS.md...
+     恢复项目状态，继续工作
+```
+
+## 平台适配
+
+### OpenClaw（完全静默）
+
+通过 Hook 实现事件驱动：
+- `message:received` → 检测任务复杂度
+- 自动创建知识库和记录需求
+
+### CodeBuddy/WorkBuddy（意图识别）
+
+通过 `description` 匹配和 Prompt 逻辑：
+- AI 自动判断是否需要创建知识库
+- 复杂任务自动记录
+
+## 文件说明
+
+| 文件 | 用途 |
+|------|------|
+| `SKILL.md` | 本文件，Skill 主入口 |
+| `settings.yaml` | Skill 配置 |
+| `skill-state.yaml` | 运行时状态（自动生成） |
+| `prompts/main.md` | 主 Prompt |
+| `prompts/hook-guide.md` | Hook 配置引导 |
+| `templates/*.md` | 文档模板 |
+| `hooks/*` | OpenClaw Hook 文件 |
+
+## 依赖
+
+- 文件系统操作能力
+- 模板渲染能力
+- （可选）OpenClaw Hook 支持
+
+## 许可证
+
+MIT

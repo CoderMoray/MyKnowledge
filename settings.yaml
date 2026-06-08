@@ -1,0 +1,102 @@
+# MyKnowledge Skill 配置
+
+skill:
+  name: myknowledge
+  version: "1.0.0"
+  description: "通用知识库管理 Skill"
+
+# 平台检测配置
+platform_detection:
+  enabled: true
+  paths:
+    openclaw: "~/.openclaw"
+    codebuddy: "~/.codebuddy"
+    workbuddy: "~/.workbuddy"
+
+# 功能特性
+features:
+  # 静默模式（自动检测复杂任务）
+  silent_mode:
+    enabled: true
+    description: "自动检测任务复杂度并创建知识库"
+    
+  # 需求管理
+  requirement_management:
+    enabled: true
+    id_format: "REQ-{date}-{seq}"
+    
+  # 状态管理
+  status_management:
+    enabled: true
+    states:
+      - Created
+      - In Progress
+      - Review
+      - Done
+      - Cancelled
+
+# 存储位置
+storage:
+  # 全局知识库
+  global:
+    path: "~/MyKnowledge/global"
+    description: "跨项目共享知识"
+    
+  # 项目知识库
+  project:
+    path: "{project-path}/.myknowledge"
+    description: "项目专属知识"
+
+# 目录结构模板
+directory_structure:
+  - README.md
+  - requirements/
+    - README.md
+  - public/
+    - README.md
+  - archive/
+    - README.md
+  - PROJECT-STATUS.md
+
+# 首次引导配置
+onboarding:
+  # 是否显示平台选择
+  show_platform_selection: true
+  
+  # OpenClaw 用户是否显示 Hook 引导
+  show_hook_guide_for_openclaw: true
+  
+  # 是否询问存储位置偏好
+  ask_storage_preference: false
+
+# 复杂任务检测规则
+complex_task_detection:
+  keywords:
+    - "分析"
+    - "统计"
+    - "挖掘"
+    - "开发"
+    - "设计"
+    - "调研"
+    - "整理"
+    - "清洗"
+    - "项目"
+    - "系统"
+  
+  min_keyword_count: 2
+  
+  indicators:
+    - "多步骤"
+    - "长期"
+    - "跟踪"
+    - "记录"
+    - "文档"
+
+# 模板配置
+templates:
+  project_status: "templates/project-status-template.md"
+  requirement_readme: "templates/requirement-readme-template.md"
+  design_doc: "templates/design-doc-template.md"
+
+# 运行时状态文件（自动生成，不提交 git）
+state_file: "skill-state.yaml"

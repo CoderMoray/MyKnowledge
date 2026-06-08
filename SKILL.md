@@ -6,6 +6,18 @@ description: |
   适用于项目开发、个人学习、团队协作等场景。
 version: "1.0.0"
 author: CoderMoray
+tags: 
+  - "knowledge-base"
+  - "knowledge-management"
+  - "project-management"
+  - "documentation"
+  - "需求管理"
+  - "知识库"
+  - "项目管理"
+  - "文档管理"
+  - "笔记"
+  - "个人知识"
+category: "productivity"
 ---
 
 # MyKnowledge Skill

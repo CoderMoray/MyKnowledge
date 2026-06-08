@@ -7,16 +7,61 @@
 **每次使用本 Skill 前，先执行以下检查：**
 
 ```
-1. 检查 skill-state.yaml 是否存在
+1. 检查 ~/.myknowledge/config/skill-state.yaml 是否存在
    - 存在 → 读取配置，继续正常使用
    - 不存在 → 停止，加载 prompts/onboarding.md 执行首次引导
 
 2. 如果用户说"重新初始化"或"重置":
-   - 删除 skill-state.yaml
+   - 删除 ~/.myknowledge/config/skill-state.yaml
    - 加载 prompts/onboarding.md 重新引导
 ```
 
 **重要**：首次引导只执行一次，之后不再加载 onboarding.md。
+
+---
+
+## 更新检查（每次使用时）
+
+**根据安装源执行不同策略**：
+
+```
+读取 ~/.myknowledge/config/install-source
+
+IF source == "skillhub_web":
+   # Skill Hub 网页/IDE 安装
+   # Skill Hub 会自动推送更新通知，无需代码检查
+   IF 用户询问更新:
+      "Skill Hub 会自动通知更新，请关注通知"
+
+IF source == "skillhub_cli":
+   # SkillHub CLI 安装
+   IF 超过 7 天未检查:
+      "📦 检查更新：运行 skillhub check-update myknowledge"
+      "🔄 安装更新：运行 skillhub update myknowledge"
+
+IF source == "clawhub":
+   # ClawHub 安装
+   IF 用户询问更新:
+      "📦 检查更新：运行 clawhub list --outdated"
+      "🔄 安装更新：运行 clawhub update myknowledge"
+
+IF source == "github_zip":
+   # GitHub ZIP 安装
+   IF 超过 7 天未检查:
+      "📦 检查更新：访问 https://github.com/CoderMoray/MyKnowledge/releases"
+      "🔄 下载最新 ZIP 替换当前文件"
+
+IF source == "github_clone":
+   # GitHub git clone 安装
+   IF 超过 7 天未检查:
+      "📦 检查更新：cd 到 Skill 目录运行 git fetch origin"
+      "🔄 安装更新：运行 git pull origin main"
+
+IF source == "manual" OR source == "unknown":
+   # 手动安装或未知
+   IF 用户询问更新:
+      "📦 关注 https://github.com/CoderMoray/MyKnowledge/releases 获取更新"
+```
 
 ---
 
@@ -37,7 +82,7 @@
 
 ```
 1. 询问类型：
-   - 全局知识库（~/MyKnowledge/global/）
+   - 全局知识库（~/.myknowledge/global/）
    - 项目知识库（当前目录/.myknowledge/）
 
 2. 创建目录结构：
@@ -93,7 +138,7 @@
 
 **检查配置**：
 ```yaml
-# 从 skill-state.yaml 读取
+# 从 ~/.myknowledge/config/skill-state.yaml 读取
 auto_record: true  # 或 false
 ```
 
@@ -101,9 +146,9 @@ auto_record: true  # 或 false
 
 ## 工作流程
 
-1. 读取 `skill-state.yaml` 获取用户配置（平台、自动记录开关等）
+1. 读取 ~/.myknowledge/config/skill-state.yaml 获取用户配置
 2. 根据用户输入执行对应操作
-3. 如需更新配置（如用户要求开关自动记录），更新 `skill-state.yaml`
+3. 如需更新配置（如用户要求开关自动记录），更新 skill-state.yaml
 4. 每次操作后更新 PROJECT-STATUS.md
 
 ---
@@ -216,9 +261,8 @@ auto_record: true  # 或 false
 **解决方法**：
 ```
 1. 首次触发时选择"不再自动创建"
-2. 或修改 settings.yaml：
-   complex_task_detection:
-     min_keyword_count: 4  # 提高阈值
+2. 或修改 ~/.myknowledge/config/skill-state.yaml：
+   auto_record: false
 ```
 
 #### 4. 平台检测错误
@@ -231,7 +275,7 @@ auto_record: true  # 或 false
    "我使用的是 CodeBuddy"
 
 2. 删除状态文件重新检测：
-   rm .myknowledge/skill-state.yaml
+   rm ~/.myknowledge/config/skill-state.yaml
 ```
 
 ### 快速诊断

@@ -20,7 +20,76 @@
 让我花 1 分钟帮你设置一下...
 ```
 
-### 步骤 2：平台确认
+---
+
+### 步骤 2：检测安装源
+
+**自动检测逻辑**：
+
+```bash
+检测顺序：
+1. 检查环境变量
+   - SKILLHUB_INSTALL=true → skillhub_web
+   - SKILLHUB_CLI_INSTALL=true → skillhub_cli
+   - CLAWHUB_INSTALL=true → clawhub
+
+2. 检查目录特征
+   - .skillhub 目录存在 → skillhub_web
+   - .clawhub 目录存在 → clawhub
+   - .git 目录存在 → github_clone
+
+3. 询问用户确认
+   "请问你是如何安装本 Skill 的？"
+   [Skill Hub 网页/插件] 
+   [SkillHub CLI 命令行]
+   [ClawHub]
+   [GitHub ZIP 下载]
+   [GitHub git clone]
+   [手动复制]
+```
+
+**保存安装源信息**：
+
+创建 `~/.myknowledge/config/install-source`：
+
+```yaml
+source: "skillhub_web"  # 用户选择的安装源
+detected_by: "env_var"  # 检测方式：env_var / dir / user_input
+installed_at: "2026-06-09"
+installed_version: "1.0.0"
+skill_path: "~/.codebuddy/skills/myknowledge"  # 实际安装路径
+```
+
+**根据安装源显示不同提示**：
+
+```
+IF source == "skillhub_web":
+   "✅ 通过 Skill Hub 安装，更新时会自动通知你"
+
+IF source == "skillhub_cli":
+   "📌 通过 SkillHub CLI 安装"
+   "更新方式：运行 skillhub update myknowledge"
+
+IF source == "clawhub":
+   "📌 通过 ClawHub 安装"
+   "更新方式：运行 clawhub update myknowledge"
+
+IF source == "github_zip":
+   "📌 通过 GitHub ZIP 安装"
+   "更新方式：重新下载最新 ZIP 并替换"
+
+IF source == "github_clone":
+   "📌 通过 GitHub git clone 安装"
+   "更新方式：cd 到目录运行 git pull"
+
+IF source == "manual":
+   "📌 手动安装"
+   "更新方式：关注 https://github.com/CoderMoray/MyKnowledge/releases"
+```
+
+---
+
+### 步骤 3：平台确认
 
 ```
 你使用什么 AI 助手？
@@ -29,7 +98,9 @@
 （检测目录：~/.codebuddy/, ~/.workbuddy/, ~/.openclaw/）
 ```
 
-### 步骤 3：自动记录设置
+---
+
+### 步骤 4：自动记录设置
 
 ```
 是否开启「自动记录」？
@@ -43,7 +114,9 @@
 💡 随时可以说"开启/关闭自动记录"修改
 ```
 
-### 步骤 4：新手实操（可选但推荐）
+---
+
+### 步骤 5：新手实操（可选但推荐）
 
 ```
 要不要实际操作一次？我会带你走一遍：
@@ -59,20 +132,42 @@
 4. 演示更新状态
 5. 展示完成效果
 
-### 步骤 5：保存配置
+---
 
-创建 `skill-state.yaml`：
+### 步骤 6：保存配置
+
+**创建用户数据目录结构**：
+
+```
+~/.myknowledge/
+├── config/
+│   ├── install-source      # 安装源信息
+│   ├── skill-state.yaml    # 用户配置和状态
+│   └── version             # 当前版本
+└── global/                 # 全局知识库（如用户选择创建）
+    └── ...
+```
+
+**skill-state.yaml 内容**：
 
 ```yaml
 initialized: true
-platform: "codebuddy"
-auto_record: true
-onboarding_completed: true
+platform: "codebuddy"           # 用户平台
+auto_record: true               # 自动记录开关
+onboarding_completed: true      # 引导完成标记
 first_use: "2026-06-09"
 version: "1.0.0"
+
+# 更新检查配置（根据安装源设置）
+update_check:
+  source: "skillhub_web"        # 安装源
+  last_check: ""                # 上次检查时间
+  next_check: ""                # 下次检查时间
 ```
 
-### 步骤 6：结束语
+---
+
+### 步骤 7：结束语
 
 ```
 🎉 设置完成！记住这 3 句话：
@@ -82,6 +177,9 @@ version: "1.0.0"
 
 ✅ 引导已完成，下次不再显示
 💡 详细参考：QUICKSTART.md
+
+📦 你的安装方式：{install_source}
+   更新方法：{update_method}
 
 开始你的第一个项目吧！😊
 ```

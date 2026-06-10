@@ -2,7 +2,7 @@
 
 skill:
   name: myknowledge
-  version: "1.1.0"
+  version: "1.1.6"
   description: "通用知识库管理 Skill"
 
 # 安装源配置（首次运行时自动检测，写入 ~/.myknowledge/config/install-source）
@@ -26,7 +26,7 @@ user_data:
 # 版本兼容性
 version_compatibility:
   # 当前 Skill 版本
-  current: "1.1.0"
+  current: "1.1.2"
 
   # 配置格式版本
   config_format: "1.0"
@@ -95,7 +95,7 @@ onboarding:
   completed: false
   
   # 引导文件位置
-  prompt_file: "prompts/onboarding.md"
+  prompt_file: "one-time/onboarding/main.md"
   
   # 是否显示平台选择
   show_platform_selection: true
@@ -150,9 +150,9 @@ complex_task_detection:
 
 # 模板配置
 templates:
-  project_status: "templates/project-status-template.md"
-  requirement_readme: "templates/requirement-readme-template.md"
-  design_doc: "templates/design-doc-template.md"
+  project_status: "core/templates/project-status-template.md"
+  requirement_readme: "core/templates/requirement-readme-template.md"
+  design_doc: "core/templates/design-doc-template.md"
 
 # 更新检查配置（策略定义在 prompts/main.md 中，此处仅开关）
 update_check:

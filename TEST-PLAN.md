@@ -12,6 +12,7 @@
 - CodeBuddy
 - WorkBuddy
 - OpenClaw
+- Claude
 
 ### 测试前提
 1. Skill 已复制到对应平台的 skills 目录

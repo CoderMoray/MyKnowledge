@@ -9,6 +9,23 @@
 
 ## 项目架构
 
+### 分层与责任
+
+| 层级 | 包含 | 打包到 SkillHub zip？ | 责任方 |
+|------|------|----------------------|--------|
+| **Skill 内容** | `core/`、`modules/`、`one-time/`、`hooks/` | ✅ 是 | AI 平台加载运行 |
+| **Skill 元数据** | `_meta.json`、`manifest.json`（根目录） | ✅ 是 | AI 平台解析、版本识别 |
+| **用户文档** | `README.md`、`QUICKSTART.md`、`USAGE.md`、`FAQ.md`、`INSTALL.md`、`TEST-PLAN.md` | ❌ 否 | 仓库内可见，zip 外 |
+| **开发者工具** | `scripts/build-skillhub.sh`、`scripts/lint-paths.sh` | ❌ 否 | 开发者发布前 |
+| **测试** | `test/` | ❌ 否 | 开发者验证 |
+| **CI 配置** | `.github/workflows/*.yml` | ❌ 否 | GitHub Actions |
+| **变更记录** | `CHANGELOG.md` | ❌ 否 | 仓库内可见 |
+
+**关键原则**：
+- 用户**不**需要手动验证 → 验证是 AI 平台和 CI 的事
+- 用户的"自动验证"靠 `core/main.md` 的"加载时自检"段（AI 透明执行）
+- 开发者的验证靠 `scripts/lint-paths.sh`（本地 + CI 都用同一份）
+
 ### 当前目录结构
 
 ```
@@ -23,34 +40,52 @@ MyKnowledge/
 │   └── templates/           # 文档模板
 │
 ├── 📁 modules/              # 可选模块（懒加载）
-│   ├── management/         # 需求管理
+│   ├── commands/            # 命令速查
 │   │   └── main.md
-│   ├── update/             # 更新检查
+│   ├── management/          # 需求管理
 │   │   └── main.md
-│   ├── error/              # 错误处理
+│   ├── error/               # 错误处理
 │   │   └── main.md
-│   └── silent/             # 静默模式
+│   └── silent/              # 静默模式
 │       └── main.md
 │
-├── 📁 one-time/            # 一次性配置
-│   ├── onboarding/         # 首次引导
+├── 📁 one-time/             # 一次性配置
+│   ├── onboarding/          # 首次引导
 │   │   └── main.md
-│   └── setup/              # 安装源检测
+│   └── setup/               # 安装源/平台/更新检测
 │       ├── install-source.md
 │       ├── platform-detector.md
 │       └── update-checker.md
 │
-├── 📁 hooks/               # 平台 Hook
-│   ├── openclaw/           # OpenClaw Hook
+├── 📁 hooks/                # 平台 Hook
+│   ├── openclaw/            # OpenClaw Hook
 │   │   ├── HOOK.md
 │   │   ├── handler.ts
 │   │   └── hook-guide.md
-│   └── claude/             # Claude Hook
+│   └── claude/              # Claude Hook
 │       ├── hooks.json
 │       ├── handler.js
 │       └── README.md
 │
-└── 📁 test/                # 测试套件
+├── 📁 scripts/              # 开发者工具（不进 zip）
+│   ├── build-skillhub.sh    # SkillHub 打包脚本
+│   └── lint-paths.sh        # 路径一致性检查（门禁）
+│
+├── 📁 releases/            # 构建产物归档（不进 zip）
+│
+├── 📁 .github/              # CI 配置（不进 zip）
+│   └── workflows/
+│       └── release.yml      # GitHub Actions：tag 触发 release
+
+└── 📁 test/                 # 测试套件（开发用，AI 忽略）
+    ├── README.md
+    ├── scenarios/           # 测试场景详细方案
+    │   ├── skillhub-only.md
+    │   ├── github-only.md
+    │   └── cross-update.md
+    └── fixtures/            # 测试模拟数据
+        ├── mock-skill-state.yaml
+        └── mock-install-source.yaml
 ```
 
 ### 目录结构说明
@@ -71,17 +106,17 @@ MyKnowledge/
 ```
 首次使用:
   SKILL.md → 检测到无 skill-state.yaml
-  → 加载 core/prompts/onboarding.md (~3K tokens)
+  → 加载 one-time/onboarding/main.md (~3K tokens)
   → 创建状态文件
-  → 后续使用 core/prompts/main.md (~4.5K tokens)
+  → 后续使用 core/main.md (~4.5K tokens)
 
 正常使用:
   SKILL.md → 检测到 skill-state.yaml 存在
-  → 直接加载 core/prompts/main.md
-  → onboarding.md 永不加载
+  → 直接加载 core/main.md
+  → 遇到具体场景再懒加载 modules/*/main.md
 ```
 
-**目的**：减少上下文占用， onboarding 只加载一次。
+**目的**：减少上下文占用， onboarding 只加载一次，模块按需加载。
 
 ### 2. 用户数据分离
 
@@ -118,34 +153,23 @@ Skill 文件（随更新替换）:
 
 ## 文件职责说明
 
-### 核心文件（core/）
+### 核心文件
 
 | 文件 | 职责 | 加载时机 |
 |------|------|----------|
-| `prompts/main.md` | 主逻辑、更新检查、知识库操作 | 每次使用 |
-| `prompts/onboarding.md` | 首次引导、安装源检测 | 仅首次 |
-| `prompts/silent-mode.md` | 静默模式规则说明 | 按需 |
-| `templates/*.md` | 文档生成模板 | 创建时 |
-| `hooks/handler.ts` | OpenClaw 事件处理 | OpenClaw 平台 |
-
-### 辅助文件（helpers/ - 待创建）
-
-| 文件 | 职责 |
-|------|------|
-| `platform-detector.md` | 平台检测逻辑文档 |
-| `update-checker.md` | 更新检查策略文档 |
-| `install-source.md` | 安装源管理逻辑 |
-
-### 用户文档（docs/ - 待创建）
-
-| 文件 | 目标读者 |
-|------|----------|
-| `README.md` | 所有用户（入门） |
-| `QUICKSTART.md` | 非技术用户 |
-| `USAGE.md` | 需要详细说明的用户 |
-| `INSTALL.md` | 手动安装用户 |
-| `FAQ.md` | 遇到问题用户 |
-| `CHANGELOG.md` | 关注更新用户 |
+| `core/main.md` | 主逻辑、命令分发、错误处理引用 | 每次使用 |
+| `core/templates/*.md` | 文档生成模板 | 创建时 |
+| `one-time/onboarding/main.md` | 首次引导流程 | 仅首次 |
+| `one-time/setup/install-source.md` | 安装源检测与管理 | 询问/检测时 |
+| `one-time/setup/platform-detector.md` | 平台自动检测 | 首次引导 |
+| `one-time/setup/update-checker.md` | 更新检查策略 | 用户询问时 |
+| `modules/commands/main.md` | 固定命令速查、同义词映射 | 用户问"能做什么"时 |
+| `modules/management/main.md` | 需求查看、更新、归档、删除 | 操作 REQ 时 |
+| `modules/error/main.md` | 错误分类、诊断清单、恢复步骤 | 报错时 |
+| `modules/silent/main.md` | 复杂任务自动检测 | 触发静默时 |
+| `hooks/openclaw/handler.ts` | OpenClaw 事件处理 | OpenClaw 平台 |
+| `hooks/claude/handler.js` | Claude 事件处理 | Claude 平台 |
+| `scripts/build-skillhub.sh` | SkillHub 打包脚本 | 发布时 |
 
 ---
 
@@ -190,11 +214,12 @@ version: "1.0.0"
 ### 3. 新增功能流程
 
 ```
-1. 在 core/prompts/main.md 添加功能逻辑
-2. 如需模板，在 core/templates/ 创建
-3. 更新 docs/USAGE.md 说明
-4. 在 test/scenarios/ 添加测试用例
-5. 更新 CHANGELOG.md
+1. 在 core/main.md 添加功能入口（保持精简，详细放模块）
+2. 如需新模块，创建 modules/<name>/main.md
+3. 如需模板，在 core/templates/ 创建
+4. 更新 USAGE.md 或对应文档
+5. 在 test/scenarios/ 添加测试用例
+6. 更新 CHANGELOG.md
 ```
 
 ---
@@ -240,11 +265,12 @@ version: "1.0.0"
 
 ### 发布检查清单
 
-- [ ] 版本号更新（`settings.yaml`, `_meta.json`, `SKILL.md`）
+- [ ] 版本号更新（`settings.yaml`, `_meta.json`, `SKILL.md` 等 10 个文件）
 - [ ] CHANGELOG.md 更新
-- [ ] 测试用例通过
-- [ ] 文档同步更新
-- [ ] GitHub Release 创建
+- [ ] `bash scripts/lint-paths.sh` 通过
+- [ ] `bash scripts/build-skillhub.sh` 生成 zip 到 `releases/`
+- [ ] `git tag vX.Y.Z && git push --tags`（触发 GitHub Actions）
+- [ ] 确认 GitHub Release 创建成功
 - [ ] Skill Hub 提交（如适用）
 
 ---
@@ -271,21 +297,26 @@ version: "1.0.0"
 
 ## 路线图
 
-### v1.1.0（计划中）
-- [ ] ClawHub 官方支持（发布后适配）
-- [ ] 知识库导入/导出
-- [ ] 需求优先级管理
+### v1.1.x（已发布）
+- [x] v1.1.1：命令速查 + 能力边界 + 错误兜底 + 文档对齐
+- [x] v1.1.2：manifest + lint 路径一致性检查
+- [x] v1.1.3：责任分层 + 加载时自检 + GitHub Actions
+- [x] v1.1.4：Self-endorsement 防御 + 硬编码自检
+- [x] v1.1.5：避坑指南 + 模板填写范例
 
 ### v1.2.0（未来）
-- [ ] 多语言支持
-- [ ] 团队协作功能
-- [ ] 与外部工具集成
+- [ ] 关键词搜索
+- [ ] 知识库备份/导出
+- [ ] 与 Agent Team Skill 集成
+- [ ] 需求优先级/标签/依赖
 
 ### 未来考虑
+- [ ] ClawHub 官方支持
+- [ ] 多语言支持
+- [ ] 团队协作功能
 - [ ] 可视化界面
 - [ ] 云端同步
-- [ ] AI 辅助知识整理
 
 ---
 
-**最后更新**: 2026-06-09
+**最后更新**: 2026-06-10

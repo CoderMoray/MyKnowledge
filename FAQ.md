@@ -6,6 +6,7 @@
 - [平台相关问题](#平台相关问题)
 - [知识库管理问题](#知识库管理问题)
 - [需求管理问题](#需求管理问题)
+- [安装与更新问题](#安装与更新问题)
 
 ---
 
@@ -51,6 +52,7 @@ features:
 - **CodeBuddy** - 腾讯 AI 助手
 - **WorkBuddy** - 企业版 AI 助手  
 - **OpenClaw** - 开源 AI 助手框架
+- **Claude** - Anthropic 的 AI 助手（v1.0.18+）
 
 ### Q5: 不同平台的功能有差异吗？
 
@@ -139,7 +141,7 @@ Cancelled
 ### Q13: 已完成的需求在哪里查看？
 
 **A**: 
-- 在 `archive/` 目录下
+- 在 `{knowledge-base}/archive/` 目录下
 - 在 `PROJECT-STATUS.md` 的"已完成"章节
 - 使用命令："查看已完成需求"
 
@@ -212,10 +214,10 @@ MyKnowledge 可以作为基础 Skill，被其他 Skill 调用：
 
 ### 如何自定义模板？
 
-修改 `templates/` 目录下的文件：
-- `project-status-template.md` - 项目状态模板
-- `requirement-readme-template.md` - 需求文档模板
-- `design-doc-template.md` - 设计文档模板
+修改 `core/templates/` 目录下的文件：
+- `core/templates/project-status-template.md` - 项目状态模板
+- `core/templates/requirement-readme-template.md` - 需求文档模板
+- `core/templates/design-doc-template.md` - 设计文档模板
 
 ---
 
@@ -223,7 +225,8 @@ MyKnowledge 可以作为基础 Skill，被其他 Skill 调用：
 
 - **GitHub Issues**: https://github.com/CoderMoray/MyKnowledge/issues
 - **文档**: https://github.com/CoderMoray/MyKnowledge/blob/main/README.md
+- **避坑指南**: [docs/PITFALLS.md](docs/PITFALLS.md) — 常见坑与正确做法
 
 ---
 
-**最后更新**: 2026-06-08
+**最后更新**: 2026-06-10

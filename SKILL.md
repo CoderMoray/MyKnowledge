@@ -9,7 +9,7 @@ description: |
   3. 如果存在 → 直接执行用户请求（core/main.md）
 
   首次引导只执行一次，之后不再显示。
-version: "1.1.0"
+version: "1.1.6"
 author: CoderMoray
 tags: 
   - "knowledge-base"

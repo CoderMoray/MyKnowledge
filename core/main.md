@@ -25,6 +25,46 @@
 
 ---
 
+## 加载时自检（AI 透明验证）
+
+> 每次加载本 Skill 时，**静默执行**以下检查。如有异常，按指示处理。
+> 目的：让用户无需手动操作即可获得"Skill 完整性"保障。
+
+**重要设计原则**（v1.1.4+）：
+- ✅ 以下检查清单是**硬编码**的，**不读取** `manifest.json`
+- 原因：避免 self-endorsement trap（manifest 撒谎时，AI 不能被骗）
+- 即使 manifest 错误或不存在，自检也照样工作
+
+```
+1. 检查必需的核心文件是否存在（用户无感）：
+   逐个用 os.path.exists 验证（不依赖任何清单）：
+   - core/main.md ✓
+   - core/templates/*.md ✓
+   - modules/commands/main.md ✓
+   - modules/management/main.md ✓
+   - modules/error/main.md ✓
+   - modules/silent/main.md ✓
+   - one-time/onboarding/main.md ✓
+   - hooks/ 目录至少有一个子目录 ✓
+   缺失任何一个 → 提示用户："Skill 文件不完整，建议重新安装"
+
+2. 检查配置文件（不读 manifest）：
+   - _meta.json 的 version 字段存在且非空
+   - settings.yaml 可被解析
+   缺失或损坏 → 提示用户："Skill 配置文件可能损坏，建议重新安装"
+
+3. 自检通过 → 静默继续，不向用户报告
+   自检失败 → 礼貌提示，但不阻断正常使用（缺失文件可能懒加载修复）
+```
+
+**原则**：
+- ✅ 自检是**用户友好的**——失败时清晰提示
+- ✅ 自检是**静默的**——通过时不打扰
+- ✅ 自检是**独立**的——不依赖 manifest 等"声明性"文件
+- ❌ 自检**不替代**完整 lint（lint 是开发者/平台侧）
+
+---
+
 ## 更新检查（懒加载）
 
 > **IF 用户主动询问更新**，加载 `one-time/setup/update-checker.md` 获取详细指令。
@@ -44,6 +84,28 @@ IF 用户问更新:
 - 创建和管理知识库
 - 跟踪需求生命周期（创建、查看、更新、归档）
 - 自动记录每次对话到需求文件
+
+---
+
+## 能力边界（不要越界）
+
+**只做**：
+- ✅ 在 `~/.myknowledge/` 范围内创建/读取/修改文件
+- ✅ 按 `modules/commands/main.md` 的命令表响应用户请求
+- ✅ 跟踪 `REQ-YYYYMMDD-XXX` 格式的需求
+- ✅ 按 `settings.yaml` 的 `complex_task_detection` 规则静默记录
+
+**不做**（遇到此类请求要礼貌拒绝并说明）：
+- ❌ 联网、调用外部 API、上传数据
+- ❌ 修改 `~/.myknowledge/` 之外的文件
+- ❌ 执行任意 shell 命令
+- ❌ 同步到云端 / 多用户协作
+- ❌ 把用户数据发给第三方
+
+**不确定时**：
+- 加载 `modules/commands/main.md` 看是否有对应命令
+- 没有就问用户，不要瞎猜
+- 真处理不了 → 引导用户去 FAQ.md 或 GitHub Issues
 
 ---
 
@@ -82,7 +144,17 @@ IF 用户请求管理需求（查看/更新/归档）:
    按其指引执行
 ```
 
-### 3. 静默模式（自动检测）
+### 3. 命令速查（用户询问用法时）
+
+> **详细指令**：`modules/commands/main.md`
+
+```
+IF 用户问"你能做什么"/"怎么用"/"有哪些命令"/对操作表达不确定:
+   加载 modules/commands/main.md
+   按其表格与映射权威回答
+```
+
+### 4. 静默模式（自动检测）
 
 > **详细说明**：`modules/silent/main.md`
 
@@ -195,6 +267,7 @@ IF 遇到错误:
 | 需求管理 | `modules/management/main.md` |
 | 错误处理 | `modules/error/main.md` |
 | 静默模式 | `modules/silent/main.md` |
+| 命令速查 | `modules/commands/main.md` |
 | 模板 | `core/templates/` |
 | OpenClaw Hook | `hooks/openclaw/` |
 | Claude Hook | `hooks/claude/` |

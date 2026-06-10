@@ -72,7 +72,7 @@ touch .claude/settings.json
 ```json
 {
   "name": "myknowledge",
-  "version": "1.0.0",
+  "version": "1.1.6",
   "events": ["message:received"],
   "enabled": false,
   "config": {
@@ -156,6 +156,6 @@ Claude：（自动检测到复杂任务）
 ## 相关文件
 
 - `hooks.json` - Hook 配置文件
-- `handler.js` - Hook 处理函数
+- `hooks/claude/handler.js` - Hook 处理函数
 - `../SKILL.md` - Skill 主入口
 - `../settings.yaml` - 全局配置

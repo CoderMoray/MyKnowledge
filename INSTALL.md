@@ -7,6 +7,7 @@
 | CodeBuddy | 最新版 | 手动安装 |
 | WorkBuddy | 最新版 | 手动安装 |
 | OpenClaw | 最新版 | 手动安装 |
+| Claude | 最新版 | 手动安装 |
 
 ---
 
@@ -145,4 +146,4 @@ chmod -R 755 ~/.codebuddy/skills/myknowledge
 
 ---
 
-**最后更新**: 2026-06-08
+**最后更新**: 2026-06-10

@@ -6,6 +6,200 @@
 
 ---
 
+## [1.1.6] - 2026-06-10
+
+### 🐛 细节质量打磨
+
+#### 版本号遗漏修复
+- `hooks/openclaw/HOOK.md` 版本号：1.0.0 → 1.1.5（遗漏 5 个版本）
+- `hooks/openclaw/hook-guide.md` 版本号：1.0.0 → 1.1.5
+- `hooks/claude/README.md` 版本号：1.0.0 → 1.1.5
+- `manifest.json` 的 `version_synced_files` 补上这 3 个文件（从 7 个扩展到 10 个）
+
+#### README 版本号更新
+- badge 更新：`version-1.1.0` → `version-1.1.5`
+- 性能对比表更新：v1.0.0 vs v1.1.0 → v1.0.0 vs v1.1.5（新增自动化验证行）
+- 下载/安装示例更新：v1.1.0 → v1.1.5
+
+#### 路线图更新
+- `DEVELOPMENT.md` 路线图：v1.1.1"计划中" → v1.1.x"已发布"（5 个版本）
+
+---
+
+## [1.1.5] - 2026-06-10
+
+### 📚 用户文档增强
+
+#### 新建：避坑指南（`docs/PITFALLS.md`）
+- 按场景分类，17 个真实使用坑：
+  - 首次使用（3 个）：跳过引导、在错误目录建知识库、混淆静默模式
+  - 需求管理（4 个）：手写 ID、状态跳级、归档后找不到、会话太多
+  - 静默模式（3 个）：误触发、漏检、首次确认被跳过
+  - 迁移与备份（2 个）：换电脑后丢失、只备 Skill 不备用户数据
+  - 权限与错误（3 个）：权限不足、配置文件损坏、不知道重置
+  - 平台差异（2 个）：切换平台行为变化、Claude Hook 未生效
+- 每个坑：❌ 错在哪 → ✅ 正确做法 → 💡 原理
+- 底部链接到 FAQ.md
+
+#### 新建：3 个模板的完整填写范例
+- `core/templates/project-status-template.md`：销售数据分析平台范例
+- `core/templates/requirement-readme-template.md`：Q2 区域销售额分析范例（含完整变更记录、会话记录）
+- `core/templates/design-doc-template.md`：用户认证模块设计文档范例（含架构、接口、决策记录）
+
+### 🔗 文档交叉引用
+- `README.md` 相关资源表新增 `docs/PITFALLS.md`
+- `FAQ.md` 获取帮助段新增避坑指南链接
+
+### 🛡️ lint 调整
+- `manifest.json` 新增 `PITFALLS.md` 路径检查豁免（用户文档引用的是用户 KB 路径）
+
+---
+
+## [1.1.4] - 2026-06-10
+
+### 🛡️ Self-Endorsement 防御（保守方案）
+
+**问题**：
+manifest 既是"声明"又是"被验证对象"，理论上可能被误用为"状态来源"——平台读 manifest 就跳过自己的检查。
+
+**修复**：
+- `manifest.json` 新增 `_truth_disclaimer` 字段
+  - 明确声明："我是清单，不是事实"
+  - 提醒平台：必须独立用文件系统验证
+  - 提醒开发者：修改 manifest 后必须跑 lint
+- `core/main.md` "加载时自检"段改为**硬编码**清单
+  - 不再读 `manifest.json`
+  - 即使 manifest 撒谎，AI 也能发现真实问题
+  - 自检逻辑独立于任何"声明性"文件
+
+**未触动**：
+- `manifest.json` 字段不变（保持 8 类）
+- `lint-paths.sh` 不变
+- 现有功能完全保留
+
+### 📚 文档
+
+#### README 更新
+- `## 🆕 版本更新` 段：新增 v1.1.1 ~ v1.1.4 摘要
+- `## 📂 目录结构` 段：补充 manifest.json、新增"开发者专用"分组
+- 反映"用户层 vs 开发者层"的责任划分
+
+---
+
+## [1.1.3] - 2026-06-10
+
+### 🏗️ 架构与责任分层
+
+#### 重新设计：谁需要验证？
+- **核心洞察**：普通用户**不**应该手动跑 lint 脚本
+  - 非技术用户根本不会用 bash
+  - 验证是 AI 平台和 CI 的事
+- **新的责任划分**：
+
+  | 层级 | 责任方 | 是否进 SkillHub zip |
+  |------|--------|---------------------|
+  | Skill 内容（core/、modules/、hooks/）| AI 平台加载 | ✅ |
+  | Skill 元数据（manifest.json）| AI 平台解析 | ✅ |
+  | 用户文档（README/QUICKSTART/...）| 仓库内可见 | ❌ |
+  | 开发者工具（scripts/）| 开发者发布前 | ❌ |
+  | 测试（test/）| 开发者验证 | ❌ |
+  | CI 配置（.github/）| GitHub Actions | ❌ |
+
+#### 新增：加载时自检（给用户的自动验证）
+- `core/main.md` 新增"加载时自检"段
+- AI 加载 Skill 时**透明**检查：
+  - 必需文件存在性
+  - 配置文件一致性
+  - 元数据版本同步
+- 通过时静默，失败时清晰提示
+
+#### 新增：GitHub Actions 自动化
+- 新建 `.github/workflows/release.yml`
+- 推送 v* tag 自动触发：
+  1. 跑 lint-paths.sh --strict 门禁
+  2. 跑 build-skillhub.sh 打包
+  3. 同时打 GitHub Release zip（含开发者工具）
+  4. 创建 GitHub Release，上传两个 zip
+
+#### build 脚本调整
+- `manifest.json` 加入 zip（用户级元数据）
+- `scripts/`、`test/`、`.github/` 不进 zip（开发者专用）
+- `manifest.json` 的 `skillhub_includes` 同步更新
+
+#### 文档改进
+- `DEVELOPMENT.md` 新增"分层与责任"小节
+- 目录树更新：scripts/ 加 lint-paths.sh、新增 .github/
+- 移除 RELEASE-GUIDE.md 引用（文件实际不存在）
+
+---
+
+## [1.1.2] - 2026-06-10
+
+### 🛡️ 自动化质量保障
+
+#### 路径一致性检查（防止文档-文件对不上）
+- 新建 `manifest.json`（路径真理来源）：
+  - 声明 23 个必需文件
+  - 声明 skillhub 打包内容
+  - 声明历史别名映射
+  - 声明版本号需同步的文件（7 个）
+  - 声明支持的平台（4 个）
+  - 声明路径检查豁免规则
+- 新建 `scripts/lint-paths.sh`（一致性检查器）：
+  - 6 个检查：必需文件、文档引用、历史别名、版本号、平台完整性、目录结构
+  - 支持 `--strict` 模式（警告也失败）
+  - 退出码：0=通过，1=有错误
+- `scripts/build-skillhub.sh` 集成 lint 门禁：
+  - 打包前自动跑 lint
+  - lint 不过则阻止打包
+
+#### 漏网之鱼修复
+- 修正 `hooks/claude/hooks.json` 版本号（1.0.0 → 1.1.1）
+- `FAQ.md` 模板路径补 `core/` 前缀
+- `hooks/claude/README.md` handler.js 引用补全路径
+- `DEVELOPMENT.md` 中"在 onboarding.md 中同步说明"豁免规则登记
+
+### 📚 文档改进
+
+#### 维护规范
+- 三个 root cause 写明：路径真实性的真理来源、软硬引用混用、发布前缺门禁、缺权威分层
+- 通过 manifest + lint 工具链实现"事前预防"，不再依赖第三方检测反馈
+
+---
+
+## [1.1.1] - 2026-06-10
+
+### 🐛 问题修复
+
+#### 文档与文件路径对齐
+- 重写 `DEVELOPMENT.md` 目录树和核心文件表（v1.0.0 旧路径 → v1.1.0 实际路径）
+- 删除 `DEVELOPMENT.md` 中"待创建"的 `helpers/` 和 `docs/` 小节（已不存在）
+- 修正 `settings.yaml` 中 `prompt_file` 和 `templates/` 路径
+- `USAGE.md` 平台表新增 Claude 列；`design.md` 标注为可选
+- `FAQ.md` 平台列表新增 Claude；`templates/` 加 `core/` 前缀
+- `INSTALL.md`、`TEST-PLAN.md` 平台列表新增 Claude
+- 多个文档的"最后更新"日期同步
+
+#### 命令速查独立模块
+- 新建 `modules/commands/main.md`（懒加载）
+- 13 条固定命令 + 同义词映射 + 模糊时确认话术
+- `core/main.md` 增加懒加载引用（保持 main.md 精简）
+- `QUICKSTART.md` 同步高频命令表
+
+### ✨ 功能增强
+
+#### 能力边界（解决"做不了什么"没说清）
+- `README.md` 顶部新增"⚠️ 能力边界"小节（7 条 + 替代方案）
+- `core/main.md` 新增"能力边界"段（AI 侧权威规则）
+- 明确"做"与"不做"，避免越界
+
+#### 错误处理兜底
+- `modules/error/main.md` 新增"5. 未列举错误（兜底）"小节
+- 包含：未知错误、平台不支持、文件夹权限、路径错误
+- 引导用户去 FAQ.md 或"重新初始化"
+
+---
+
 ## [1.1.0] - 2026-06-10
 
 ### ⚡ 架构优化
@@ -103,22 +297,21 @@
 
 ## 版本规划
 
-### [1.1.0] - 计划中
+### [1.1.6] - 已发布
 
-#### 预期功能
-- [ ] 需求优先级管理
-- [ ] 标签/分类系统
-- [ ] 需求依赖关系
-- [ ] 导出功能（PDF、HTML）
-- [ ] 多语言支持
+#### 完成内容
+- [x] 3 个 Hook 文件版本号遗漏修复
+- [x] README badge + 性能表 + 下载链接版本号更新
+- [x] DEVELOPMENT 路线图更新
+- [x] manifest version_synced_files 扩展（7→10 个文件）
 
 ### [1.2.0] - 计划中
 
 #### 预期功能
-- [ ] 与项目2（Agent Team Skill）集成
-- [ ] 自动工作流生成
-- [ ] 数据血缘追踪
-- [ ] 高级搜索功能
+- [ ] 关键词搜索
+- [ ] 知识库备份/导出
+- [ ] 与 Agent Team Skill 集成
+- [ ] 需求优先级/标签/依赖
 
 ---
 

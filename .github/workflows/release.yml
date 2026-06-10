@@ -1,43 +1,69 @@
-name: Build Release ZIP
+name: Release
 
+# 触发条件：推送以 v 开头的 tag（如 v1.1.3）
 on:
   push:
     tags:
       - 'v*'
 
+# 权限：需要写权限以上传 release 资产
 permissions:
   contents: write
 
 jobs:
   build:
+    name: Lint + Build + Release
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: 检出代码
         uses: actions/checkout@v4
 
-      - name: Create full ZIP
-        run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
-          zip -r "MyKnowledge-${VERSION}-full.zip" . \
-            -x "*.git*" \
-            -x "*.DS_Store" \
-            -x "test/*" \
-            -x "scripts/*" \
-            -x "*.zip"
+      - name: 设置 Python（lint 脚本依赖）
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-      - name: Upload to Release
-        uses: softprops/action-gh-release@v1
+      - name: 跑路径一致性检查（lint 门禁）
+        run: bash scripts/lint-paths.sh --strict
+
+      - name: 打包 SkillHub zip
+        run: bash scripts/build-skillhub.sh
+
+      - name: 打包 GitHub Release zip（包含开发者文档）
+        run: |
+          VERSION=$(grep '"version"' _meta.json | head -1 | sed 's/.*"version": "\(.*\)".*/\1/')
+          OUTPUT="MyKnowledge-${VERSION}-github.zip"
+          # GitHub Release zip 包含一切：用户内容 + 开发者工具 + LICENSE + CHANGELOG
+          zip -r "${OUTPUT}" . \
+            -x "*.DS_Store" \
+               "*/__pycache__/*" \
+               "*.zip" \
+               ".git/*" \
+               ".codegraph/*"
+          echo "📦 Release zip: ${OUTPUT}"
+          ls -lh "${OUTPUT}"
+
+      - name: 创建 GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
           files: |
-            MyKnowledge-*-full.zip
+            MyKnowledge-*-skillhub.zip
+            MyKnowledge-*-github.zip
           body: |
-            ## v${{ github.ref_name }}
+            详见 [CHANGELOG.md](https://github.com/CoderMoray/MyKnowledge/blob/main/CHANGELOG.md)
 
-            完整版 ZIP（含 LICENSE、CHANGELOG 等所有文件）
+            ## 📦 下载说明
 
-            ### 下载
-            - `MyKnowledge-v*-full.zip` - 完整版
+            两个 zip 包，按需选择：
 
-            详细变更请查看 [CHANGELOG.md](../blob/main/CHANGELOG.md)。
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            | 文件 | 包含内容 | 适用场景 |
+            |------|---------|---------|
+            | `MyKnowledge-X.Y.Z-skillhub.zip` | 用户级 Skill 内容（core/、modules/、hooks/、manifest.json） | 通过 SkillHub / ClawHub 安装 |
+            | `MyKnowledge-X.Y.Z-github.zip` | 完整仓库（含 scripts/、test/、CHANGELOG、LICENSE、DEVELOPMENT） | GitHub Clone、开发者参考、归档 |
+
+            ## ✅ 发布前自检
+
+            本次发布已通过 6 项路径一致性检查（lint-paths.sh --strict）。
+          draft: false
+          prerelease: false

@@ -26,10 +26,14 @@ export default async function handler(ctx: HookContext<MessageReceivedEvent>) {
         timestamp: new Date().toISOString()
       });
       
-      // 可选：记录日志
-      console.log("[MyKnowledge Hook] 自动创建知识库记录");
+      // 可选：记录日志（仅开发环境）
+      if (process.env.MYKNOWLEDGE_DEBUG) {
+        console.log("[MyKnowledge Hook] 知识库记录已创建");
+      }
     } catch (error) {
-      console.error("[MyKnowledge Hook] 自动创建失败:", error);
+      if (process.env.MYKNOWLEDGE_DEBUG) {
+        console.error("[MyKnowledge Hook] 创建失败:", error.message);
+      }
     }
   }
 }

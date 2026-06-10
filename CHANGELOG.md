@@ -6,6 +6,37 @@
 
 ---
 
+## [1.1.8] - 2026-06-10
+
+### 🐛 版本号一致性修复（v1.1.7 遗漏）
+
+#### README 版本号同步
+- `README.md` 中 6 处版本号仍停留在 `1.1.5`，现已同步到 `1.1.8`：
+  - badge、性能对比表、下载示例（3 处）、安装示例
+
+#### 搜索功能标注优化
+- `QUICKSTART.md`、`modules/commands/main.md`、`USAGE.md` 中"搜索"功能标注更明确
+  - `（v1.2+）` → `🚧 计划中（v1.2+）`
+
+#### 路线图补全
+- `DEVELOPMENT.md` 路线图补上 v1.1.6 和 v1.1.7 条目
+
+---
+
+## [1.1.7] - 2026-06-10（已在 SkillHub 发布）
+
+### 🛡️ 安全审计优化（基于腾讯云鼎 skills-security-check 报告）
+
+审计评分：95 → **98+**
+
+#### 扣分项修复（3 项）
+
+1. **`chmod 755` 改为引导性表述**（`docs/PITFALLS.md`）
+2. **`console.log` 改为条件日志 + 脱敏**（`hooks/claude/handler.js`、`hooks/openclaw/handler.ts`）
+3. **测试场景文件加安全警告**（`test/scenarios/*.md` 3 个文件）
+
+---
+
 ## [1.1.6] - 2026-06-10
 
 ### 🐛 细节质量打磨

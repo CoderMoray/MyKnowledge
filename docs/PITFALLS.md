@@ -136,11 +136,9 @@ tar -xzf myknowledge-backup.tar.gz -C ~/
 ❌ AI 说"无法创建知识库"，不知道怎么办。
 
 ✅ 检查目录写入权限：
-```bash
-chmod 755 ~/.myknowledge/
-# 如果是项目知识库
-chmod 755 .myknowledge/
-```
+- 全局知识库：在终端运行 `ls -la ~/` 查看 `~/.myknowledge/` 权限
+- 项目知识库：在终端运行 `ls -la` 查看 `.myknowledge/` 权限
+- 如无写入权限，请在系统设置或终端中调整目录权限
 
 ### 坑 14：配置文件损坏
 

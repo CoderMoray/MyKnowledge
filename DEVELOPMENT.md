@@ -303,6 +303,8 @@ version: "1.0.0"
 - [x] v1.1.3：责任分层 + 加载时自检 + GitHub Actions
 - [x] v1.1.4：Self-endorsement 防御 + 硬编码自检
 - [x] v1.1.5：避坑指南 + 模板填写范例
+- [x] v1.1.6：细节质量打磨（版本号修复 + releases/ 目录）
+- [x] v1.1.7：安全审计优化（腾讯云鼎 skills-security-check 3 项修复）
 
 ### v1.2.0（未来）
 - [ ] 关键词搜索

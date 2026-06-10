@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.1.5-blue" alt="Version" />
+  <img src="https://img.shields.io/badge/version-1.1.8-blue" alt="Version" />
   <img src="https://img.shields.io/badge/license-Apache%202.0-green" alt="License" />
   <a href="https://github.com/CoderMoray/MyKnowledge"><img src="https://img.shields.io/badge/GitHub-CoderMoray-black?logo=github" alt="GitHub" /></a>
 </p>
@@ -42,7 +42,7 @@
 
 ## 📊 性能对比
 
-| 指标 | v1.0.0 | v1.1.5 | 变化 |
+| 指标 | v1.0.0 | v1.1.8 | 变化 |
 |------|--------|--------|------|
 | 主模块代码量 | 387 行 | **~250 行** | 🔻 -35% |
 | 日常上下文占用 | ~9K tokens | **~5K tokens** | 🔻 -44% |
@@ -61,9 +61,9 @@
 # 1. 下载最新版本（访问 GitHub Releases 获取最新版本号）
 # https://github.com/CoderMoray/MyKnowledge/releases
 
-# 2. 解压（以 v1.1.5 为例）
-wget https://github.com/CoderMoray/MyKnowledge/archive/refs/tags/v1.1.5.zip
-unzip v1.1.5.zip
+# 2. 解压（以 v1.1.8 为例）
+wget https://github.com/CoderMoray/MyKnowledge/archive/refs/tags/v1.1.8.zip
+unzip v1.1.8.zip
 ```
 
 ### 方式二：按平台安装
@@ -80,7 +80,7 @@ unzip v1.1.5.zip
 ```bash
 # 以 CodeBuddy 为例（将 X.Y.Z 替换为实际版本号）
 mkdir -p ~/.codebuddy/skills/
-cp -r MyKnowledge-1.1.5 ~/.codebuddy/skills/myknowledge/
+cp -r MyKnowledge-1.1.8 ~/.codebuddy/skills/myknowledge/
 ```
 
 ### 方式三：通过 SkillHub

@@ -28,7 +28,7 @@
 | **"查看 REQ-001"** | 读取并展示该需求文档 | "REQ-001 是什么"、"REQ-001 进展" |
 | **"项目进展如何"** | 汇总 PROJECT-STATUS.md | "现在到哪了"、"状态怎么样" |
 | **"继续 xxx"** | 加载 PROJECT-STATUS 并恢复上下文 | "接着做 xxx"、"回到 xxx 项目" |
-| **"搜索 xxx"** | 跨需求/文档关键词搜索 | "找一下 xxx"、"有没有 xxx"（v1.2+） |
+| **"搜索 xxx"** | 跨需求/文档关键词搜索 🚧 计划中（v1.2+） | "找一下 xxx"、"有没有 xxx"（v1.2+） |
 | **"开启自动记录"** | 设置 skill-state.yaml 中 auto_record=true | "启用静默模式" |
 | **"关闭自动记录"** | 设置 skill-state.yaml 中 auto_record=false | "别自动记录" |
 | **"重新初始化"** | 删除 state 并触发 onboarding | "重置 MyKnowledge" |

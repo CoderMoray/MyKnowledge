@@ -93,8 +93,10 @@ async function handler(context, event) {
         platform: "claude"
       });
       
-      // 可选：记录日志
-      console.log("[MyKnowledge Hook] 自动创建知识库记录:", result);
+      // 可选：记录日志（仅开发环境）
+      if (process.env.MYKNOWLEDGE_DEBUG) {
+        console.log("[MyKnowledge Hook] 知识库记录已创建");
+      }
       
       // 返回处理结果给 Claude
       return {

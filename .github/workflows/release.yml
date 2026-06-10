@@ -1,0 +1,40 @@
+name: Build Release ZIP
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create full ZIP
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          zip -r "MyKnowledge-${VERSION}-full.zip" . \
+            -x "*.git*" \
+            -x "*.DS_Store" \
+            -x "test/*" \
+            -x "scripts/*" \
+            -x "*.zip"
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            MyKnowledge-*-full.zip
+          body: |
+            ## v${{ github.ref_name }}
+
+            完整版 ZIP（含 LICENSE、CHANGELOG 等所有文件）
+
+            ### 下载
+            - `MyKnowledge-v*-full.zip` - 完整版
+
+            详细变更请查看 [CHANGELOG.md](../blob/main/CHANGELOG.md)。
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

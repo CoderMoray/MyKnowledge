@@ -10,6 +10,18 @@
 
 ---
 
+## 📖 5 分钟上手指南
+
+| 我想... | 看这里 |
+|---------|--------|
+| 快速安装 | → [🚀 快速开始](#-快速开始) |
+| 了解能做什么/不能做什么 | → [✨ 核心特性](#-核心特性) + [⚠️ 能力边界](#️-能力边界) |
+| 学会常用命令 | → [QUICKSTART.md](QUICKSTART.md) |
+| 遇到问题 | → [FAQ.md](FAQ.md) 或 [docs/PITFALLS.md](docs/PITFALLS.md) |
+| 深入了解 | → [USAGE.md](USAGE.md) |
+
+---
+
 ## ✨ 核心特性
 
 | 特性 | 说明 |
@@ -83,12 +95,14 @@ mkdir -p ~/.codebuddy/skills/
 cp -r MyKnowledge-1.1.8 ~/.codebuddy/skills/myknowledge/
 ```
 
-### 方式三：通过 SkillHub
+### 方式三：通过 SkillHub / 平台内更新
 
 对支持 SkillHub 的 AI 助手说：
 ```
 安装 my-knowledge 技能
 ```
+
+> 💡 **更新也一样简单**：SkillHub 会自动通知更新，或对 AI 说"检查 MyKnowledge 更新"即可。无需手动下载 GitHub。
 
 ---
 

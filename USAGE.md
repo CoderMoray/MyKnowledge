@@ -289,4 +289,10 @@ AI：🤖 检测到软件开发任务
 
 ---
 
+## 遇到问题？
+
+→ [FAQ.md](FAQ.md) | [docs/PITFALLS.md](docs/PITFALLS.md) | 对 AI 说"重新初始化 MyKnowledge"
+
+---
+
 **最后更新**: 2026-06-10

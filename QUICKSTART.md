@@ -118,9 +118,10 @@ AI：🤖 检测到复杂任务，已自动创建记录 REQ-003
 
 ## 需要帮助？
 
+- **遇到问题？** → [FAQ.md](FAQ.md)（常见问题解答）
+- **踩坑了？** → [docs/PITFALLS.md](docs/PITFALLS.md)（避坑指南）
 - **详细指南**: [USAGE.md](USAGE.md)
-- **常见问题**: [FAQ.md](FAQ.md)
-- **故障排除**: prompts/main.md 中的"错误处理"章节
+- **故障排除**: 对 AI 说"重新初始化 MyKnowledge"
 
 ---
 

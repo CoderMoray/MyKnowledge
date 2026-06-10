@@ -2,14 +2,14 @@
 name: myknowledge
 description: |
   当用户需要创建知识库、管理项目文档、记录需求、整理个人知识时使用。
-  
+
   ⚠️ 重要：使用本 Skill 前，请先检查初始化状态：
   1. 检查 skill-state.yaml 是否存在
-  2. 如果不存在 → 执行首次引导（prompts/onboarding.md）
-  3. 如果存在 → 直接执行用户请求（prompts/main.md）
-  
+  2. 如果不存在 → 执行首次引导（one-time/onboarding/main.md）
+  3. 如果存在 → 直接执行用户请求（core/main.md）
+
   首次引导只执行一次，之后不再显示。
-version: "1.0.0"
+version: "1.1.0"
 author: CoderMoray
 tags: 
   - "knowledge-base"
@@ -199,7 +199,7 @@ AI：读取 PROJECT-STATUS.md...
 通过 Hook 实现事件驱动：
 - `message:received` → 检测任务复杂度
 - 自动创建知识库和记录需求
-- 详细配置参考：`prompts/hook-guide.md`
+- 详细配置参考：`hooks/openclaw/hook-guide.md`
 
 ### CodeBuddy/WorkBuddy（意图识别）
 
@@ -207,20 +207,26 @@ AI：读取 PROJECT-STATUS.md...
 - AI 自动判断是否需要创建知识库
 - 复杂任务自动记录
 
+### Claude（意图识别 + Hooks）
+
+支持两种方式：
+- **意图识别模式**：AI 自动检测复杂任务
+- **Hooks 模式**：通过 `hooks/claude/hooks.json` 配置事件监听
+- 详细配置参考：`hooks/claude/README.md`
+
 ## 文件说明
 
 | 文件/目录 | 用途 |
 |-----------|------|
 | `SKILL.md` | 本文件，Skill 主入口 |
 | `settings.yaml` | Skill 配置 |
-| `prompts/` | Prompt 文件目录 |
-| `templates/` | 文档模板目录 |
-| `hooks/` | OpenClaw Hook 文件 |
-| `helpers/` | 辅助逻辑文档（开发用） |
-| `docs/` | 用户文档目录 |
+| `core/` | 核心功能（主逻辑、模板） |
+| `modules/` | 可选模块（懒加载：管理、更新、错误处理、静默模式） |
+| `one-time/` | 一次性配置（首次引导、安装源检测） |
+| `hooks/` | 平台 Hook（OpenClaw、Claude） |
 | `test/` | 测试套件（开发用，AI 忽略） |
 
-> **AI 助手注意**：`test/` 和 `helpers/` 目录仅供开发和测试使用，正常响应用户请求时请忽略。
+> **AI 助手注意**：`test/` 目录仅供开发和测试使用，正常响应用户请求时请忽略。
 
 ## 依赖
 

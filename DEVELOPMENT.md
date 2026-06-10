@@ -9,58 +9,58 @@
 
 ## 项目架构
 
-### 目录结构（推荐重构后）
+### 当前目录结构
 
 ```
 MyKnowledge/
 ├── 📄 入口与配置
-│   ├── SKILL.md              # Skill 主入口（必须）
+│   ├── SKILL.md              # Skill 主入口
 │   ├── _meta.json            # Skill Hub 元数据
 │   └── settings.yaml         # 默认配置
 │
-├── 📁 core/                  # 核心逻辑（新增）
-│   ├── prompts/              # Prompt 文件
-│   │   ├── main.md           # 主逻辑（运行时加载）
-│   │   ├── onboarding.md     # 首次引导（懒加载）
-│   │   └── silent-mode.md    # 静默模式说明
-│   │
-│   ├── templates/            # 文档模板
-│   │   ├── project-status.md
-│   │   ├── requirement.md
-│   │   └── design-doc.md
-│   │
-│   └── hooks/                # OpenClaw Hook
-│       ├── handler.ts
+├── 📁 core/                  # 核心功能
+│   ├── main.md              # 主逻辑（每次加载）
+│   └── templates/           # 文档模板
+│
+├── 📁 modules/              # 可选模块（懒加载）
+│   ├── management/         # 需求管理
+│   │   └── main.md
+│   ├── update/             # 更新检查
+│   │   └── main.md
+│   ├── error/              # 错误处理
+│   │   └── main.md
+│   └── silent/             # 静默模式
+│       └── main.md
+│
+├── 📁 one-time/            # 一次性配置
+│   ├── onboarding/         # 首次引导
+│   │   └── main.md
+│   └── setup/              # 安装源检测
+│       ├── install-source.md
+│       ├── platform-detector.md
+│       └── update-checker.md
+│
+├── 📁 hooks/               # 平台 Hook
+│   ├── openclaw/           # OpenClaw Hook
+│   │   ├── HOOK.md
+│   │   ├── handler.ts
+│   │   └── hook-guide.md
+│   └── claude/             # Claude Hook
+│       ├── hooks.json
+│       ├── handler.js
 │       └── README.md
 │
-├── 📁 helpers/               # 辅助工具（新增）
-│   ├── platform-detector.md  # 平台检测逻辑
-│   ├── update-checker.md     # 更新检查逻辑
-│   └── install-source.md     # 安装源管理
-│
-├── 📁 docs/                  # 用户文档
-│   ├── README.md             # 项目介绍
-│   ├── QUICKSTART.md         # 快速入门
-│   ├── USAGE.md              # 详细使用
-│   ├── INSTALL.md            # 安装指南
-│   ├── FAQ.md                # 常见问题
-│   └── CHANGELOG.md          # 变更日志
-│
-└── 📁 test/                  # 测试套件
-    ├── README.md
-    ├── scenarios/
-    └── fixtures/
+└── 📁 test/                # 测试套件
 ```
 
-### 当前结构与目标结构对比
+### 目录结构说明
 
-| 当前 | 目标 | 说明 |
-|------|------|------|
-| `prompts/` | `core/prompts/` | 核心 Prompt 移至 core |
-| `templates/` | `core/templates/` | 模板移至 core |
-| `hooks/` | `core/hooks/` | Hook 移至 core |
-| 根目录 docs | `docs/` | 文档统一归集 |
-| 无 | `helpers/` | 新增辅助逻辑文档 |
+| 目录 | 用途 | 加载频率 |
+|------|------|----------|
+| `core/` | 核心功能 | 每次使用 |
+| `modules/` | 可选功能 | 按需懒加载 |
+| `one-time/` | 一次性配置 | 仅首次或特定场景 |
+| `hooks/` | 平台集成 | OpenClaw/Claude 专用 |
 
 ---
 

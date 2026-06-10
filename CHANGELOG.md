@@ -6,53 +6,98 @@
 
 ---
 
-## [1.0.17] - 2026-06-08
+## [1.1.0] - 2026-06-10
 
-### 🎉 初始发布（累积 17 次迭代）
+### ⚡ 架构优化
 
-#### 新增
-- **核心功能**: 知识库创建与管理
-  - 支持全局知识库（~/MyKnowledge/global/）
-  - 支持项目知识库（{project}/.myknowledge/）
+#### 目录结构重组
+- 核心功能迁移到 `core/`（main.md, templates/）
+- 可选模块集中到 `modules/`（懒加载）
+- 一次性配置归类到 `one-time/`
+- 平台 Hook 统一到 `hooks/`
 
-- **需求管理**: 完整的需求生命周期管理
+#### 性能优化
+- main.md 精简：387行 → ~180行（减少 53%）
+- 懒加载架构：按需加载模块，日常工作 Token 消耗更低
+- onboarding 轻量化：~200行 → ~150行
+
+#### 功能增强
+- 错误处理表格化：统一错误码和解决方案
+- 需求管理独立模块：查看、更新、归档更清晰
+- 静默模式说明独立文档
+
+### 🐛 问题修复
+- 修复懒加载路径引用错误
+- 修复模板路径更新遗漏
+- 修复文档间交叉引用
+
+---
+
+## [1.0.18] - 2026-06-10
+
+### 🎉 新平台支持
+
+#### Claude 平台适配
+- 新增 `hooks/claude/`：Claude Hook 支持
+- `claude/handler.js`：Claude 平台专用处理脚本
+- 支持 Claude CLI 集成
+
+#### 开源完善
+- GitHub 仓库链接：`https://github.com/CoderMoray/MyKnowledge`
+- README 添加 GitHub 徽章和链接
+- CHANGELOG 添加许可证信息
+
+---
+
+## [1.0.0] - 2026-06-09
+
+### 🎉 初始发布
+
+#### 核心功能
+- **知识库管理**: 创建标准化的知识库目录结构
+  - 全局知识库（~/MyKnowledge/global/）
+  - 项目知识库（{project}/.myknowledge/）
+  - 自动初始化 README、PROJECT-STATUS.md 等文件
+
+- **需求生命周期管理**: 完整跟踪需求状态
   - 创建需求（REQ-{date}-{seq} 格式）
-  - 状态流转（Created → In Progress → Review → Done）
-  - 自动更新 PROJECT-STATUS.md
+  - 状态流转（Created → In Progress → Review → Done → Cancelled）
+  - 自动归档已完成需求
 
-- **静默模式**: 自动检测复杂任务
-  - 关键词检测（分析、统计、开发等）
-  - 自动创建知识库并记录需求
-  - 可配置的检测规则
+- **静默模式**: 智能检测复杂任务
+  - 关键词匹配（分析、统计、开发等 10+ 关键词）
+  - 可配置敏感度（min_keyword_count）
+  - 首次触发时询问用户偏好
 
-- **平台适配**: 支持三大 AI 平台
-  - CodeBuddy（意图识别模式）
-  - WorkBuddy（意图识别模式）
-  - OpenClaw（Hook + 意图识别）
+#### 跨平台支持
+- **CodeBuddy**: 意图识别模式
+- **WorkBuddy**: 意图识别模式
+- **OpenClaw**: Hook + 意图识别（支持真静默）
 
-- **首次引导**: 智能平台检测与引导流程
-  - 自动检测当前平台
-  - 针对性的配置引导
-  - 状态持久化（skill-state.yaml）
+#### 安装与更新
+- **6种安装源支持**: SkillHub(Web/CLI)、ClawHub、GitHub(ZIP/Clone)、手动安装
+- **安装源自动检测**: 环境变量、目录标记、用户确认
+- **安装源变更检测**: 自动检测或用户主动告知
+- **用户数据分离**: 配置存储在 ~/.myknowledge/config/，Skill 更新不丢失
 
-- **会话恢复**: 从文件恢复项目状态
-  - 读取 PROJECT-STATUS.md
-  - 恢复任务上下文
+#### 首次引导
+- 平台自动检测（CodeBuddy/WorkBuddy/OpenClaw）
+- 安装源自动识别
+- 自动记录偏好设置
+- 可选新手实操教程
+- 引导完成后不再显示
 
-#### 文档
-- README.md — 项目概述
-- SKILL.md — Skill 主入口
-- settings.yaml — 配置说明
-- INSTALL.md — 安装指南
-- USAGE.md — 使用指南
-- TEST-PLAN.md — 测试计划
-- 模板文件（PROJECT-STATUS、需求 README、设计文档）
+#### 文档与模板
+- 完整的用户文档（README、QUICKSTART、USAGE、FAQ、INSTALL）
+- 3种文档模板（项目状态、需求文档、设计文档）
+- 开发文档（DEVELOPMENT、helpers/）
+- 测试套件（test/）
 
 #### 技术特性
-- 纯 Prompt + YAML 配置实现
-- 可选的 OpenClaw Hook 支持
-- 跨平台兼容
-- 零外部依赖
+- 懒加载设计：onboarding 只加载一次
+- 上下文优化：正常使用约 9K tokens
+- 身份不冲突：能力声明式 Prompt，不覆盖 Agent 角色
+- 无外部依赖：纯 Prompt + YAML 实现
 
 ---
 

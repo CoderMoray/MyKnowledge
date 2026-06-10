@@ -172,15 +172,28 @@ Cancelled
 
 **场景**：原本通过 Skill Hub/ClawHub 安装，后来改用 GitHub 更新
 
-**解决方法**：
+**解决方法（推荐）**：
 ```
-1. 告诉 AI："我改用 GitHub 更新了"
-2. AI 会检测 .git 目录并询问是否变更安装源
-3. 确认后，更新提示会切换为 git pull 方式
+直接告诉 AI：
+- "我改用 GitHub 更新了" → AI 自动更新记录
+- "切换安装源到 skillhub" → 切换到 SkillHub
+- "安装源是 clawhub" → 切换到 ClawHub
+```
 
-或手动修改：
+**备用方法（手动修改）**：
+```bash
+# 编辑安装源文件
 ~/.myknowledge/config/install-source
-source: "github_clone"
+
+# 修改为对应的安装源
+source: "github_clone"    # 或 skillhub_web / clawhub 等
+```
+
+**自动检测（如果可用）**：
+```
+1. 告诉 AI："检查安装源"
+2. AI 会尝试检测 Skill 目录的标记文件（.git / .skillhub / .clawhub）
+3. 如果检测到变更，会询问是否更新记录
 ```
 
 **ClawHub 特有场景**：

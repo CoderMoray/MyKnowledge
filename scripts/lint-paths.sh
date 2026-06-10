@@ -338,6 +338,72 @@ else
 fi
 
 # ============================================================
+# 7. README 版本号一致性（v1.1.8+）
+# ============================================================
+section "7. README 版本号一致性"
+README_VER=$(python3 << 'PYEOF'
+import json, os, re
+
+# 目标版本
+m = json.load(open('manifest.json'))
+expected = m['version']
+
+# 检查 README.md 中硬编码的版本号是否与 expected 一致
+# 关键位置：badge、性能对比表、下载示例、安装示例
+if not os.path.exists('README.md'):
+    print('README.md 不存在')
+    raise SystemExit(0)
+
+with open('README.md') as f:
+    content = f.read()
+
+issues = []
+
+# 1. badge 版本号
+badge_pattern = re.compile(r'badge/version-(\d+\.\d+\.\d+)-blue')
+badge_matches = badge_pattern.findall(content)
+if badge_matches:
+    for v in badge_matches:
+        if v != expected:
+            issues.append('badge 版本号: ' + v + ' (应为 ' + expected + ')')
+
+# 2. 性能对比表标题行
+perf_pattern = re.compile(r'\|.*\|.*v(\d+\.\d+\.\d+)\s*\|.*变化')
+perf_matches = perf_pattern.findall(content)
+if perf_matches:
+    for v in perf_matches:
+        if v != expected:
+            issues.append('性能对比表: v' + v + ' (应为 v' + expected + ')')
+
+# 3. 下载示例中的版本号
+dl_pattern = re.compile(r'/tags/v(\d+\.\d+\.\d+)\.zip')
+dl_matches = dl_pattern.findall(content)
+if dl_matches:
+    for v in dl_matches:
+        if v != expected:
+            issues.append('下载示例: v' + v + ' (应为 v' + expected + ')')
+
+# 4. 安装示例中的版本号
+install_pattern = re.compile(r'MyKnowledge-(\d+\.\d+\.\d+)')
+install_matches = install_pattern.findall(content)
+if install_matches:
+    for v in install_matches:
+        if v != expected:
+            issues.append('安装示例: MyKnowledge-' + v + ' (应为 MyKnowledge-' + expected + ')')
+
+for i in issues:
+    print(i)
+PYEOF
+)
+
+if [ -z "$README_VER" ]; then
+  ok "README.md 中所有版本号都是 ${EXPECTED_VERSION}"
+else
+  err "README.md 版本号不一致："
+  echo "$README_VER" | sed 's/^/      /'
+fi
+
+# ============================================================
 # 汇总
 # ============================================================
 echo ""

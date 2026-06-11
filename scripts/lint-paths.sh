@@ -12,6 +12,8 @@
 #     3. 是否还在使用历史别名
 #     4. 多个文件里的版本号是否一致
 #     5. 用户文档是否提及了所有支持的平台
+#     6. README 中版本号引用是否一致
+#     7. 配置参数是否跨文档一致（v1.1.17+）
 #   配合 scripts/build-skillhub.sh 使用，作为发布门禁。
 
 # 不使用 set -e，因为我们要收集所有错误再退出
@@ -401,6 +403,68 @@ if [ -z "$README_VER" ]; then
 else
   err "README.md 版本号不一致："
   echo "$README_VER" | sed 's/^/      /'
+fi
+
+# ============================================================
+# 8. 配置参数跨文档一致性（v1.1.17+）
+# ============================================================
+section "8. 配置参数一致性"
+
+CONFIG_OK=1
+
+# 8.1 检查 min_keyword_count 是否在所有文档中一致
+MIN_KW=$(grep -h "min_keyword_count" settings.yaml 2>/dev/null | head -1 | grep -o '[0-9]\+')
+if [ -n "$MIN_KW" ]; then
+  # 检查核心模块
+  if grep -q "满足 ${MIN_KW} 个及以上" modules/silent/main.md 2>/dev/null; then
+    :
+  else
+    echo "  ❌ modules/silent/main.md: min_keyword_count 阈值与 settings.yaml (${MIN_KW}) 不一致"
+    CONFIG_OK=0
+  fi
+  # 检查 SKILL.md
+  if grep -q "满足 ${MIN_KW} 个及以上" SKILL.md 2>/dev/null; then
+    :
+  else
+    echo "  ❌ SKILL.md: 关键词触发数量与 settings.yaml (${MIN_KW}) 不一致"
+    CONFIG_OK=0
+  fi
+  # 检查 USAGE.md
+  if grep -q "满足 ${MIN_KW} 个及以上" USAGE.md 2>/dev/null; then
+    :
+  else
+    echo "  ❌ USAGE.md: 关键词触发数量与 settings.yaml (${MIN_KW}) 不一致"
+    CONFIG_OK=0
+  fi
+  # 检查 USAGE.md 中的示例值
+  if grep -q "min_keyword_count: ${MIN_KW}" USAGE.md 2>/dev/null; then
+    :
+  else
+    echo "  ❌ USAGE.md: min_keyword_count 示例值与 settings.yaml (${MIN_KW}) 不一致"
+    CONFIG_OK=0
+  fi
+  # 检查 FAQ.md 中提及的默认值
+  if grep -q "min_keyword_count.*${MIN_KW}" FAQ.md 2>/dev/null; then
+    :
+  else
+    echo "  ❌ FAQ.md: min_keyword_count 默认值与 settings.yaml (${MIN_KW}) 不一致"
+    CONFIG_OK=0
+  fi
+  # 检查 PITFALLS.md
+  if grep -q "min_keyword_count.*${MIN_KW}" docs/PITFALLS.md 2>/dev/null; then
+    :
+  else
+    echo "  ❌ docs/PITFALLS.md: min_keyword_count 默认值与 settings.yaml (${MIN_KW}) 不一致"
+    CONFIG_OK=0
+  fi
+else
+  echo "  ⚠️  无法从 settings.yaml 读取 min_keyword_count"
+fi
+
+if [ $CONFIG_OK -eq 1 ]; then
+  ok "配置参数在所有文档中一致"
+else
+  err "配置参数不一致，请统一为 settings.yaml 中的值"
 fi
 
 # ============================================================

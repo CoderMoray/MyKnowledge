@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.1.16-blue" alt="Version" />
+  <img src="https://img.shields.io/badge/version-1.1.17-blue" alt="Version" />
   <img src="https://img.shields.io/badge/license-Apache%202.0-green" alt="License" />
   <a href="https://github.com/CoderMoray/MyKnowledge"><img src="https://img.shields.io/badge/GitHub-CoderMoray-black?logo=github" alt="GitHub" /></a>
 </p>
@@ -54,7 +54,7 @@
 
 ## 📊 性能对比
 
-| 指标 | v1.0.0 | v1.1.16 | 变化 |
+| 指标 | v1.0.0 | v1.1.17 | 变化 |
 |------|--------|--------|------|
 | 主模块代码量 | 387 行 | **~250 行** | 🔻 -35% |
 | 日常上下文占用 | ~9K tokens | **~5K tokens** | 🔻 -44% |
@@ -125,7 +125,7 @@ AI：（读取 PROJECT-STATUS.md）
 
 ## 🆕 版本更新
 
-### [v1.1.16] - 2026-06-11 — 规则统一 + 误解消除
+### [v1.1.17] - 2026-06-11 — 规则统一 + 误解消除
 
 - 🗣️ **"没有自动修复" → 恢复极简单**：一句话恢复，不丢数据
 - 📋 **静默触发规则统一**：4 个文件关键词列表对齐，不再不一致

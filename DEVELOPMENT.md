@@ -210,6 +210,11 @@ version: "1.0.0"
 - [ ] 是否影响现有用户配置？
 - [ ] 是否需要配置迁移逻辑？
 - [ ] 是否在 `onboarding.md` 中同步说明？
+- [ ] **配置参数是否在以下文件中保持一致？**（v1.1.17+ lint 第 8 项自动检查）
+  - `modules/silent/main.md`（权威源）
+  - `SKILL.md`、`core/main.md`、`USAGE.md`（用户文档）
+  - `FAQ.md`、`docs/PITFALLS.md`（参考文档）
+- [ ] 数值型参数（如 `min_keyword_count`）的默认值是否在所有文件中统一？
 
 ### 3. 新增功能流程
 

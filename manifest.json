@@ -109,7 +109,7 @@
     "DEVELOPMENT.md": {
       "_doc": "DEVELOPMENT.md 里有目录树和测试场景表格，引用了 test/ 下的简化路径",
       "line_ranges": [[50, 90], [200, 250]],
-      "patterns": ["onboarding.md", "skillhub-only.md", "github-only.md", "cross-update.md"]
+      "patterns": ["onboarding.md", "skillhub-only.md", "github-only.md", "cross-update.md", "releases/"]
     },
     "TEST-PLAN.md": {
       "_doc": "测试计划里有需求目录格式示例（不是真实路径）",

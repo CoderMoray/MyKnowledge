@@ -6,6 +6,16 @@
 
 ---
 
+## [1.3.1] - 2026-06-12
+
+### 🏷️ 需求优先级与标签
+
+- `requirement-readme-template.md` 新增**优先级**（P0/P1/P2/P3，默认 P2）和**标签**字段
+- `core/main.md` 静默创建需求默认 P2，用户说"优先级 P1"可修改
+- `modules/management/main.md` 查看需求列表按优先级排序（P0→P1→P2→P3）
+- `requirements-index-template.md` 索引表新增优先级+标签列
+- `modules/silent/main.md` 新增灵敏度调优提示，引导用户说"调整检测灵敏度"
+
 ## [1.3.0] - 2026-06-11
 
 ### 🎯 用户体验优化（7 项真实反馈）

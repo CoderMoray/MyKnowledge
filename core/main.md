@@ -66,7 +66,13 @@
    - settings.yaml 可被解析
    缺失或损坏 → 提示用户："Skill 配置文件可能损坏，建议重新安装"
 
-3. 自检通过 → 静默继续，不向用户报告
+3. 检查 install-source 格式（静默）：
+   - 读 ~/.myknowledge/config/install-source
+   - 如果是纯文本（非 YAML，不以 "source:" 开头）→ 加载 one-time/setup/install-source.md 触发重新检测
+   - 检测完成后写入新 YAML 格式
+   - 已经是 YAML 格式 → 跳过
+
+4. 自检通过 → 静默继续，不向用户报告
    自检失败 → 礼貌提示，但不阻断正常使用（缺失文件可能懒加载修复）
 ```
 
@@ -134,9 +140,10 @@ IF 用户问更新:
    - 如果没明确说 → 根据对话内容提取关键词作为项目名（如"销售数据分析"）
    - 确认项目名后继续
 
-2. 确定存储位置：
-   - 如果用户指定了工作空间（当前目录非 inbox） → 项目知识库（当前目录/.myknowledge/）
-   - 如果用户无工作空间 → 全局知识库（~/.myknowledge/global/{project-name}/）
+2. 确定存储位置（默认全局）：
+   - 默认：全局知识库 ~/.myknowledge/global/{project-name}/
+   - 例外：用户明确说"在当前目录创建"或"项目知识库" → 当前目录/.myknowledge/
+   - 不主动询问"全局还是项目"，减少用户认知负担
 
 3. 创建目录结构（每个 README 有明确职责边界，见下表）：
    {knowledge-base}/

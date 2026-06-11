@@ -2,7 +2,7 @@
 
 skill:
   name: myknowledge
-  version: "1.2.3"
+  version: "1.2.4"
   description: "通用知识库管理 Skill"
 
 # 安装源配置（首次运行时自动检测，写入 ~/.myknowledge/config/install-source）

@@ -18,6 +18,10 @@
 #### 新增 lint 第 8 项：配置参数一致性检查
 - `scripts/lint-paths.sh` 自动验证 `min_keyword_count` 在 6 个文件中是否一致
 - 以 `settings.yaml` 为权威源，检测所有引用该参数的文档
+
+#### 首次引导触发优化
+- `SKILL.md` description 新增"安装后主动提示用户初始化"，AI 安装完成后会主动询问是否进行首次设置
+- `INSTALL.md` 验证安装部分明确说明"安装后 Skill 不会自动运行，需要说'创建知识库'触发"
 - 不一致时阻止打包
 
 #### 开发规范更新

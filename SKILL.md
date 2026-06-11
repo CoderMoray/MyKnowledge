@@ -3,7 +3,10 @@ name: myknowledge
 description: |
   当用户需要创建知识库、管理项目文档、记录需求、整理个人知识时使用。
 
-  ⚠️ 重要：使用本 Skill 前，请先检查初始化状态：
+  ⚠️ 首次安装后：安装完成时主动提示用户"已安装 MyKnowledge！是否现在进行首次设置？（约 1 分钟）"
+  如果用户同意，立即检查 ~/.myknowledge/config/skill-state.yaml 并执行首次引导。
+
+  ⚠️ 每次使用前检查初始化状态：
   1. 检查 skill-state.yaml 是否存在
   2. 如果不存在 → 执行首次引导（one-time/onboarding/main.md）
   3. 如果存在 → 直接执行用户请求（core/main.md）

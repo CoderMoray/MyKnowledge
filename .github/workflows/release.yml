@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: 设置 Python（lint 脚本依赖）
         uses: actions/setup-python@v5
@@ -39,6 +41,7 @@ jobs:
             -x "*.DS_Store" \
                "*/__pycache__/*" \
                "*.zip" \
+               "releases/*" \
                ".git/*" \
                ".codegraph/*"
           echo "📦 Release zip: ${OUTPUT}"
@@ -64,6 +67,6 @@ jobs:
 
             ## ✅ 发布前自检
 
-            本次发布已通过 6 项路径一致性检查（lint-paths.sh --strict）。
+            本次发布已通过 8 项一致性检查（lint-paths.sh --strict）。
           draft: false
           prerelease: false

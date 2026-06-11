@@ -1,0 +1,25 @@
+name: Sync to AtomGit
+
+# 触发条件：推送 tag 时自动同步，也支持手动触发
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    name: Mirror to AtomGit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码（含完整历史）
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 推送到 AtomGit
+        run: |
+          git remote add atomgit https://CoderMoray:${{ secrets.ATOMGIT_TOKEN }}@atomgit.com/CoderMoray/MyKnowledge.git
+          git push atomgit --all --force
+          git push atomgit --tags --force

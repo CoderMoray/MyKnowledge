@@ -11,10 +11,11 @@
 |------|------|
 | [首次使用](#首次使用) | 3 |
 | [需求管理](#需求管理) | 4 |
-| [静默模式](#静默模式) | 3 |
+| [静默模式](#静默模式) | 2 |
 | [迁移与备份](#迁移与备份) | 2 |
 | [权限与错误](#权限与错误) | 3 |
 | [平台差异](#平台差异) | 2 |
+| [进阶使用](#进阶使用) | 3 |
 
 ---
 
@@ -82,19 +83,16 @@
 
 ## 静默模式
 
-### 坑 8：误触发太多
+### 坑 8：检测灵敏度不符合个人偏好
 
-❌ 说"帮我看看"也触发自动记录。
+💡 静默模式的默认检测阈值适合大多数场景。如果你的工作风格不同，可以微调：
 
-✅ 在 `settings.yaml` 调 `min_keyword_count`（从 3 调到 4-5），或在 `exclude_patterns` 加常用非复杂词。
+- 觉得**太敏感**（简单对话也触发）→ 提高 `min_keyword_count`（默认 3 → 4-5），或加 `exclude_patterns`
+- 觉得**不够敏感**（复杂任务没触发）→ 降低 `min_keyword_count`（默认 3 → 2），或在 `keywords` 加常用术语
 
-### 坑 9：漏检
+修改 `settings.yaml` 即可，无需改代码。这不是 bug，是个人偏好——就像有人喜欢通知多、有人喜欢安静。
 
-❌ 明明是复杂任务，AI 没自动记录。
-
-✅ 检查关键词是否在 `keywords` 列表里，看是否触发了否定模式（"简单"等）。实在不行手动说"创建需求 xxx"。
-
-### 坑 10：首次确认被跳过
+### 坑 9：首次确认被跳过
 
 ❌ 以为开了静默就无需确认——首次触发时 AI 仍然会问。
 
@@ -104,7 +102,7 @@
 
 ## 迁移与备份
 
-### 坑 11：换电脑后知识库"丢失"
+### 坑 10：换电脑后知识库"丢失"
 
 ❌ 换了电脑，以为 MyKnowledge 会自动同步。
 
@@ -119,7 +117,7 @@ tar -xzf myknowledge-backup.tar.gz -C ~/
 
 💡 也可以用 git 管理 `~/.myknowledge/`，但注意 `config/skill-state.yaml` 里的平台信息可能不适用新环境。
 
-### 坑 12：备份只备了 Skill 没备用户数据
+### 坑 11：备份只备了 Skill 没备用户数据
 
 ❌ 只把 `MyKnowledge/` 文件夹复制了，但 `~/.myknowledge/` 没备。
 
@@ -133,7 +131,7 @@ tar -xzf myknowledge-backup.tar.gz -C ~/
 
 > 💡 **为什么 AI 不自动修复？** MyKnowledge 的设计原则是"不执行任意 shell 命令"——这是安全边界。权限、备份、迁移等操作需要**你**手动确认，AI 会给出明确的修复步骤。
 
-### 坑 13：权限不足导致创建失败
+### 坑 12：权限不足导致创建失败
 
 ❌ AI 说"无法创建知识库"，不知道怎么办。
 
@@ -142,7 +140,7 @@ tar -xzf myknowledge-backup.tar.gz -C ~/
 - 项目知识库：在终端运行 `ls -la` 查看 `.myknowledge/` 权限
 - 如无写入权限，请在系统设置或终端中调整目录权限
 
-### 坑 14：配置文件损坏
+### 坑 13：配置文件损坏
 
 ❌ `skill-state.yaml` 被手动编辑后格式错误，AI 加载异常。
 
@@ -155,7 +153,7 @@ rm ~/.myknowledge/config/skill-state.yaml
 
 💡 不要手动编辑 `skill-state.yaml`，让 AI 帮你改。
 
-### 坑 15：不知道说"重新初始化"可以重置
+### 坑 14：不知道说"重新初始化"可以重置
 
 ❌ 遇到诡异问题反复折腾，不知道有重置机制。
 
@@ -165,7 +163,7 @@ rm ~/.myknowledge/config/skill-state.yaml
 
 ## 平台差异
 
-### 坑 16：从 CodeBuddy 切到 OpenClaw，自动记录行为变了
+### 坑 15：从 CodeBuddy 切到 OpenClaw，自动记录行为变了
 
 ❌ 习惯了 CodeBuddy 的"AI 告知"，换到 OpenClaw 后突然静默，以为坏了。
 
@@ -179,11 +177,42 @@ rm ~/.myknowledge/config/skill-state.yaml
 
 💡 OpenClaw 的真静默需手动启用 Hook：`openclaw hooks enable myknowledge`。
 
-### 坑 17：Claude 的 Hook 没生效
+### 坑 16：Claude 的 Hook 没生效
 
 ❌ 看了文档以为 Claude 支持 Hook，配置了没反应。
 
 ✅ Claude 的 Hook 支持取决于具体环境。目前主要通过意图识别（伪静默）工作。`hooks/claude/hooks.json` 的 `enabled` 默认为 `false`。
+
+---
+
+## 进阶使用
+
+### 坑 17：在多项目间切换时忘了当前知识库
+
+❌ 上午在项目 A 建了需求，下午切到项目 B 说"查看项目进展"，看到的是项目 B 的状态，以为 A 的需求丢了。
+
+✅ 知识库是**目录绑定的**——项目知识库 = 当前目录下的 `.myknowledge/`。切换项目后，`项目进展如何` 看的是新项目的状态。想看旧项目：`cd` 到旧项目目录再说。
+
+💡 用"查看项目状态"前先确认 `pwd`，避免混淆。
+
+### 坑 18：模板复制后不修改占位符
+
+❌ 从 `core/templates/` 复制了模板到需求目录，但 `{{PROJECT_NAME}}`、`{{DATE}}` 等占位符没改，导致文档信息不完整。
+
+✅ 模板是**参考格式**，复制后必须填写实际内容。让 AI 帮你填：说"基于 design-doc-template 模板，帮我写用户认证模块的设计文档"。
+
+💡 不要让 AI 直接复制粘贴模板——让 AI 理解模板结构后**生成**具体内容。
+
+### 坑 19：用 git 管理用户数据但忽略 .gitignore
+
+❌ 把 `~/.myknowledge/` 整个加入 git，结果 `skill-state.yaml` 里的平台信息被同步到其他环境，引发冲突。
+
+✅ 如用 git 管理用户数据，创建 `~/.myknowledge/.gitignore`：
+```
+config/skill-state.yaml
+config/install-source
+```
+至少排除平台相关的配置文件。参考 [坑 10](#坑-10换电脑后知识库丢失)。
 
 ---
 

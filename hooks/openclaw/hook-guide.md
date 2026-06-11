@@ -80,7 +80,7 @@ AI：✅ 已创建 Hook 文件
 ```yaml
 ---
 name: myknowledge
-version: "1.1.9"
+version: "1.1.16"
 events:
   - message:received
 description: |
@@ -153,5 +153,5 @@ openclaw hooks info myknowledge
 | 问题 | 解决方案 |
 |------|----------|
 | Hook 未触发 | 检查是否已启用：`openclaw hooks list` |
-| 误触发 | 调整复杂度检测规则，或禁用 Hook |
+| 触发频率不符合预期 | 调整灵敏度偏好（参考 settings.yaml），或禁用 Hook |
 | 权限错误 | 检查 Hook 文件权限 |

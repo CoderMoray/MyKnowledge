@@ -39,7 +39,9 @@ STAGE_DIR="${TMP_DIR}/myknowledge"
 # 复制必要文件
 mkdir -p "${STAGE_DIR}"
 cp SKILL.md settings.yaml _meta.json manifest.json "${STAGE_DIR}/"
-cp README.md "${STAGE_DIR}/" 2>/dev/null || true
+cp README.md FAQ.md "${STAGE_DIR}/" 2>/dev/null || true
+mkdir -p "${STAGE_DIR}/docs"
+cp docs/PITFALLS.md "${STAGE_DIR}/docs/" 2>/dev/null || true
 cp -r core modules one-time hooks "${STAGE_DIR}/"
 # 注意：scripts/、test/、.github/ 都是开发者专用，不进 SkillHub zip
 
@@ -58,4 +60,4 @@ ls -lh "releases/${OUTPUT_NAME}"
 # 验证排除项
 echo ""
 echo "🔍 验证 ZIP 内容（确认无 GitHub 相关文件）:"
-unzip -l "releases/${OUTPUT_NAME}" | grep -E "(LICENSE|CHANGELOG|\.github|RELEASE-GUIDE|\.gitignore)" && echo "❌ 警告：发现应排除的文件" || echo "✅ 干净：无 LICENSE/CHANGELOG/.github/RELEASE-GUIDE"
+unzip -l "releases/${OUTPUT_NAME}" | grep -E "(LICENSE|CHANGELOG|\.github|RELEASE-GUIDE|\.gitignore|DEVELOPMENT|TEST-PLAN)" && echo "❌ 警告：发现应排除的文件" || echo "✅ 干净：无 LICENSE/CHANGELOG/.github/RELEASE-GUIDE/DEVELOPMENT/TEST-PLAN"

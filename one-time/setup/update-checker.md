@@ -2,18 +2,20 @@
 
 当用户询问更新时，按本指引响应。
 
+> ⚠️ **用户数据安全**：`~/.myknowledge/` 与 Skill 文件分离，更新/重装不会影响你的知识库、配置和需求记录。
+
 ---
 
 ## 各安装源检查策略
 
-| 安装源 | 响应 |
-|--------|------|
-| skillhub_web | "Skill Hub 会自动通知更新，请关注通知" |
-| skillhub_cli | "📦 检查更新：skillhub check-update myknowledge<br>🔄 安装更新：skillhub update myknowledge" |
-| clawhub | "📦 检查更新：clawhub list --outdated<br>🔄 安装更新：clawhub update myknowledge" |
-| github_zip | "📦 检查更新：访问 https://github.com/CoderMoray/MyKnowledge/releases<br>⚠️ 更新前请备份 ~/.myknowledge/config/" |
-| github_clone | "📦 检查更新：git fetch origin<br>🔄 安装更新：git pull origin main<br>✅ 用户配置不受更新影响" |
-| manual/unknown | "📦 关注 https://github.com/CoderMoray/MyKnowledge/releases 获取更新" |
+| 安装源 | 检查方式 | 升级方式 |
+|--------|---------|---------|
+| skillhub_web | 无自动通知，需手动检查 | 在 SkillHub 中搜索 my-knowledge 并重新安装，或对 AI 说"安装 my-knowledge 技能" |
+| skillhub_cli | `skillhub list` 查看可用版本 | `skillhub upgrade myknowledge` |
+| clawhub | `clawhub list --outdated` | `clawhub update myknowledge` |
+| github_zip | 访问 https://github.com/CoderMoray/MyKnowledge/releases | 下载新版 ZIP 解压覆盖 |
+| github_clone | `git fetch origin` | `git pull origin main` |
+| manual/unknown | 访问 https://github.com/CoderMoray/MyKnowledge/releases | 手动下载覆盖 |
 
 ---
 

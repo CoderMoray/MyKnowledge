@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.1.9-blue" alt="Version" />
+  <img src="https://img.shields.io/badge/version-1.1.16-blue" alt="Version" />
   <img src="https://img.shields.io/badge/license-Apache%202.0-green" alt="License" />
   <a href="https://github.com/CoderMoray/MyKnowledge"><img src="https://img.shields.io/badge/GitHub-CoderMoray-black?logo=github" alt="GitHub" /></a>
 </p>
@@ -18,7 +18,7 @@
 | 了解能做什么/不能做什么 | → [✨ 核心特性](#-核心特性) + [⚠️ 能力边界](#️-能力边界) |
 | 学会常用命令 | → [QUICKSTART.md](QUICKSTART.md) |
 | 遇到问题 | → [FAQ.md](FAQ.md) 或 [docs/PITFALLS.md](docs/PITFALLS.md) |
-| 深入了解 | → [USAGE.md](USAGE.md) |
+| 深入了解 / 进阶技巧 | → [USAGE.md](USAGE.md) 或 [💡 高手技巧](#-高手技巧) |
 
 ---
 
@@ -54,7 +54,7 @@
 
 ## 📊 性能对比
 
-| 指标 | v1.0.0 | v1.1.9 | 变化 |
+| 指标 | v1.0.0 | v1.1.16 | 变化 |
 |------|--------|--------|------|
 | 主模块代码量 | 387 行 | **~250 行** | 🔻 -35% |
 | 日常上下文占用 | ~9K tokens | **~5K tokens** | 🔻 -44% |
@@ -67,42 +67,23 @@
 
 ## 🚀 快速开始
 
-### 方式一：下载 ZIP（推荐，通用）
+### 方式一：通过 SkillHub 安装（推荐，无需 GitHub）
 
-```bash
-# 1. 下载最新版本（访问 GitHub Releases 获取最新版本号）
-# https://github.com/CoderMoray/MyKnowledge/releases
-
-# 2. 解压（以 v1.1.9 为例）
-wget https://github.com/CoderMoray/MyKnowledge/archive/refs/tags/v1.1.9.zip
-unzip v1.1.9.zip
-```
-
-### 方式二：按平台安装
-
-根据你的 AI 助手，将解压后的文件夹复制到对应位置：
-
-| 平台 | 安装路径 |
-|------|----------|
-| CodeBuddy | `~/.codebuddy/skills/myknowledge/` |
-| WorkBuddy | `~/.workbuddy/skills/myknowledge/` |
-| OpenClaw | `~/.openclaw/skills/myknowledge/` |
-| Claude | `~/.claude/plugins/myknowledge/` |
-
-```bash
-# 以 CodeBuddy 为例（将 X.Y.Z 替换为实际版本号）
-mkdir -p ~/.codebuddy/skills/
-cp -r MyKnowledge-1.1.9 ~/.codebuddy/skills/myknowledge/
-```
-
-### 方式三：通过 SkillHub / 平台内更新
-
-对支持 SkillHub 的 AI 助手说：
+对 AI 说一句话即可：
 ```
 安装 my-knowledge 技能
 ```
 
-> 💡 **更新也一样简单**：SkillHub 会自动通知更新，或对 AI 说"检查 MyKnowledge 更新"即可。无需手动下载 GitHub。
+> 💡 **更新也一样**：对 AI 说"检查 MyKnowledge 更新"，或直接重新说"安装 my-knowledge 技能"即可覆盖为新版。**用户数据不会丢失。**
+
+### 方式二：从 GitHub 下载（备选，需要终端）
+
+```bash
+# 一行命令完成下载+安装（以 CodeBuddy 为例）
+git clone https://github.com/CoderMoray/MyKnowledge.git ~/.codebuddy/skills/myknowledge/
+```
+
+> 其他平台替换路径：WorkBuddy → `~/.workbuddy/skills/myknowledge/`，OpenClaw → `~/.openclaw/skills/myknowledge/`，Claude → `~/.claude/plugins/myknowledge/`
 
 ---
 
@@ -143,6 +124,66 @@ AI：（读取 PROJECT-STATUS.md）
 ```
 
 ## 🆕 版本更新
+
+### [v1.1.16] - 2026-06-11 — 规则统一 + 误解消除
+
+- 🗣️ **"没有自动修复" → 恢复极简单**：一句话恢复，不丢数据
+- 📋 **静默触发规则统一**：4 个文件关键词列表对齐，不再不一致
+- 📖 **FAQ 增加具体示例**：静默触发对比表 + 反模式效果对比表
+
+### [v1.1.15] - 2026-06-11 — skillhub 命令修正
+
+- 🔧 **`skillhub update` → `skillhub upgrade`**：基于实测纠正
+- 📡 **删除"自动通知"**：SkillHub 平台无通知功能，改为"重新安装"指引
+- 🧹 **波及修正**：README/INSTALL/DEVELOPMENT/测试场景同步更新
+
+### [v1.1.14] - 2026-06-11 — AI 回复自足性增强
+
+- 🗣️ **错误提示自足化**：AI 直接给答案，不让用户对照文档
+
+### [v1.1.13] - 2026-06-11 — 安全设计文档化 + 错误提示自足化
+
+- 🛡️ **"不自动重试"原因说明**：非 bug，是安全边界
+- 🗣️ **错误提示自足化**：AI 直接给答案，不让用户对照文档；15 条提示全部通俗化
+- 📋 **路线图更新**：v1.2.0 规划"一键导出/分享"功能
+
+### [v1.1.12] - 2026-06-11 — 用户文档随 Skill 分发
+
+- 📦 **FAQ + 避坑指南进 zip**：用户安装后本地即可查阅，无需跳转 GitHub
+- 📋 **SKILL.md 新增用户支持章节**：AI 知道何时引导用户查看 FAQ/PITFALLS
+- 🔧 **打包脚本同步更新**：build-skillhub.sh 自动包含 FAQ.md + docs/PITFALLS.md
+
+### [v1.1.11] - 2026-06-11 — 措辞优化版
+
+- 🗣️ **负面标签消除**：PITFALLS "误触发/漏检"改为"灵敏度偏好调优"，error/main 删除"静默误触发"
+- 📖 **导航增强**：README 导航表新增"进阶技巧"入口
+- 🎯 **FAQ 措辞软化**：微调技巧从"减少误触发"改为"匹配工作风格"
+
+### [v1.1.10] - 2026-06-10 — 用户体验优化版
+
+- 📖 **安装流程简化**：GitHub 方式简化为一行命令，突出 SkillHub 无需终端
+- 📚 **FAQ 增强**：新增反模式（5 条）+ 多项目管理 + 数据备份 + 进阶技巧（6 条）
+- 💡 **README 高手技巧**：一键切换项目、AI 写周报、git 管理知识库
+- 📋 **避坑指南扩展**：17 → 20 坑（项目切换、模板使用、git 管理）
+
+### [v1.1.9] - 2026-06-10 — 文档导航优化版
+
+- 📖 **README 导航增强**：顶部"5 分钟上手"导航表
+- 📚 **文档底部统一引导**：QUICKSTART/USAGE 底部 FAQ/PITFALLS 链接
+
+### [v1.1.8] - 2026-06-10 — 版本号修复版
+
+- 🐛 **README 版本号同步**：6 处版本号修复
+- 🛡️ **Lint 第 7 项检查**：README 版本号自动验证
+
+### [v1.1.7] - 2026-06-10 — 安全审计版
+
+- 🛡️ **安全评分 98+**：修复 3 项安全扣分（chmod 引导、console.log 脱敏、测试警告）
+
+### [v1.1.5] - 2026-06-10 — 用户文档版
+
+- 📚 **避坑指南**：17 个真实使用坑 + 3 个模板填写范例
+- 🔗 **文档交叉引用**：README/FAQ 链接 PITFALLS
 
 ### [v1.1.4] - 2026-06-10 — 自检防护版
 
@@ -205,6 +246,38 @@ MyKnowledge/
 ├── test/                # 测试套件
 └── .github/             # CI 配置
 ```
+
+## 💡 高手技巧
+
+> 熟悉基础用法后，这些技巧能让你效率翻倍。
+
+### 一键切换项目
+```
+cd ~/project-a && 对 AI 说"项目进展如何"  → 看项目A
+cd ~/project-b && 对 AI 说"项目进展如何"  → 看项目B
+```
+知识库自动跟随当前目录，无需手动切换。
+
+### 让 AI 帮你写周报
+```
+把本周完成的 3 个需求总结成周报要点
+把过去一周 PROJECT-STATUS.md 的变更汇总成进展报告
+```
+
+### git 管理知识库
+```bash
+cd ~/.myknowledge
+git init && git add . && git commit -m "初始化知识库"
+# 记得 .gitignore 排除 config/ 目录（含平台特定配置）
+```
+
+### 自定义静默检测
+编辑 `settings.yaml`，调整检测灵敏度以匹配你的工作风格，添加常用任务关键词。
+
+### 更多技巧
+→ [USAGE.md 进阶使用](USAGE.md#进阶使用) | [FAQ.md 进阶使用](FAQ.md#进阶使用) | [PITFALLS 进阶使用](docs/PITFALLS.md#进阶使用)
+
+---
 
 ## 🔗 相关资源
 

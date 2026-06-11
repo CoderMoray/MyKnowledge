@@ -8,12 +8,12 @@
 
 | 类型 | 标识 | 更新方式 |
 |------|------|----------|
-| skillhub_web | Skill Hub 网页/IDE | 自动通知 |
-| skillhub_cli | SkillHub CLI | `skillhub update` |
-| clawhub | ClawHub | `clawhub update` |
-| github_zip | GitHub ZIP | 手动下载 |
-| github_clone | GitHub Clone | `git pull` |
-| manual | 手动复制 | 手动关注 releases |
+| skillhub_web | Skill Hub 网页/IDE | 重新安装：对 AI 说"安装 my-knowledge 技能" |
+| skillhub_cli | SkillHub CLI | `skillhub upgrade myknowledge` |
+| clawhub | ClawHub | `clawhub update myknowledge` |
+| github_zip | GitHub ZIP | 手动下载新版覆盖 |
+| github_clone | GitHub Clone | `git pull origin main` |
+| manual | 手动复制 | 访问 GitHub Releases |
 | unknown | 未知 | 询问用户 |
 
 ---
@@ -98,24 +98,26 @@ skill_path: "~/.codebuddy/skills/myknowledge"
 根据 source 执行不同策略：
 
 IF source == "skillhub_web":
-   "Skill Hub 会自动通知更新"
+   "升级：在 SkillHub 中重新搜索安装 my-knowledge，或对 AI 说'安装 my-knowledge 技能'即可覆盖旧版"
+   "✅ 用户数据（~/.myknowledge/）不受影响"
 
 IF source == "skillhub_cli":
-   "检查更新：skillhub check-update myknowledge"
-   "安装更新：skillhub update myknowledge"
+   "检查可用版本：skillhub list"
+   "升级：skillhub upgrade myknowledge"
+   "✅ 用户数据不受影响"
 
 IF source == "clawhub":
-   "检查更新：clawhub list --outdated"
-   "安装更新：clawhub update myknowledge"
+   "检查：clawhub list --outdated"
+   "升级：clawhub update myknowledge"
 
 IF source == "github_zip":
-   "访问 https://github.com/CoderMoray/MyKnowledge/releases"
+   "访问 https://github.com/CoderMoray/MyKnowledge/releases 下载新版覆盖"
 
 IF source == "github_clone":
-   "cd 到目录运行 git pull origin main"
+   "cd 到 Skill 目录运行 git pull origin main"
 
 IF source == "manual":
-   "关注 releases 页面获取更新"
+   "访问 GitHub Releases 页面获取新版"
 ```
 
 ---

@@ -34,7 +34,7 @@
 **预期结果**:
 - [ ] 显示 onboarding.md 欢迎语（👋 欢迎使用 MyKnowledge）
 - [ ] 自动检测到 `source: "skillhub_web"`
-- [ ] 显示 "✅ 通过 Skill Hub 安装，更新时会自动通知你"
+- [ ] 显示"✅ 通过 Skill Hub 安装，升级时重新安装即可，数据不受影响"
 - [ ] 询问平台选择（CodeBuddy/WorkBuddy/OpenClaw）
 - [ ] 询问自动记录设置
 - [ ] 创建 `~/.myknowledge/config/skill-state.yaml`
@@ -52,7 +52,7 @@
 - [ ] 显示 onboarding.md 欢迎语
 - [ ] 自动检测到 `source: "skillhub_cli"`
 - [ ] 显示 "📌 通过 SkillHub CLI 安装"
-- [ ] 显示 "更新方式：运行 skillhub update myknowledge"
+- [ ] 显示 "更新方式：运行 skillhub upgrade myknowledge"
 - [ ] 创建 `~/.myknowledge/config/install-source` 记录 CLI 来源
 
 ---
@@ -67,7 +67,7 @@
 
 **预期结果**:
 - [ ] 不主动提示更新（Skill Hub 会自动推送通知）
-- [ ] 用户询问 "如何更新" 时，回复 "Skill Hub 会自动通知更新"
+- [ ] 用户询问 "如何更新" 时，回复"重新安装 my-knowledge 技能即可，用户数据不受影响"
 
 ---
 
@@ -80,8 +80,8 @@
 2. 触发 Skill 使用
 
 **预期结果**:
-- [ ] 显示 "📦 检查更新：运行 skillhub check-update myknowledge"
-- [ ] 显示 "🔄 安装更新：运行 skillhub update myknowledge"
+- [ ] 显示 "📦 查看可用版本：运行 skillhub list"
+- [ ] 显示 "🔄 升级：运行 skillhub upgrade myknowledge"
 - [ ] 更新 `last_check` 时间戳
 
 ---

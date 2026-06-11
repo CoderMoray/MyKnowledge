@@ -1,6 +1,6 @@
 {
   "name": "myknowledge",
-  "version": "1.1.9",
+  "version": "1.1.16",
   "description": "路径清单 - 单一真理来源。lint-paths.sh 据此检查文档和配置里引用的所有路径。",
   "_doc": "本文件由 scripts/lint-paths.sh 读取。修改时记得同步运行 lint 验证。",
 
@@ -21,6 +21,9 @@
     "SKILL.md",
     "settings.yaml",
     "_meta.json",
+
+    "FAQ.md",
+    "docs/PITFALLS.md",
 
     "core/main.md",
     "core/templates/project-status-template.md",
@@ -56,13 +59,15 @@
     "_meta.json",
     "manifest.json",
     "README.md",
+    "FAQ.md",
+    "docs/PITFALLS.md",
     "core/",
     "modules/",
     "one-time/",
     "hooks/"
   ],
 
-  "_skillhub_includes_doc": "build-skillhub.sh 实际会打包的目录/文件。lint 校验此处声明与 build 脚本一致。注意：scripts/、test/、.github/ 是开发者专用，不进 zip。",
+  "_skillhub_includes_doc": "build-skillhub.sh 实际会打包的目录/文件。lint 校验此处声明与 build 脚本一致。注意：scripts/、test/、.github/ 是开发者专用，不进 zip。v1.1.12 新增 FAQ.md + docs/PITFALLS.md，让用户本地可查。",
 
   "path_aliases": {
     "templates/": "core/templates/",
@@ -104,7 +109,7 @@
     "DEVELOPMENT.md": {
       "_doc": "DEVELOPMENT.md 里有目录树和测试场景表格，引用了 test/ 下的简化路径",
       "line_ranges": [[50, 90], [200, 250]],
-      "patterns": ["onboarding.md"]
+      "patterns": ["onboarding.md", "skillhub-only.md", "github-only.md", "cross-update.md"]
     },
     "TEST-PLAN.md": {
       "_doc": "测试计划里有需求目录格式示例（不是真实路径）",

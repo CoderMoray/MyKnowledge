@@ -4,71 +4,37 @@
 
 | 平台 | 支持版本 | 安装方式 |
 |------|----------|----------|
-| CodeBuddy | 最新版 | 手动安装 |
-| WorkBuddy | 最新版 | 手动安装 |
-| OpenClaw | 最新版 | 手动安装 |
-| Claude | 最新版 | 手动安装 |
+| CodeBuddy | 最新版 | SkillHub / GitHub |
+| WorkBuddy | 最新版 | SkillHub / GitHub |
+| OpenClaw | 最新版 | SkillHub / GitHub |
+| Claude | 最新版 | SkillHub / GitHub |
 
 ---
 
 ## 安装步骤
 
-### 方式一：Git 克隆（推荐）
+### 方式一：SkillHub 安装（推荐，无需终端）
 
-```bash
-# 克隆仓库
-git clone https://github.com/CoderMoray/MyKnowledge.git
-
-# 根据平台选择安装路径
+对 AI 说一句话即可：
 ```
+安装 my-knowledge 技能
+```
+
+> 💡 升级方法：对 AI 说"安装 my-knowledge 技能"即可覆盖为新版，用户数据（~/.myknowledge/）不受影响。
 
 ---
 
-### 方式二：手动下载
+### 方式二：GitHub 安装（备选，需要终端）
 
-1. 访问 https://github.com/CoderMoray/MyKnowledge
-2. 点击 "Code" → "Download ZIP"
-3. 解压到合适的位置
-
----
-
-### 平台特定安装
-
-#### CodeBuddy
-
+一行命令完成下载+安装（以 CodeBuddy 为例）：
 ```bash
-# 创建 skills 目录（如不存在）
-mkdir -p ~/.codebuddy/skills
-
-# 复制 Skill
-cp -r MyKnowledge ~/.codebuddy/skills/myknowledge
-
-# 重启 CodeBuddy
+git clone https://github.com/CoderMoray/MyKnowledge.git ~/.codebuddy/skills/myknowledge/
 ```
 
-#### WorkBuddy
-
-```bash
-# 创建 skills 目录（如不存在）
-mkdir -p ~/.workbuddy/skills
-
-# 复制 Skill
-cp -r MyKnowledge ~/.workbuddy/skills/myknowledge
-
-# 重启 WorkBuddy
-```
-
-#### OpenClaw
-
-```bash
-# 创建 skills 目录（如不存在）
-mkdir -p ~/.openclaw/skills
-
-# 复制 Skill
-cp -r MyKnowledge ~/.openclaw/skills/myknowledge
-
-# 重启 OpenClaw
-```
+其他平台替换路径：
+- WorkBuddy：`~/.workbuddy/skills/myknowledge/`
+- OpenClaw：`~/.openclaw/skills/myknowledge/`
+- Claude：`~/.claude/plugins/myknowledge/`
 
 ---
 
@@ -132,10 +98,7 @@ rm -rf ~/.openclaw/skills/myknowledge
 
 ### 问题：权限错误
 
-**解决**:
-```bash
-chmod -R 755 ~/.codebuddy/skills/myknowledge
-```
+**解决**: 在系统设置或终端中调整目录权限，确保 AI 有读取权限。
 
 ---
 

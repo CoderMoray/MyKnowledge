@@ -72,7 +72,14 @@
    - 检测完成后写入新 YAML 格式
    - 已经是 YAML 格式 → 跳过
 
-4. 自检通过 → 静默继续，不向用户报告
+4. 检查项目迁移需求（静默，skill-state.yaml 存在时执行）：
+   - 读 projects.yaml，筛选 type: "project" 的旧条目
+   - 发现旧条目 → 提示"检测到 {N} 个项目级知识库，v1.3.0 起默认使用全局知识库。是否迁移到 ~/.myknowledge/global/？"
+   - 用户确认 → 搬移文件到 global/ + 更新 projects.yaml（type 改为 global）
+   - 用户拒绝 → 保留不动
+   - 无旧条目或 projects.yaml 不存在 → 跳过
+
+5. 自检通过 → 静默继续，不向用户报告
    自检失败 → 礼貌提示，但不阻断正常使用（缺失文件可能懒加载修复）
 ```
 
@@ -136,9 +143,9 @@ IF 用户问更新:
 
 ```
 1. 确定项目名称：
-   - 如果用户明确说了项目名 → 使用用户说的
-   - 如果没明确说 → 根据对话内容提取关键词作为项目名（如"销售数据分析"）
-   - 确认项目名后继续
+   - 如果用户明确说了项目名 → 直接使用
+   - 如果没明确说 → 提取关键词作为建议名，问"项目叫「{name}」可以吗？"
+   - 用户确认后继续（不得跳过确认）
 
 2. 确定存储位置（默认全局）：
    - 默认：全局知识库 ~/.myknowledge/global/{project-name}/
@@ -166,13 +173,13 @@ IF 用户问更新:
    | PROJECT-STATUS.md | project-status-template.md |
    | requirements/{id}/README.md | requirement-readme-template.md |
 
-5. 追加到 ~/.myknowledge/config/projects.yaml（按 projects-yaml-spec.md 格式）：
-   - path: 知识库完整路径
-   - name: 项目名称
-   - last_access: 当前日期
-   - type: "global" 或 "project"
+5. 🔒 强制注册到 projects.yaml（原子操作，缺一不可）：
+   - 打开 ~/.myknowledge/config/projects.yaml
+   - 追加项目条目（path/name/last_access/type）
+   - 保存文件
    - 如果 projects.yaml 不存在 → 先创建空文件再追加
    - 如果该项目已存在 → 更新 last_access
+   ⚠️ 未完成注册 = 创建失败，必须向用户报告"❌ 创建失败：无法注册到项目目录"
 
 6. 创建后告知用户目录结构和各文件用途
 ```

@@ -1,6 +1,6 @@
 {
   "name": "myknowledge",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "路径清单 - 单一真理来源。lint-paths.sh 据此检查文档和配置里引用的所有路径。",
   "_doc": "本文件由 scripts/lint-paths.sh 读取。修改时记得同步运行 lint 验证。",
 

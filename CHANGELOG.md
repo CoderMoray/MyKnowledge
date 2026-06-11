@@ -6,6 +6,101 @@
 
 ---
 
+## [1.2.3] - 2026-06-11
+
+### 💬 操作反馈规范（用户反馈：每次记录/更新后明确告知）
+
+- `core/main.md` 新增「操作反馈规范」段，统一所有操作的反馈模板
+- 覆盖 8 种操作：创建知识库、创建需求、更新状态、更新内容、归档、删除、自动会话记录、静默创建
+- 反馈原则：一句话确认 + 关键信息，不冗长
+- 自动会话记录从完全静默改为追加后告知（`📋 已记录本次会话到 {id}`）
+- 明确不需要反馈的后台操作（PROJECT-STATUS 例行更新、projects.yaml last_access、自检通过）
+
+## [1.2.2] - 2026-06-11
+
+### 🔧 Lint 修复 + 开发流程文档化
+
+#### Lint 全通过
+- Hook 文件版本号同步（4 个文件）
+- README.md badge + 性能对比表版本号同步
+- lint 脚本修复：`KNOWN_USER_FILES` 新增用户 KB 路径 + 目录引用 `rstrip` bug 修复
+- manifest.json 新增路径豁免规则
+
+#### 开发流程文档化
+- `DEVELOPMENT.md` 新增「开发前必读」：Skill 内部规范 + 外部参考链接
+- 新增「版本号同步清单」：10 个文件的完整表格
+- 新增「经验教训」：记录 6 条历史踩坑记录
+- 发布检查清单更新：增加 `clawhub publish` 步骤
+
+## [1.2.1] - 2026-06-11
+
+### 🗂️ 项目追踪 + 新对话自动恢复
+
+#### 全局知识库子目录化
+- `~/.myknowledge/global/` 从扁平结构改为 `global/{project-name}/` 子目录
+- 纯对话用户创建知识库时按项目名分子目录，不再全部混在一起
+- `settings.yaml` 存储路径同步更新
+
+#### 项目目录管理（projects.yaml）
+- 新增 `~/.myknowledge/config/projects.yaml`，记录所有知识库位置
+- 创建知识库时自动追加条目（path、name、last_access、type）
+- 按需读取，不占常驻上下文
+- `core/templates/projects-yaml-spec.md` 定义格式规范
+
+#### 新对话项目恢复
+- `core/main.md` 使用前检查新增"项目恢复"逻辑：
+  - 当前目录有 `.myknowledge/` → 直接恢复（最快路径）
+  - 无工作空间 → 读 `projects.yaml` 列出所有项目供选择
+  - 选择了项目 → 更新 `last_access`
+- `onboarding/main.md` 步骤 4 初始化空的 `projects.yaml`
+
+#### 错误处理增强
+- `modules/error/main.md` 新增"项目目录不存在"错误类型
+- 检测到项目文件夹被手动删除 → 自动从 `projects.yaml` 清理 → 提示用户
+
+#### 版本号全量同步
+- `SKILL.md`、`settings.yaml`、`_meta.json`、`manifest.json`、`onboarding/main.md` 统一为 1.2.1
+
+## [1.2.0] - 2026-06-11
+
+### 🚀 引导流程强制化 + 模板体系完善
+
+#### 引导流程修复（来自用户反馈）
+- **onboarding/main.md**：新增硬性规则——必须按序完成全部 5 步，每步骤需用户确认才能进入下一步
+  - 步骤标注 `@阻塞性`/`@自动`/`@auto-detect`，AI 不可跳过或合并
+  - 步骤 2 支持自动检测平台（`CODEBUDDY_*`/`WORKBUDDY_*` 等环境变量）
+  - 步骤 5 增加前置校验：确认 `skill-state.yaml` 已写入才展示结束语
+  - 新增"引导完成后硬性禁止"规则，防止正常使用时重新加载引导
+- **core/main.md 检查段**：从"加载 onboarding"改为"强制按序完成 onboarding 全部 5 步骤"
+  - 明确 `⚠️ "加载 onboarding 文件" ≠ "完成引导"`
+
+#### 新增 4 个 README 模板
+- `core/templates/kb-readme-template.md` — 知识库入口（项目简介+快速导航）
+- `core/templates/requirements-index-template.md` — 需求索引页（ID+标题+状态+时间）
+- `core/templates/public-readme-template.md` — 公开文件清单
+- `core/templates/archive-readme-template.md` — 归档索引（原因+日期+原链接）
+
+#### 职责边界澄清
+- 在 `core/main.md` 输出规范中新增"各 README 职责边界"表格
+- 明确区分 `requirements/README.md`（需求索引）与 `PROJECT-STATUS.md`（项目快照）
+- 创建知识库时自动使用对应模板，创建后告知用户各文件用途
+
+#### 模板文件清单（共 6 个）
+| 模板 | 用途 |
+|------|------|
+| `kb-readme-template.md` | 知识库入口 |
+| `requirements-index-template.md` | 需求目录索引 |
+| `requirement-readme-template.md` | 单个需求详情 |
+| `public-readme-template.md` | 公开文件清单 |
+| `archive-readme-template.md` | 归档索引 |
+| `project-status-template.md` | 项目状态快照 |
+
+## [1.1.18] - 2026-06-11
+
+### 📝 description 精简 + 排除规则
+- `SKILL.md` description 从中英混杂改为简洁中英双语摘要
+- 新增 `.clawhubignore`，排除开发者文件（test/、releases/、DEVELOPMENT.md 等）
+
 ## [1.1.17] - 2026-06-11
 
 ### 🔧 配置一致性修复 + 自动化防护

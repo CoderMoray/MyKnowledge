@@ -2,7 +2,7 @@
 
 skill:
   name: myknowledge
-  version: "1.1.17"
+  version: "1.2.3"
   description: "通用知识库管理 Skill"
 
 # 安装源配置（首次运行时自动检测，写入 ~/.myknowledge/config/install-source）
@@ -26,7 +26,7 @@ user_data:
 # 版本兼容性
 version_compatibility:
   # 当前 Skill 版本
-  current: "1.1.17"
+  current: "1.2.1"
 
   # 配置格式版本
   config_format: "1.0"
@@ -68,26 +68,29 @@ features:
 
 # 存储位置
 storage:
-  # 全局知识库
+  # 全局知识库（按项目名分子目录）
   global:
-    path: "~/.myknowledge/global"
-    description: "跨项目共享知识"
+    path: "~/.myknowledge/global/{project-name}"
+    description: "无工作空间时，按项目名创建子目录存储知识"
     
   # 项目知识库
   project:
     path: "{project-path}/.myknowledge"
-    description: "项目专属知识"
+    description: "有工作空间时，在当前目录创建 .myknowledge/"
 
-# 目录结构模板
+  # 项目目录（按需读取，记录所有知识库位置）
+  projects_catalog: "~/.myknowledge/config/projects.yaml"
+
+# 目录结构模板（每个知识库的目录结构）
 directory_structure:
-  - README.md
+  - README.md           # 知识库入口（kb-readme-template.md）
   - requirements/
-    - README.md
+    - README.md         # 需求索引（requirements-index-template.md）
   - public/
-    - README.md
+    - README.md         # 公开文件清单（public-readme-template.md）
   - archive/
-    - README.md
-  - PROJECT-STATUS.md
+    - README.md         # 归档索引（archive-readme-template.md）
+  - PROJECT-STATUS.md   # 项目状态快照（project-status-template.md）
 
 # 首次引导配置
 onboarding:

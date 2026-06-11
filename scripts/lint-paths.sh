@@ -118,6 +118,11 @@ EXEMPT_RULES = m.get('path_check_exempt', {})
 KNOWN_USER_FILES = {
     'PROJECT-STATUS.md',          # 用户 KB 里的文件
     'README.md',                   # 用户 KB 里的文件（在根目录/KB 根）
+    'requirements/README.md',      # 用户 KB 里的需求索引
+    'public/README.md',            # 用户 KB 里的公开文件清单
+    'archive/README.md',           # 用户 KB 里的归档索引
+    '{kb}/README.md',              # 用户 KB 入口（模板变量）
+    'requirements/{id}/README.md', # 用户 KB 需求详情（模板变量）
     'design.md',                   # 单个需求的设计文档（可选）
     'mock-install-source.yaml',   # test 目录（已 skip）
     'mock-skill-state.yaml',      # test 目录（已 skip）
@@ -180,7 +185,7 @@ for doc in doc_files:
             continue
         if '://' in ref:
             continue
-        if ref in {'core/', 'modules/', 'one-time/', 'hooks/', 'test/', 'scripts/', 'requirements/', 'public/', 'archive/'}:
+        if ref in {'core', 'modules', 'one-time', 'hooks', 'test', 'scripts', 'requirements', 'public', 'archive'}:
             continue
         if any(p in ref or ref in p for p in exempt_patterns):
             continue

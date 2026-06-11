@@ -14,14 +14,27 @@
 ```
 1. 检查 ~/.myknowledge/config/skill-state.yaml 是否存在
    - 存在 → 读取配置，继续正常使用
-   - 不存在 → 停止，加载 one-time/onboarding/main.md 执行首次引导
+   - 不存在 → 🔒 强制按序完成 onboarding 全部 5 个步骤（1→2→3→4→5），
+             任一未完成则不得写入 skill-state.yaml
+             ⚠️ "加载 onboarding 文件" ≠ "完成引导"
+             必须确保：每步骤获得用户确认 + 步骤5完成后写入 skill-state.yaml
 
 2. 如果用户说"重新初始化"或"重置":
    - 删除 ~/.myknowledge/config/skill-state.yaml
-   - 加载 one-time/onboarding/main.md 重新引导
+   - 重新执行完整 onboarding（步骤1→5），同上强制规则
 ```
 
 **重要**：首次引导只执行一次，之后不再加载 onboarding。
+
+3. 项目恢复（skill-state.yaml 存在时执行）：
+   a. 检测当前工作目录是否有 .myknowledge/ 
+      → 有：跳过 projects.yaml，直接读 PROJECT-STATUS.md 恢复上下文
+      → 无：继续步骤 b
+   b. 检查 ~/.myknowledge/config/projects.yaml 是否存在
+      → 不存在：首次使用，不提示（等用户说"创建知识库"或静默触发）
+      → 存在且非空：读取项目列表，礼貌询问"要恢复哪个项目？"
+        列出格式：项目名（路径），用户选择后读对应 PROJECT-STATUS.md
+   c. 用户选择了项目 → 更新 projects.yaml 中该项目的 last_access
 
 ---
 
@@ -116,22 +129,45 @@ IF 用户问更新:
 当用户需要创建知识库时：
 
 ```
-1. 询问类型：
-   - 全局知识库（~/.myknowledge/global/）
-   - 项目知识库（当前目录/.myknowledge/）
+1. 确定项目名称：
+   - 如果用户明确说了项目名 → 使用用户说的
+   - 如果没明确说 → 根据对话内容提取关键词作为项目名（如"销售数据分析"）
+   - 确认项目名后继续
 
-2. 创建目录结构：
+2. 确定存储位置：
+   - 如果用户指定了工作空间（当前目录非 inbox） → 项目知识库（当前目录/.myknowledge/）
+   - 如果用户无工作空间 → 全局知识库（~/.myknowledge/global/{project-name}/）
+
+3. 创建目录结构（每个 README 有明确职责边界，见下表）：
    {knowledge-base}/
-   ├── README.md
+   ├── README.md          ← 知识库入口+快速导航
    ├── requirements/
-   │   └── README.md
+   │   └── README.md      ← 需求索引（ID+标题+状态+时间，不含详情）
    ├── public/
-   │   └── README.md
+   │   └── README.md      ← 公开文件清单
    ├── archive/
-   │   └── README.md
-   └── PROJECT-STATUS.md
+   │   └── README.md      ← 归档索引（原因+日期+原链接）
+   └── PROJECT-STATUS.md  ← 项目整体状态快照（阶段+活跃需求+数据资产）
 
-3. 使用 core/templates/ 中的模板生成文件
+4. 使用 core/templates/ 中的对应模板生成文件：
+   | 文件 | 模板 |
+   |------|------|
+   | {kb}/README.md | kb-readme-template.md |
+   | requirements/README.md | requirements-index-template.md |
+   | public/README.md | public-readme-template.md |
+   | archive/README.md | archive-readme-template.md |
+   | PROJECT-STATUS.md | project-status-template.md |
+   | requirements/{id}/README.md | requirement-readme-template.md |
+
+5. 追加到 ~/.myknowledge/config/projects.yaml（按 projects-yaml-spec.md 格式）：
+   - path: 知识库完整路径
+   - name: 项目名称
+   - last_access: 当前日期
+   - type: "global" 或 "project"
+   - 如果 projects.yaml 不存在 → 先创建空文件再追加
+   - 如果该项目已存在 → 更新 last_access
+
+6. 创建后告知用户目录结构和各文件用途
 ```
 
 ### 2. 需求管理
@@ -204,15 +240,35 @@ IF 用户提到需求 ID (REQ-XXX):
 
 ```
 1. 读取 ~/.myknowledge/config/skill-state.yaml 获取用户配置
-2. 根据用户输入执行对应操作
-3. 检测是否涉及当前项目需求 → 自动记录会话
-4. 如需更新配置，更新 skill-state.yaml
-5. 每次操作后更新 PROJECT-STATUS.md
+2. 恢复项目上下文（见"使用前检查"步骤 3）
+3. 根据用户输入执行对应操作
+4. 检测是否涉及当前项目需求 → 自动记录会话
+5. 如需更新配置，更新 skill-state.yaml
+6. 每次操作后更新 PROJECT-STATUS.md
+7. 如果当前项目被访问 → 更新 projects.yaml 的 last_access
 ```
 
 ---
 
 ## 输出规范
+
+### 各 README 职责边界（重要）
+
+> 知识库中有 5 个 README.md，**职责不可重叠**：
+
+| 文件 | 职责 | 不负责 |
+|------|------|--------|
+| `{kb}/README.md` | 项目简介 + 快速导航 | 不列需求详情、不列数据资产 |
+| `requirements/README.md` | 需求索引：ID+标题+状态+时间 | **不包含需求详情**（详情在 `requirements/{id}/README.md`） |
+| `requirements/{id}/README.md` | 单个需求的完整信息（描述+验收+会话记录） | 不列出其他需求 |
+| `public/README.md` | 公开文件清单 | 不列内部文件 |
+| `archive/README.md` | 归档索引：原因+日期+原链接 | 不复制原需求内容 |
+| `PROJECT-STATUS.md` | 项目整体状态：阶段+活跃需求摘要+数据资产索引 | **不列需求详情**、不列公开文件 |
+
+**核心区分**：
+- `requirements/README.md` = 需求目录索引（只看有哪些需求、什么状态）
+- `PROJECT-STATUS.md` = 项目快照（看项目整体：什么阶段、有哪些需求、数据资产）
+- 两者都列出需求 ID，但角度不同：前者是索引视图，后者是状态视图
 
 ### PROJECT-STATUS.md 格式
 
@@ -241,6 +297,26 @@ IF 用户提到需求 ID (REQ-XXX):
 
 > **模板文件**：`core/templates/requirement-readme-template.md`
 
+### 操作反馈规范
+
+> **原则**：每次完成记录或更新后，必须明确告知用户操作结果。反馈 = 一句话确认 + 关键信息，不冗长。
+
+| 操作 | 反馈模板 | 说明 |
+|------|----------|------|
+| 创建知识库 | `📁 已创建知识库「{name}」` | 附目录结构概览（各文件用途一句话） |
+| 创建需求 | `📝 已记录需求 {id}：{title}` | - |
+| 更新需求状态 | `✅ {id} 状态：{old} → {new}` | - |
+| 更新需求内容 | `✅ 已更新 {id} 的 {字段}` | - |
+| 归档需求 | `📦 已归档 {id}：{title}` | 批量归档时列出所有 ID |
+| 删除需求 | `🗑️ 已删除 {id}：{title}` | 删除前已确认，此反馈仅告知完成 |
+| 自动会话记录 | `📋 已记录本次会话到 {id}` | 追加到需求文件后告知，不中断对话 |
+| 静默创建 | `🔇 检测到复杂任务，已自动创建知识库「{name}」和需求 {id}` | 静默触发后的统一告知 |
+
+**不需要单独反馈的操作（伴随上述操作自动完成）：**
+- PROJECT-STATUS.md 的例行更新（已在上述反馈中覆盖）
+- projects.yaml 的 last_access 更新（纯技术维护）
+- 自检通过（静默）
+
 ---
 
 ## 错误处理
@@ -268,6 +344,13 @@ IF 遇到错误:
 | 错误处理 | `modules/error/main.md` |
 | 静默模式 | `modules/silent/main.md` |
 | 命令速查 | `modules/commands/main.md` |
-| 模板 | `core/templates/` |
+| 模板 | `core/templates/`（共6个） |
+| 　├ 项目状态 | `core/templates/project-status-template.md` |
+| 　├ 知识库入口 | `core/templates/kb-readme-template.md` |
+| 　├ 需求索引 | `core/templates/requirements-index-template.md` |
+| 　├ 需求详情 | `core/templates/requirement-readme-template.md` |
+| 　├ 公开文件 | `core/templates/public-readme-template.md` |
+| 　└ 归档索引 | `core/templates/archive-readme-template.md` |
+| 项目目录规范 | `core/templates/projects-yaml-spec.md` |
 | OpenClaw Hook | `hooks/openclaw/` |
 | Claude Hook | `hooks/claude/` |

@@ -1,6 +1,6 @@
 {
   "name": "myknowledge",
-  "version": "1.1.17",
+  "version": "1.2.3",
   "description": "路径清单 - 单一真理来源。lint-paths.sh 据此检查文档和配置里引用的所有路径。",
   "_doc": "本文件由 scripts/lint-paths.sh 读取。修改时记得同步运行 lint 验证。",
 
@@ -28,7 +28,12 @@
     "core/main.md",
     "core/templates/project-status-template.md",
     "core/templates/requirement-readme-template.md",
+    "core/templates/requirements-index-template.md",
+    "core/templates/kb-readme-template.md",
+    "core/templates/public-readme-template.md",
+    "core/templates/archive-readme-template.md",
     "core/templates/design-doc-template.md",
+    "core/templates/projects-yaml-spec.md",
 
     "modules/commands/main.md",
     "modules/management/main.md",
@@ -122,6 +127,14 @@
     "PITFALLS.md": {
       "_doc": "避坑指南是用户文档，引用的是用户 KB 里的路径（archive/、MyKnowledge/ 等），不是 Skill 自身",
       "patterns": ["archive/", "MyKnowledge/"]
+    },
+    "core/main.md": {
+      "_doc": "输出规范和创建知识库段引用了用户知识库内的路径（requirements/README.md 等），不是 Skill 自身文件",
+      "patterns": ["requirements/README.md", "public/README.md", "archive/README.md", "requirements/{id}/README.md", "{kb}/README.md", "PROJECT-STATUS.md"]
+    },
+    "core/templates/archive-readme-template.md": {
+      "_doc": "归档模板引用用户知识库内的路径，不是 Skill 自身",
+      "patterns": ["requirements/"]
     }
   }
 }

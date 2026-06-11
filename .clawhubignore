@@ -1,0 +1,22 @@
+# ClawHub 发布时排除的文件
+# .git、LICENSE、.DS_Store、二进制文件 已被 ClawHub 自动排除，无需再写
+
+# 开发者文档（普通用户不需要）
+DEVELOPMENT.md
+TEST-PLAN.md
+
+# 测试目录
+test/
+
+# 发布历史 zip 包（体积大，用户不需要）
+releases/
+
+# 开发脚本
+scripts/
+
+# 运行时状态文件
+skill-state.yaml
+
+# IDE 配置
+.vscode/
+.idea/

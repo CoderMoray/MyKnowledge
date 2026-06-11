@@ -284,6 +284,55 @@ version: "1.0.0"
 
 ## 发布流程
 
+### 开发前必读
+
+修改 Skill 内容前，确保了解以下规范：
+
+**Skill 内部规范（必读）：**
+1. [ClawHub SKILL.md 格式规范](https://docs.openclaw.ai/clawhub/skill-format) — frontmatter 字段定义
+2. 本项目 `scripts/lint-paths.sh` — 了解 8 项检查的规则和逻辑
+3. 本文件「开发规范」章节 — Prompt 编写、配置变更、新增功能流程
+4. 本文件「文档措辞规范」章节 — 避免负面标签被平台误判
+
+**外部参考（按需）：**
+- [SKILL.md 开放标准](https://www.agensi.io/learn/skill-md-specification-open-standard) — 跨平台 SKILL.md 规范
+- [ClawHub 发布指南](https://clawhub.ai/luduoxin/skill-publish-guide) — 发布流程和常见错误
+- [OpenClaw 中文文档](https://docs.openclaw.ac.cn/tools/clawhub) — ClawHub 中文说明
+
+---
+
+### 版本号同步清单（共 10 个文件）
+
+> ⚠️ 改版本号时必须全部同步，lint 第 5 项会自动检查。
+
+| # | 文件 | 位置 |
+|---|------|------|
+| 1 | `SKILL.md` | frontmatter `version` |
+| 2 | `settings.yaml` | `skill.version` + `version_compatibility.current` |
+| 3 | `_meta.json` | `version` |
+| 4 | `manifest.json` | `version` |
+| 5 | `one-time/onboarding/main.md` | 步骤 4 的 skill-state.yaml 模板 |
+| 6 | `hooks/claude/hooks.json` | `version` |
+| 7 | `hooks/claude/README.md` | 示例中的 `version` |
+| 8 | `hooks/openclaw/HOOK.md` | frontmatter `version` |
+| 9 | `hooks/openclaw/hook-guide.md` | 示例中的 `version` |
+| 10 | `README.md` | badge + 性能对比表 |
+
+### 经验教训
+
+> 记录每次发布踩过的坑，避免重复犯错。
+
+| 日期 | 版本 | 问题 | 教训 |
+|------|------|------|------|
+| 2026-06-11 | 1.2.1→1.2.2 | ClawHub 不允许覆盖同版本 | 发布前先跑 lint，发布后发现 lint 不通过需升版本号 |
+| 2026-06-11 | 1.2.1 | 改了 5 个文件的版本号，忘了 Hook 4 个 + README 2 处 | 版本号用 lint 第 5 项自动检查，不要人工记 |
+| 2026-06-11 | 1.2.1 | lint 误报用户 KB 路径（`requirements/README.md` 等） | 新增用户侧路径时加入 `KNOWN_USER_FILES` 或 `manifest.json` 豁免 |
+| 2026-06-11 | 1.2.3 | 只做了 lint + clawhub publish，忘了 build-skillhub.sh 生成 SkillHub zip | ClawHub 和 SkillHub 是两个独立渠道，发布步骤：lint → build → clawhub publish，缺一不可 |
+| 2026-06-11 | 1.1.12 | FAQ + PITFALLS 没进 zip | 新增文件需确认进 `manifest.json` 的 `skillhub_includes` |
+| 2026-06-11 | 1.1.11 | 负面标签（"误触发""漏检"）被平台误判为缺陷 | 遵循文档措辞规范，用中性表述 |
+
+---
+
 ### 版本号规范（SemVer）
 
 ```
@@ -295,15 +344,47 @@ version: "1.0.0"
 - 修订号：向下兼容的问题修复
 ```
 
+## 发布工作流
+
+> MyKnowledge 通过 3 个渠道分发，各有不同用途：
+
+| 渠道 | 命令/方式 | 产出 | 用途 |
+|------|----------|------|------|
+| ClawHub 注册表 | `clawhub publish` | 在线注册 | OpenClaw/WorkBuddy 用户一键安装 |
+| SkillHub（腾讯镜像） | `bash scripts/build-skillhub.sh` | `releases/MyKnowledge-x.x.x-skillhub.zip` | 提交到 SkillHub 国内镜像 |
+| GitHub Release | `git tag + push` | GitHub Release 页面 | 开源仓库版本管理 |
+
+### 发布步骤（严格按序执行）
+
+```
+1. 修改代码，版本号同步 10 个文件
+2. bash scripts/lint-paths.sh               ← 必须全绿，否则阻止后续
+3. bash scripts/build-skillhub.sh           ← 生成 releases/ zip（给 SkillHub）
+4. clawhub publish ...                      ← 推送到 ClawHub 注册表
+5. git 提交流程：
+   git add -A
+   git commit -m "release: vX.Y.Z - {简要说明}"
+   git push origin main                     ← 先推代码
+   git tag vX.Y.Z
+   git push origin vX.Y.Z                   ← 再推 tag（触发 GitHub Actions）
+```
+
+> ⚠️ Git 提交流程不能只打 tag，必须先 `commit + push` 代码，再 `tag + push tag`。
+> GitHub Actions 在收到 tag push 后自动执行：lint → build → 创建 GitHub Release（上传 skillhub.zip + github.zip）。
+
+> ⚠️ 第 3 步生成的 zip 用于提交到 SkillHub（腾讯国内镜像），第 4 步 `clawhub publish` 推的是文件夹内容到 ClawHub 官方注册表。两个是不同的分发渠道，**都要做**。
+
 ### 发布检查清单
 
-- [ ] 版本号更新（`settings.yaml`, `_meta.json`, `SKILL.md` 等 10 个文件）
+- [ ] 版本号更新（见上方「版本号同步清单」10 个文件）
 - [ ] CHANGELOG.md 更新
-- [ ] `bash scripts/lint-paths.sh` 通过
+- [ ] `bash scripts/lint-paths.sh` 通过（8 项全绿）
 - [ ] `bash scripts/build-skillhub.sh` 生成 zip 到 `releases/`
-- [ ] `git tag vX.Y.Z && git push --tags`（触发 GitHub Actions）
-- [ ] 确认 GitHub Release 创建成功
-- [ ] Skill Hub 提交（如适用）
+- [ ] `clawhub publish` 发布到 ClawHub
+- [ ] `git add -A && git commit -m "release: vX.Y.Z"`
+- [ ] `git push origin main`
+- [ ] `git tag vX.Y.Z && git push origin vX.Y.Z`
+- [ ] 确认 GitHub Actions 执行成功（Release 创建）
 
 ---
 
@@ -344,7 +425,11 @@ version: "1.0.0"
 - [x] v1.1.12：用户文档随 Skill 分发（FAQ + PITFALLS 进 zip + SKILL.md 用户支持章节）
 - [x] v1.1.13：安全设计文档化（"不自动重试"原因说明）
 
-### v1.2.0（未来）
+### v1.2.x（已发布/进行中）
+- [x] v1.2.0：引导流程强制化 + 模板体系完善 + 职责边界澄清
+- [x] v1.2.1：项目追踪（projects.yaml）+ 全局知识库子目录化 + 新对话自动恢复
+
+### v1.3.0（未来）
 - [ ] 关键词搜索
 - [ ] 一键导出/分享：打包项目知识库为可分享文件
   - 导出包含 PROJECT-STATUS.md + 需求摘要 + 安装引导
@@ -352,6 +437,7 @@ version: "1.0.0"
   - 对方无 MyKnowledge → 分享包内 INSTALL-GUIDE.md 引导安装
 - [ ] 与 Agent Team Skill 集成
 - [ ] 需求优先级/标签/依赖
+- [ ] 嵌套/子需求支持
 
 ### 未来考虑
 - [ ] ClawHub 官方支持

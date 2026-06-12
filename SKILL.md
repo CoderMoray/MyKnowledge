@@ -3,7 +3,7 @@ name: myknowledge
 slug: my-knowledge
 displayName: MyKnowledge
 description: 创建知识库、管理项目文档、记录需求、整理个人知识。Create knowledge bases, manage project docs, track requirements, and organize personal knowledge.
-version: "1.4.72"
+version: "1.4.8"
 author: CoderMoray
 tags: 
   - "knowledge-base"
@@ -111,14 +111,14 @@ AI：（自动创建到 ~/.myknowledge/global/{项目名}/）
 AI：（在项目目录创建 .myknowledge/）
 ```
 
-### 模式 2：静默使用（自动检测）
+### 模式 2：自动检测
 
-AI 自动检测复杂任务，静默创建知识库：
+AI 检测到复杂任务时自动创建知识库并告知用户：
 
 ```
 用户：帮我分析这个销售数据
-AI：（自动检测为复杂任务）
-     已自动创建知识库并记录需求 REQ-20260608-001
+AI：（检测到复杂任务）
+    🔇 已自动创建知识库「销售数据分析」和需求 REQ-20260608-001
 ```
 
 **复杂任务检测规则**：
@@ -203,11 +203,11 @@ AI：读取 PROJECT-STATUS.md...
 
 ## 平台适配
 
-### OpenClaw（完全静默）
+### OpenClaw（Hook 事件驱动）
 
-通过 Hook 实现事件驱动：
+通过 Hook 在消息到达时主动触发检测，不依赖 AI 是否注意到：
 - `message:received` → 检测任务复杂度
-- 自动创建知识库和记录需求
+- 更可靠地自动创建知识库和记录需求
 - 详细配置参考：`hooks/openclaw/hook-guide.md`
 
 ### CodeBuddy/WorkBuddy（意图识别）

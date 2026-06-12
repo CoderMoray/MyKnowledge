@@ -1,5 +1,7 @@
 ---
 name: myknowledge
+slug: my-knowledge
+displayName: MyKnowledge
 description: 创建知识库、管理项目文档、记录需求、整理个人知识。Create knowledge bases, manage project docs, track requirements, and organize personal knowledge.
 version: "1.4.4"
 author: CoderMoray

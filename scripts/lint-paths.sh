@@ -291,7 +291,8 @@ for fpath in synced_files:
     # 不在 raw string 里用 \'（bash heredoc 友好），改用字符类
     pattern1 = re.compile(r'version:[\s"=]+(1\.\d+\.\d+)')
     pattern2 = re.compile(r'"version"[\s":=]+"(1\.\d+\.\d+)"')
-    for pattern in [pattern1, pattern2]:
+    pattern3 = re.compile(r'current:[\s"]+(1\.\d+\.\d+)')  # settings.yaml version_compatibility.current
+    for pattern in [pattern1, pattern2, pattern3]:
         for mt in pattern.findall(content):
             declared_versions.add(mt)
 

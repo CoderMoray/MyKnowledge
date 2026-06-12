@@ -1,7 +1,7 @@
 ---
 name: myknowledge
 description: 创建知识库、管理项目文档、记录需求、整理个人知识。Create knowledge bases, manage project docs, track requirements, and organize personal knowledge.
-version: "1.3.2"
+version: "1.3.3"
 author: CoderMoray
 tags: 
   - "knowledge-base"

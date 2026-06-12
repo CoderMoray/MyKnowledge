@@ -2,7 +2,7 @@
   "name": "myknowledge",
   "displayName": "MyKnowledge",
   "displayName_zh": "我的知识库",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "通用知识库管理 Skill，支持需求管理、项目文档、自动记录复杂任务",
   "description_zh": "通用知识库管理 Skill，支持需求管理、项目文档、自动记录复杂任务",
   "author": "CoderMoray",

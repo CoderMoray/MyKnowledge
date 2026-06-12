@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.3.2-blue" alt="Version" />
+  <img src="https://img.shields.io/badge/version-1.3.3-blue" alt="Version" />
   <img src="https://img.shields.io/badge/license-Apache%202.0-green" alt="License" />
   <a href="https://github.com/CoderMoray/MyKnowledge"><img src="https://img.shields.io/badge/GitHub-CoderMoray-black?logo=github" alt="GitHub" /></a>
 </p>
@@ -54,7 +54,7 @@
 
 ## 📊 性能对比
 
-| 指标 | v1.0.0 | v1.3.2 | 变化 |
+| 指标 | v1.0.0 | v1.3.3 | 变化 |
 |------|--------|--------|------|
 | 主模块代码量 | 387 行 | **~250 行** | 🔻 -35% |
 | 日常上下文占用 | ~9K tokens | **~5K tokens** | 🔻 -44% |
@@ -76,10 +76,13 @@
 
 > 💡 **更新也一样**：对 AI 说"检查 MyKnowledge 更新"，或直接重新说"安装 my-knowledge 技能"即可覆盖为新版。**用户数据不会丢失。**
 
-### 方式二：从 GitHub 下载（备选，需要终端）
+### 方式二：Git 下载（备选，需要终端）
 
 ```bash
-# 一行命令完成下载+安装（以 CodeBuddy 为例）
+# 国内用户推荐 Atomgit
+git clone https://atomgit.com/CoderMoray/MyKnowledge.git ~/.codebuddy/skills/myknowledge/
+
+# 或使用 GitHub
 git clone https://github.com/CoderMoray/MyKnowledge.git ~/.codebuddy/skills/myknowledge/
 ```
 

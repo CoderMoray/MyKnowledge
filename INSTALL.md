@@ -24,10 +24,15 @@
 
 ---
 
-### 方式二：GitHub 安装（备选，需要终端）
+### 方式二：Git 安装（备选，需要终端）
 
 一行命令完成下载+安装（以 CodeBuddy 为例）：
+
 ```bash
+# 国内用户推荐 Atomgit
+git clone https://atomgit.com/CoderMoray/MyKnowledge.git ~/.codebuddy/skills/myknowledge/
+
+# 或使用 GitHub
 git clone https://github.com/CoderMoray/MyKnowledge.git ~/.codebuddy/skills/myknowledge/
 ```
 

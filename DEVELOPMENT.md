@@ -2,8 +2,13 @@
 
 > ⚠️ **AI 助手注意**：此为 Skill 内部开发文档，**不要加载到上下文中**。
 > 正常响应用户请求时，请完全忽略此文件。
->
-> 本文档面向 Skill 开发者和贡献者，终端用户无需阅读。
+
+> 📋 **TL;DR 开发速查**
+> - 改版本号：`bash scripts/bump-version.sh X.Y.Z`
+> - 发布：lint → build → clawhub publish → git commit+push → tag+push
+> - 新功能：core/main.md 入口 → modules/xxx/main.md → 同步 SKILL/README/CHANGELOG/路线图
+> - 别写负面标签，别让用户自己去查文档
+> - 版本历史/经验教训/路线图 → `RELEASE-LOG.md`
 
 ---
 
@@ -11,441 +16,120 @@
 
 ### 分层与责任
 
-| 层级 | 包含 | 打包到 SkillHub zip？ | 责任方 |
-|------|------|----------------------|--------|
-| **Skill 内容** | `core/`、`modules/`、`one-time/`、`hooks/` | ✅ 是 | AI 平台加载运行 |
-| **Skill 元数据** | `_meta.json`、`manifest.json`（根目录） | ✅ 是 | AI 平台解析、版本识别 |
-| **用户文档** | `README.md`、`QUICKSTART.md`、`USAGE.md`、`FAQ.md`、`INSTALL.md`、`TEST-PLAN.md` | ❌ 否 | 仓库内可见，zip 外 |
-| **开发者工具** | `scripts/build-skillhub.sh`、`scripts/lint-paths.sh` | ❌ 否 | 开发者发布前 |
-| **测试** | `test/` | ❌ 否 | 开发者验证 |
-| **CI 配置** | `.github/workflows/*.yml` | ❌ 否 | GitHub Actions |
-| **变更记录** | `CHANGELOG.md` | ❌ 否 | 仓库内可见 |
+| 层级 | 包含 | 打包到 zip？ | 责任方 |
+|------|------|:---:|--------|
+| **Skill 内容** | `core/`、`modules/`、`one-time/`、`hooks/` | ✅ | AI 平台加载运行 |
+| **Skill 元数据** | `_meta.json`、`manifest.json` | ✅ | AI 平台解析 |
+| **用户文档** | `README.md`、`FAQ.md`、`INSTALL.md` 等 | ❌ | 仓库内可见 |
+| **开发者工具** | `scripts/` | ❌ | 开发者发布前 |
+| **测试/CI** | `test/`、`.github/` | ❌ | 开发者验证 |
 
-**关键原则**：
-- 用户**不**需要手动验证 → 验证是 AI 平台和 CI 的事
-- 用户的"自动验证"靠 `core/main.md` 的"加载时自检"段（AI 透明执行）
-- 开发者的验证靠 `scripts/lint-paths.sh`（本地 + CI 都用同一份）
-
-### 当前目录结构
+### 目录结构
 
 ```
 MyKnowledge/
-├── 📄 入口与配置
-│   ├── SKILL.md              # Skill 主入口
-│   ├── _meta.json            # Skill Hub 元数据
-│   └── settings.yaml         # 默认配置
-│
-├── 📁 core/                  # 核心功能
-│   ├── main.md              # 主逻辑（每次加载）
-│   └── templates/           # 文档模板
-│
-├── 📁 modules/              # 可选模块（懒加载）
-│   ├── commands/            # 命令速查
-│   │   └── main.md
-│   ├── management/          # 需求管理
-│   │   └── main.md
-│   ├── error/               # 错误处理
-│   │   └── main.md
-│   └── silent/              # 静默模式
-│       └── main.md
-│
-├── 📁 one-time/             # 一次性配置
-│   ├── onboarding/          # 首次引导
-│   │   └── main.md
-│   └── setup/               # 安装源/平台/更新检测
-│       ├── install-source.md
-│       ├── platform-detector.md
-│       └── update-checker.md
-│
-├── 📁 hooks/                # 平台 Hook
-│   ├── openclaw/            # OpenClaw Hook
-│   │   ├── HOOK.md
-│   │   ├── handler.ts
-│   │   └── hook-guide.md
-│   └── claude/              # Claude Hook
-│       ├── hooks.json
-│       ├── handler.js
-│       └── README.md
-│
-├── 📁 scripts/              # 开发者工具（不进 zip）
-│   ├── build-skillhub.sh    # SkillHub 打包脚本
-│   └── lint-paths.sh        # 路径一致性检查（门禁）
-│
-├── 📁 releases/            # 构建产物归档（不进 zip）
-│
-├── 📁 .github/              # CI 配置（不进 zip）
-│   └── workflows/
-│       └── release.yml      # GitHub Actions：tag 触发 release
-
-└── 📁 test/                 # 测试套件（开发用，AI 忽略）
-    ├── README.md
-    ├── scenarios/           # 测试场景详细方案
-    │   ├── skillhub-only.md
-    │   ├── github-only.md
-    │   └── cross-update.md
-    └── fixtures/            # 测试模拟数据
-        ├── mock-skill-state.yaml
-        └── mock-install-source.yaml
+├── SKILL.md              # Skill 主入口
+├── _meta.json / settings.yaml / manifest.json
+├── core/                 # 核心功能（每次加载）
+│   ├── main.md
+│   └── templates/
+├── modules/              # 可选模块（懒加载）
+│   ├── commands/  management/  error/  export/  silent/
+├── one-time/             # 一次性配置（首次/特定场景）
+│   ├── onboarding/  setup/
+├── hooks/                # 平台集成
+│   ├── openclaw/  claude/
+├── scripts/              # 开发者工具（不进 zip）
+├── releases/             # 构建产物归档
+└── test/                 # 测试套件
 ```
-
-### 目录结构说明
-
-| 目录 | 用途 | 加载频率 |
-|------|------|----------|
-| `core/` | 核心功能 | 每次使用 |
-| `modules/` | 可选功能 | 按需懒加载 |
-| `one-time/` | 一次性配置 | 仅首次或特定场景 |
-| `hooks/` | 平台集成 | OpenClaw/Claude 专用 |
 
 ---
 
 ## 核心设计原则
 
-### 1. 懒加载（Lazy Loading）
+### 1. 懒加载
 
 ```
-首次使用:
-  SKILL.md → 检测到无 skill-state.yaml
-  → 加载 one-time/onboarding/main.md (~3K tokens)
-  → 创建状态文件
-  → 后续使用 core/main.md (~4.5K tokens)
-
-正常使用:
-  SKILL.md → 检测到 skill-state.yaml 存在
-  → 直接加载 core/main.md
-  → 遇到具体场景再懒加载 modules/*/main.md
+首次: SKILL.md → 无 skill-state.yaml → onboarding/main.md → 创建状态
+正常: SKILL.md → 直接 core/main.md → 按需懒加载 modules/*/main.md
 ```
-
-**目的**：减少上下文占用， onboarding 只加载一次，模块按需加载。
 
 ### 2. 用户数据分离
 
 ```
-Skill 文件（随更新替换）:
-  ~/.codebuddy/skills/myknowledge/
-
-用户数据（持久保留）:
-  ~/.myknowledge/
-  ├── config/
-  │   ├── skill-state.yaml    # 用户配置
-  │   └── install-source      # 安装源记录
-  └── global/                 # 全局知识库
+Skill 文件（随更新替换）: ~/.codebuddy/skills/myknowledge/
+用户数据（持久保留）:     ~/.myknowledge/config/ + ~/.myknowledge/global/
 ```
 
-**目的**：Skill 更新时不丢失用户数据。
+### 3. 安装源检测
 
-### 3. 安装源检测与适配
-
-```
-检测优先级:
-  1. 环境变量 (SKILLHUB_INSTALL, CLAWHUB_INSTALL)
-  2. 目录标记 (.clawhub/, .skillhub/, .git/)
-  3. 用户确认
-
-适配策略:
-  - skillhub_web: 依赖 Skill Hub 通知
-  - skillhub_cli: 提示 skillhub upgrade 命令
-  - github_clone: 提示 git pull
-  - github_zip: 提示重新下载
-```
-
----
-
-## 文件职责说明
-
-### 核心文件
-
-| 文件 | 职责 | 加载时机 |
-|------|------|----------|
-| `core/main.md` | 主逻辑、命令分发、错误处理引用 | 每次使用 |
-| `core/templates/*.md` | 文档生成模板 | 创建时 |
-| `one-time/onboarding/main.md` | 首次引导流程 | 仅首次 |
-| `one-time/setup/install-source.md` | 安装源检测与管理 | 询问/检测时 |
-| `one-time/setup/platform-detector.md` | 平台自动检测 | 首次引导 |
-| `one-time/setup/update-checker.md` | 更新检查策略 | 用户询问时 |
-| `modules/commands/main.md` | 固定命令速查、同义词映射 | 用户问"能做什么"时 |
-| `modules/management/main.md` | 需求查看、更新、归档、删除 | 操作 REQ 时 |
-| `modules/error/main.md` | 错误分类、诊断清单、恢复步骤 | 报错时 |
-| `modules/silent/main.md` | 复杂任务自动检测 | 触发静默时 |
-| `hooks/openclaw/handler.ts` | OpenClaw 事件处理 | OpenClaw 平台 |
-| `hooks/claude/handler.js` | Claude 事件处理 | Claude 平台 |
-| `scripts/build-skillhub.sh` | SkillHub 打包脚本 | 发布时 |
+优先级：环境变量 → 目录标记（.clawhub/ .skillhub/ .git/）→ 用户确认
 
 ---
 
 ## 开发规范
 
-### 1. Prompt 编写规范
-
-```markdown
-# 文件头格式
-
----
-name: xxx
-description: |
-  简短描述
-  
-  使用说明：
-  1. 步骤一
-  2. 步骤二
-version: "1.0.0"
----
-
-# 正文使用三级标题
-
-## 主要功能
-
-### 子功能一
-
-具体说明...
-
-### 子功能二
-
-具体说明...
-```
-
-### 2. 配置变更规范
-
-修改 `settings.yaml` 时需检查：
-- [ ] 是否影响现有用户配置？
-- [ ] 是否需要配置迁移逻辑？
-- [ ] 是否在 `onboarding.md` 中同步说明？
-- [ ] **配置参数是否在以下文件中保持一致？**（v1.1.17+ lint 第 8 项自动检查）
-  - `modules/silent/main.md`（权威源）
-  - `SKILL.md`、`core/main.md`、`USAGE.md`（用户文档）
-  - `FAQ.md`、`docs/PITFALLS.md`（参考文档）
-- [ ] 数值型参数（如 `min_keyword_count`）的默认值是否在所有文件中统一？
-
-### 3. 新增功能流程
+### 1. 新增功能流程
 
 ```
-1. 在 core/main.md 添加功能入口（保持精简，详细放模块）
-2. 如需新模块，创建 modules/<name>/main.md
-3. 如需模板，在 core/templates/ 创建
-4. 更新 USAGE.md 或对应文档
-5. 在 test/scenarios/ 添加测试用例
-6. 更新 CHANGELOG.md
+1. core/main.md 添加入口（精简，详细放模块）
+2. 新模块 → modules/<name>/main.md（懒加载）
+3. 新模板 → core/templates/
+4. 同步文档（必须）：
+   - SKILL.md — 概述 + 核心功能
+   - README.md — 使用场景 + 版本更新
+   - CHANGELOG.md — 版本记录
+   - RELEASE-LOG.md — 路线图 + 经验教训更新
+5. test/scenarios/ 加测试用例
 ```
 
-### 4. 文档措辞规范（v1.1.11 新增）
+### 2. 文档措辞规范
 
-> **核心原则**：SkillHub 平台会对文档进行自动评估。诚实是好的，但要避免把"AI 通用局限"或"设计权衡"写成"产品缺陷"。
-
-#### ❌ 避免的表述
-
-| 类型 | 错误示例 | 为什么不行 |
-|------|---------|-----------|
-| 把 AI 通用局限写成 bug | "静默误触发""漏检""判断不准确" | 基于关键词的意图检测，任何 Skill 都不可能 100% 准确。这不是 bug，是 AI 能力上限 |
-| 把设计权衡写成问题 | "归档后找不到""配置文件损坏" | 归档到 archive/ 是有意设计；配置损坏是用户手动编辑导致 |
-| 把可配置项写成缺陷 | "简单对话也触发创建" | 灵敏度可调，不是缺陷 |
-
-#### ✅ 正确的表述
-
-| 场景 | 正确写法 |
-|------|---------|
-| 检测灵敏度 | "检测灵敏度不符合个人偏好 → 可调整 settings.yaml" |
-| 功能边界 | "本 Skill 不提供 X 功能 → 见能力边界表" |
-| 用户操作错误 | "如果手动编辑了配置文件 → 用'重新初始化'恢复" |
-
-#### 自检清单（发布前检查）
-
-- [ ] 文档中是否有"误触发""漏检""不准确""bug""缺陷"等负面标签？
-- [ ] 是否有描述可以被平台误解为"产品有 bug"？
-- [ ] 用户操作导致的问题是否归因于"用户操作"而非"产品缺陷"？
-- [ ] 设计权衡是否说明了"为什么这样设计"？
-
----
-
-## 测试策略
-
-### 测试金字塔
-
-```
-        /\
-       /  \
-      / E2E \          test/scenarios/cross-update.md
-     /--------\
-    / Integration \     test/scenarios/skillhub-only.md
-   /--------------\
-  /    Unit        \    test/fixtures/*.yaml
- /------------------\
-```
-
-### 关键测试场景
-
-| 场景 | 测试文件 | 优先级 |
-|------|----------|--------|
-| 首次引导 | `skillhub-only.md` TC-SH-01 | P0 |
-| 更新检查 | `github-only.md` TC-GH-04 | P0 |
-| 源变更检测 | `cross-update.md` TC-CU-01 | P1 |
-| 配置持久化 | `cross-update.md` TC-CU-06 | P1 |
+❌ 避免："误触发""漏检""不准确""bug""缺陷"
+✅ 正确："检测灵敏度可调整""这是设计权衡""用'重新初始化'恢复"
 
 ---
 
 ## 发布流程
 
-### 开发前必读
+### 3 个分发渠道
 
-修改 Skill 内容前，确保了解以下规范：
+| 渠道 | 命令 | 产出 |
+|------|------|------|
+| ClawHub | `clawhub publish` | 在线注册 |
+| SkillHub | `bash scripts/build-skillhub.sh` | zip 包 |
+| GitHub | `git tag + push` | Release 页面 |
 
-**Skill 内部规范（必读）：**
-1. [ClawHub SKILL.md 格式规范](https://docs.openclaw.ai/clawhub/skill-format) — frontmatter 字段定义
-2. 本项目 `scripts/lint-paths.sh` — 了解 8 项检查的规则和逻辑
-3. 本文件「开发规范」章节 — Prompt 编写、配置变更、新增功能流程
-4. 本文件「文档措辞规范」章节 — 避免负面标签被平台误判
-
-**外部参考（按需）：**
-- [SKILL.md 开放标准](https://www.agensi.io/learn/skill-md-specification-open-standard) — 跨平台 SKILL.md 规范
-- [ClawHub 发布指南](https://clawhub.ai/luduoxin/skill-publish-guide) — 发布流程和常见错误
-- [OpenClaw 中文文档](https://docs.openclaw.ac.cn/tools/clawhub) — ClawHub 中文说明
-
----
-
-### 版本号同步清单（共 10 个文件）
-
-> ⚠️ 改版本号时必须全部同步，lint 第 5 项会自动检查。
-
-| # | 文件 | 位置 |
-|---|------|------|
-| 1 | `SKILL.md` | frontmatter `version` |
-| 2 | `settings.yaml` | `skill.version` + `version_compatibility.current` |
-| 3 | `_meta.json` | `version` |
-| 4 | `manifest.json` | `version` |
-| 5 | `one-time/onboarding/main.md` | 步骤 4 的 skill-state.yaml 模板 |
-| 6 | `hooks/claude/hooks.json` | `version` |
-| 7 | `hooks/claude/README.md` | 示例中的 `version` |
-| 8 | `hooks/openclaw/HOOK.md` | frontmatter `version` |
-| 9 | `hooks/openclaw/hook-guide.md` | 示例中的 `version` |
-| 10 | `README.md` | badge + 性能对比表 |
-
-### 经验教训
-
-> 记录每次发布踩过的坑，避免重复犯错。
-
-| 日期 | 版本 | 问题 | 教训 |
-|------|------|------|------|
-| 2026-06-11 | 1.2.1→1.2.2 | ClawHub 不允许覆盖同版本 | 发布前先跑 lint，发布后发现 lint 不通过需升版本号 |
-| 2026-06-11 | 1.2.1 | 改了 5 个文件的版本号，忘了 Hook 4 个 + README 2 处 | 版本号用 lint 第 5 项自动检查，不要人工记 |
-| 2026-06-11 | 1.2.1 | lint 误报用户 KB 路径（`requirements/README.md` 等） | 新增用户侧路径时加入 `KNOWN_USER_FILES` 或 `manifest.json` 豁免 |
-| 2026-06-11 | 1.2.3 | 只做了 lint + clawhub publish，忘了 build-skillhub.sh 生成 SkillHub zip | ClawHub 和 SkillHub 是两个独立渠道，发布步骤：lint → build → clawhub publish，缺一不可 |
-| 2026-06-11 | 1.1.12 | FAQ + PITFALLS 没进 zip | 新增文件需确认进 `manifest.json` 的 `skillhub_includes` |
-| 2026-06-11 | 1.1.11 | 负面标签（"误触发""漏检"）被平台误判为缺陷 | 遵循文档措辞规范，用中性表述 |
-
----
-
-### 版本号规范（SemVer）
-
-```
-主版本.次版本.修订号
-  1.   0.   0
-
-- 主版本：不兼容的 API 变更
-- 次版本：向下兼容的功能添加
-- 修订号：向下兼容的问题修复
-```
-
-## 发布工作流
-
-> MyKnowledge 通过 3 个渠道分发，各有不同用途：
-
-| 渠道 | 命令/方式 | 产出 | 用途 |
-|------|----------|------|------|
-| ClawHub 注册表 | `clawhub publish` | 在线注册 | OpenClaw/WorkBuddy 用户一键安装 |
-| SkillHub（腾讯镜像） | `bash scripts/build-skillhub.sh` | `releases/MyKnowledge-x.x.x-skillhub.zip` | 提交到 SkillHub 国内镜像 |
-| GitHub Release | `git tag + push` | GitHub Release 页面 | 开源仓库版本管理 |
-
-### 发布步骤（严格按序执行）
+### 发布步骤
 
 ```
 1. 修改代码
-2. bash scripts/bump-version.sh X.Y.Z      ← 一键同步 12 处版本号
-3. bash scripts/lint-paths.sh               ← 必须全绿，否则阻止后续
-4. bash scripts/build-skillhub.sh           ← 生成 releases/ zip（给 SkillHub）
-5. clawhub publish ...                      ← 推送到 ClawHub 注册表
-6. git 提交流程：
-   git add -A
-   git commit -m "release: vX.Y.Z - {简要说明}"
-   git push origin main                     ← 先推代码
-   git tag vX.Y.Z
-   git push origin vX.Y.Z                   ← 再推 tag（触发 GitHub Actions）
+2. bash scripts/bump-version.sh X.Y.Z
+3. bash scripts/lint-paths.sh              ← 必须全绿
+4. bash scripts/build-skillhub.sh          ← 生成 SkillHub zip
+5. clawhub publish ...                     ← 推 ClawHub
+6. git add -A && git commit -m "release: vX.Y.Z"
+7. git push origin main
+8. git tag vX.Y.Z && git push origin vX.Y.Z
 ```
-
-> ⚠️ Git 提交流程不能只打 tag，必须先 `commit + push` 代码，再 `tag + push tag`。
-> GitHub Actions 在收到 tag push 后自动执行：lint → build → 创建 GitHub Release（上传 skillhub.zip + github.zip）。
-
-> ⚠️ 第 3 步生成的 zip 用于提交到 SkillHub（腾讯国内镜像），第 4 步 `clawhub publish` 推的是文件夹内容到 ClawHub 官方注册表。两个是不同的分发渠道，**都要做**。
 
 ### 发布检查清单
 
-- [ ] `bash scripts/bump-version.sh X.Y.Z`（一键同步版本号）
+- [ ] `bash scripts/bump-version.sh X.Y.Z`
 - [ ] CHANGELOG.md 更新
-- [ ] `bash scripts/lint-paths.sh` 通过（8 项全绿）
-- [ ] `bash scripts/build-skillhub.sh` 生成 zip 到 `releases/`
-- [ ] `clawhub publish` 发布到 ClawHub
-- [ ] `git add -A && git commit -m "release: vX.Y.Z"`
-- [ ] `git push origin main`
-- [ ] `git tag vX.Y.Z && git push origin vX.Y.Z`
-- [ ] 确认 GitHub Actions 执行成功（Release 创建）
+- [ ] `bash scripts/lint-paths.sh` 全绿
+- [ ] `bash scripts/build-skillhub.sh`
+- [ ] `clawhub publish`
+- [ ] git commit + push + tag + push tag
+- [ ] 确认 GitHub Actions 通过
 
 ---
 
 ## 贡献指南
 
-### 提交 Issue
-
-请包含：
-1. 平台（CodeBuddy/WorkBuddy/OpenClaw）
-2. 安装方式（SkillHub/GitHub/手动）
-3. 复现步骤
-4. 期望行为 vs 实际行为
-
-### 提交 PR
-
-1. Fork 仓库
-2. 创建功能分支：`feature/xxx` 或 `fix/xxx`
-3. 提交变更
-4. 确保测试通过
-5. 提交 PR 并描述变更
-
----
-
-## 路线图
-
-### v1.1.x（已发布）
-- [x] v1.1.1：命令速查 + 能力边界 + 错误兜底 + 文档对齐
-- [x] v1.1.2：manifest + lint 路径一致性检查
-- [x] v1.1.3：责任分层 + 加载时自检 + GitHub Actions
-- [x] v1.1.4：Self-endorsement 防御 + 硬编码自检
-- [x] v1.1.5：避坑指南 + 模板填写范例
-- [x] v1.1.6：细节质量打磨（版本号修复 + releases/ 目录）
-- [x] v1.1.7：安全审计优化（腾讯云鼎 skills-security-check 3 项修复）
-- [x] v1.1.8：版本号一致性修复 + lint 第 7 项检查
-- [x] v1.1.9：文档导航优化（导航表 + 底部统一引导）
-- [x] v1.1.10：用户体验优化（安装简化 + FAQ 反模式 + 高手技巧 + 20 坑）
-- [x] v1.1.11：负面标签消除（措辞规范化 + 文档措辞规范纳入开发规范）
-- [x] v1.1.12：用户文档随 Skill 分发（FAQ + PITFALLS 进 zip + SKILL.md 用户支持章节）
-- [x] v1.1.13：安全设计文档化（"不自动重试"原因说明）
-
-### v1.3.x（已发布）
-- [x] v1.3.0：UX 优化 7 项（标注泄漏 + 引导体验 + 知识库默认全局 + 跨版本迁移）
-- [x] v1.3.1：需求优先级与标签
-- [x] v1.3.2：projects.yaml 注册原子化 + 旧项目迁移引导 + 名称交互
-- [x] v1.3.3：版本号一致性修复 + Atomgit 安装引导 + 错误兜底增强
-
-### v1.4.x（已发布）
-- [x] v1.4.0：一键导出/分享（导出 zip + 导入 + 同名冲突对比）
-
-### v1.5.0（未来）
-- [ ] 关键词搜索
-- [ ] 与 Agent Team Skill 集成
-- [ ] 嵌套/子需求支持
-
-### 未来考虑
-- [ ] ClawHub 官方支持
-- [ ] 多语言支持
-- [ ] 团队协作功能
-- [ ] 可视化界面
-- [ ] 云端同步
+- Issue：平台 + 安装方式 + 复现步骤 + 期望/实际行为
+- PR：Fork → `feature/xxx` 分支 → commit → PR
 
 ---
 

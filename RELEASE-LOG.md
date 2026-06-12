@@ -1,0 +1,98 @@
+# MyKnowledge 发布日志
+
+> 版本历史、经验教训、路线图。开发者按需查阅。
+
+---
+
+## 版本号同步清单
+
+> ⚠️ 改版本号时用 `bash scripts/bump-version.sh X.Y.Z` 一键同步，以下为参考。
+
+| # | 文件 | 位置 |
+|---|------|------|
+| 1 | `SKILL.md` | frontmatter `version` |
+| 2 | `settings.yaml` | `skill.version` + `version_compatibility.current` |
+| 3 | `_meta.json` | `version` |
+| 4 | `manifest.json` | `version` |
+| 5 | `one-time/onboarding/main.md` | skill-state.yaml 模板 |
+| 6 | `hooks/claude/hooks.json` | `version` |
+| 7 | `hooks/claude/README.md` | 示例 `version` |
+| 8 | `hooks/openclaw/HOOK.md` | frontmatter `version` |
+| 9 | `hooks/openclaw/hook-guide.md` | 示例 `version` |
+| 10 | `README.md` | badge + 性能对比表 |
+
+---
+
+## 经验教训
+
+| 日期 | 版本 | 问题 | 教训 |
+|------|------|------|------|
+| 2026-06-11 | 1.2.1→1.2.2 | ClawHub 不允许覆盖同版本 | 发布前先跑 lint，发现 lint 不通过需升版本号 |
+| 2026-06-11 | 1.2.1 | 改了 5 个文件忘了 Hook 4 个 + README 2 处 | 版本号用 lint 第 5 项自动检查，不要人工记 |
+| 2026-06-11 | 1.2.1 | lint 误报用户 KB 路径 | 新增用户侧路径加入 `KNOWN_USER_FILES` 或豁免 |
+| 2026-06-11 | 1.2.3 | 忘了 build-skillhub.sh 生成 SkillHub zip | ClawHub 和 SkillHub 是独立渠道，lint→build→publish 缺一不可 |
+| 2026-06-11 | 1.1.12 | FAQ + PITFALLS 没进 zip | 新增文件确认进 `manifest.json` 的 `skillhub_includes` |
+| 2026-06-11 | 1.1.11 | 负面标签被平台误判为缺陷 | 遵循文档措辞规范，用中性表述 |
+| 2026-06-12 | 1.3.2 | `version_compatibility.current` 漏同步 | lint 已新增 pattern3 检查 `current:` 后的版本号 |
+
+---
+
+## 版本号规范（SemVer）
+
+```
+主版本.次版本.修订号 — 1.4.0
+- 主版本：不兼容 API 变更
+- 次版本：向下兼容功能添加
+- 修订号：向下兼容问题修复
+```
+
+---
+
+## 路线图
+
+### v1.1.x（已发布）
+- [x] v1.1.1：命令速查 + 能力边界 + 错误兜底
+- [x] v1.1.2：manifest + lint 路径一致性检查
+- [x] v1.1.3：责任分层 + 加载时自检 + GitHub Actions
+- [x] v1.1.4：Self-endorsement 防御 + 硬编码自检
+- [x] v1.1.5：避坑指南 + 模板填写范例
+- [x] v1.1.6：细节质量打磨
+- [x] v1.1.7：安全审计优化
+- [x] v1.1.8：版本号一致性修复 + lint 第 7 项
+- [x] v1.1.9：文档导航优化
+- [x] v1.1.10：用户体验优化
+- [x] v1.1.11：负面标签消除
+- [x] v1.1.12：用户文档随 Skill 分发
+- [x] v1.1.13：安全设计文档化
+
+### v1.2.x（已发布）
+- [x] v1.2.0：引导流程强制化 + 模板体系完善 + 职责边界
+- [x] v1.2.1：项目追踪 + global 子目录化 + 新对话自动恢复
+- [x] v1.2.2：Lint 全通过 + 开发流程文档化
+- [x] v1.2.3：操作反馈规范
+- [x] v1.2.4：错误处理增强
+
+### v1.3.x（已发布）
+- [x] v1.3.0：UX 优化 7 项
+- [x] v1.3.1：需求优先级与标签
+- [x] v1.3.2：projects.yaml 注册原子化 + 迁移引导
+- [x] v1.3.3：版本号一致性修复 + Atomgit 安装引导
+
+### v1.4.x（已发布）
+- [x] v1.4.0：一键导出/分享
+
+### v1.5.0（未来）
+- [ ] 关键词搜索
+- [ ] 与 Agent Team Skill 集成
+- [ ] 嵌套/子需求支持
+
+### 未来考虑
+- [ ] ClawHub 官方支持
+- [ ] 多语言支持
+- [ ] 团队协作功能
+- [ ] 可视化界面
+- [ ] 云端同步
+
+---
+
+**最后更新**: 2026-06-12

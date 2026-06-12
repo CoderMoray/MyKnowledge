@@ -56,6 +56,7 @@ Created → Cancelled
 3. 更新"状态"字段
 4. 在"变更记录"表格追加新记录
 5. 更新 PROJECT-STATUS.md 中的需求列表
+6. 更新 requirements/README.md 需求索引（同步状态变更）
 ```
 
 ### 示例
@@ -100,7 +101,8 @@ AI：✅ 已更新 REQ-001 状态：Created → In Progress
 1. 确认需求 ID
 2. 将需求目录从 requirements/ 移动到 archive/
 3. 更新 PROJECT-STATUS.md（从活跃需求移到已完成）
-4. 在需求 README.md 追加归档记录
+4. 更新 requirements/README.md 需求索引（移除已归档项）
+5. 在需求 README.md 追加归档记录
 ```
 
 ### 批量归档
@@ -125,6 +127,7 @@ AI：✅ 已归档 3 个需求：
 2. 确认用户知道这是不可逆操作
 3. 删除需求目录
 4. 更新 PROJECT-STATUS.md
+5. 更新 requirements/README.md 需求索引（移除已删除项）
 ```
 
 ---

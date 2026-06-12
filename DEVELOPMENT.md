@@ -357,11 +357,12 @@ version: "1.0.0"
 ### 发布步骤（严格按序执行）
 
 ```
-1. 修改代码，版本号同步 10 个文件
-2. bash scripts/lint-paths.sh               ← 必须全绿，否则阻止后续
-3. bash scripts/build-skillhub.sh           ← 生成 releases/ zip（给 SkillHub）
-4. clawhub publish ...                      ← 推送到 ClawHub 注册表
-5. git 提交流程：
+1. 修改代码
+2. bash scripts/bump-version.sh X.Y.Z      ← 一键同步 12 处版本号
+3. bash scripts/lint-paths.sh               ← 必须全绿，否则阻止后续
+4. bash scripts/build-skillhub.sh           ← 生成 releases/ zip（给 SkillHub）
+5. clawhub publish ...                      ← 推送到 ClawHub 注册表
+6. git 提交流程：
    git add -A
    git commit -m "release: vX.Y.Z - {简要说明}"
    git push origin main                     ← 先推代码
@@ -376,7 +377,7 @@ version: "1.0.0"
 
 ### 发布检查清单
 
-- [ ] 版本号更新（见上方「版本号同步清单」10 个文件）
+- [ ] `bash scripts/bump-version.sh X.Y.Z`（一键同步版本号）
 - [ ] CHANGELOG.md 更新
 - [ ] `bash scripts/lint-paths.sh` 通过（8 项全绿）
 - [ ] `bash scripts/build-skillhub.sh` 生成 zip 到 `releases/`

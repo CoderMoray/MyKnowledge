@@ -98,7 +98,7 @@ Skill 文件（随更新替换）: ~/.codebuddy/skills/myknowledge/
 | 渠道 | 命令 | 产出 | 注意 |
 |------|------|------|------|
 | ClawHub | `clawhub publish` | 在线注册 | 读 SKILL.md frontmatter |
-| SkillHub | `skillhub publish releases/*.zip` | zip 推送 | 需要 login；SKILL.md 须含 `slug` + `displayName` |
+| SkillHub | `skillhub publish releases/*.zip --host https://api.skillhub.cn` | zip 推送 | 需要 `skillhub auth login --token skh_xxx`；SKILL.md 须含 `slug` + `displayName`；host 必须用 `api.skillhub.cn` |
 | GitHub | `git tag + push` | Release 页面 | 触发 Actions 自动创建 |
 
 ### 发布步骤
@@ -109,8 +109,8 @@ Skill 文件（随更新替换）: ~/.codebuddy/skills/myknowledge/
 3. bash scripts/lint-paths.sh              ← 必须全绿
 4. bash scripts/build-skillhub.sh          ← 生成 SkillHub zip
 5. bash scripts/check-file-size.sh 200     ← 检查超大文件
-6. skillhub publish releases/MyKnowledge-X.Y.Z-skillhub.zip --dry-run  ← SkillHub 预检
-7. skillhub publish releases/MyKnowledge-X.Y.Z-skillhub.zip             ← 推 SkillHub
+6. skillhub publish releases/MyKnowledge-X.Y.Z-skillhub.zip --host https://api.skillhub.cn --dry-run  ← SkillHub 预检
+7. skillhub publish releases/MyKnowledge-X.Y.Z-skillhub.zip --host https://api.skillhub.cn             ← 推 SkillHub
 8. clawhub publish ...                     ← 推 ClawHub
 9. git add -A && git commit -m "release: vX.Y.Z"
 10. git push origin main

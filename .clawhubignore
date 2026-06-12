@@ -21,3 +21,4 @@ skill-state.yaml
 # IDE 配置
 .vscode/
 .idea/
+.codebuddy/

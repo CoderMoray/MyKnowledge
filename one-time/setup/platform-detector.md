@@ -31,7 +31,7 @@ AI_PLATFORM=workbuddy → WorkBuddy
 | 特性 | CodeBuddy | WorkBuddy | OpenClaw |
 |------|-----------|-----------|----------|
 | 静默模式 | 意图识别 | 意图识别 | Hook + 意图识别 |
-| 真静默 | ❌ | ❌ | ✅ |
+| 后台运行（操作后告知） | ✅ | ✅ | ✅（Hook 驱动） |
 | Hook 支持 | ❌ | ❌ | ✅ |
 | 企业功能 | 部分 | 完整 | 自定义 |
 

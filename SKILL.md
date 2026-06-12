@@ -3,7 +3,7 @@ name: myknowledge
 slug: my-knowledge
 displayName: MyKnowledge
 description: 创建知识库、管理项目文档、记录需求、整理个人知识。Create knowledge bases, manage project docs, track requirements, and organize personal knowledge.
-version: "1.4.8"
+version: "1.4.80"
 author: CoderMoray
 tags: 
   - "knowledge-base"
@@ -207,18 +207,20 @@ AI：读取 PROJECT-STATUS.md...
 
 通过 Hook 在消息到达时主动触发检测，不依赖 AI 是否注意到：
 - `message:received` → 检测任务复杂度
-- 更可靠地自动创建知识库和记录需求
+- 更可靠地自动创建知识库和记录需求（操作后告知用户）
 - 详细配置参考：`hooks/openclaw/hook-guide.md`
+
+> **注意**：OpenClaw 的 Hook 模式是"后台运行（操作后告知）"，并非"无感知"。首次检测到大任务时会询问用户是否开启自动记录。
 
 ### CodeBuddy/WorkBuddy（意图识别）
 
 通过 `description` 匹配和 Prompt 逻辑：
 - AI 自动判断是否需要创建知识库
-- 复杂任务自动记录
+- 操作前会提示用户确认
 
 ### Claude（意图识别）
 
-通过意图识别检测复杂任务，AI 自动判断是否创建知识库。
+通过意图识别检测复杂任务，AI 自动判断是否创建知识库（操作前提示用户）。
 
 > ⚠️ Hook 支持取决于具体 Claude 环境，默认通过意图识别工作。如有 Hook 需求，参考 `hooks/claude/README.md`。
 

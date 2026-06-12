@@ -2,9 +2,9 @@
 
 ## 概述
 
-OpenClaw 支持通过 Hook 实现**完全静默模式**。
+OpenClaw 支持通过 Hook 实现**后台运行模式**（操作后告知用户）。
 
-当启用 Hook 后，MyKnowledge 会在后台自动检测任务并创建知识库，无需任何手动操作。
+当启用 Hook 后，MyKnowledge 会在后台自动检测任务并创建知识库，操作完成后会告知用户（不会在用户无感知的情况下悄悄创建文件）。
 
 ## Hook 功能
 
@@ -18,10 +18,10 @@ OpenClaw 支持通过 Hook 实现**完全静默模式**。
 
 ### 与意图识别模式的区别
 
-| 模式 | 触发方式 | 用户感知 |
+| 模式 | 触发方式 | 用户告知 |
 |------|----------|----------|
-| **Hook 模式** | 事件驱动，自动触发 | 后台运行（操作后告知用户） |
-| **意图识别模式** | AI 判断后触发 | 主动提示（AI 先询问再操作） |
+| **Hook 模式** | 事件驱动，自动触发 | 操作后告知（非无感知） |
+| **意图识别模式** | AI 判断后触发 | 操作前提示（AI 先询问再操作） |
 
 ## 安装步骤
 
@@ -53,13 +53,13 @@ openclaw hooks list
 ## 用户交互流程
 
 ```
-AI：检测到您使用 OpenClaw，支持完全静默模式。
+AI：检测到您使用 OpenClaw，支持后台运行模式（操作后告知）。
 
      我可以帮您：
      1. 创建 Hook 文件到 ~/.openclaw/hooks/myknowledge/
      2. 您手动启用：openclaw hooks enable myknowledge
      
-     启用后，所有复杂任务将自动记录，无需任何操作。
+     启用后，复杂任务将自动记录，操作完成后会告知您。
 
 [创建 Hook 文件] [使用普通模式]
 
@@ -70,7 +70,7 @@ AI：✅ 已创建 Hook 文件
      
      请运行：openclaw hooks enable myknowledge
      
-     下次对话将自动静默记录。
+     下次对话将自动记录（操作后告知）。
 ```
 
 ## Hook 文件内容
@@ -80,7 +80,7 @@ AI：✅ 已创建 Hook 文件
 ```yaml
 ---
 name: myknowledge
-version: "1.4.8"
+version: "1.4.80"
 events:
   - message:received
 description: |

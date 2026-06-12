@@ -44,7 +44,7 @@ touch .claude/settings.json
       "enabled": true,
       "config": {
         "keywords": ["分析", "统计", "挖掘", "开发", "设计", "调研"],
-        "minKeywordCount": 2
+        "minKeywordCount": 3
       }
     }
   }
@@ -59,7 +59,7 @@ touch .claude/settings.json
 |------|----------------|
 | 知识库创建 | ✅ 完整支持 |
 | 需求管理 | ✅ 完整支持 |
-| 静默模式 | ⚠️ 依赖意图识别（伪静默） |
+| 自动检测（操作后告知） | ✅ 依赖意图识别（操作前提示用户） |
 | Hook 自动触发 | ⚠️ 需 Claude 支持 Hooks API |
 | 会话恢复 | ✅ 完整支持 |
 
@@ -72,7 +72,7 @@ touch .claude/settings.json
 ```json
 {
   "name": "myknowledge",
-  "version": "1.4.8",
+  "version": "1.4.80",
   "events": ["message:received"],
   "enabled": false,
   "config": {
@@ -89,7 +89,7 @@ touch .claude/settings.json
 |--------|------|--------|------|
 | `enabled` | boolean | false | 是否启用 Hook |
 | `keywords` | string[] | [...] | 复杂任务关键词列表 |
-| `minKeywordCount` | number | 2 | 触发所需最小关键词数 |
+| `minKeywordCount` | number | 3 | 触发所需最小关键词数（避免误触发） |
 | `excludePatterns` | string[] | [...] | 排除模式（降低触发概率） |
 
 ---
@@ -105,26 +105,27 @@ Claude：我将为您创建知识库。请选择类型：
        [项目知识库] - 位于当前项目目录
 ```
 
-### 静默使用（自动检测）
+### 自动检测使用（后台运行，操作后告知）
 
 ```
 用户：帮我分析这个销售数据
 Claude：（自动检测到复杂任务）
        已自动创建知识库并记录需求 REQ-20260609-001
+       （首次会自动询问是否开启自动记录）
 ```
 
 ---
 
 ## 与其他平台对比
 
-| 平台 | 静默能力 | 实现方式 |
+| 平台 | 检测方式 | 用户告知 |
 |------|----------|----------|
 | CodeBuddy | 意图识别 | 操作前提示用户 |
 | WorkBuddy | 意图识别 | 操作前提示用户 |
 | OpenClaw | Hook 驱动 | 事件触发，操作后告知 |
 | **Claude** | **意图识别 / Hooks** | **操作前提示用户** |
 
-> **注意**：Claude 的 Hook 支持取决于具体实现和环境，目前主要通过意图识别实现伪静默模式。
+> **注意**：Claude 的 Hook 支持取决于具体实现和环境，目前主要通过意图识别实现自动检测（操作前提示用户）。
 
 ---
 
@@ -137,7 +138,7 @@ Claude：（自动检测到复杂任务）
 2. 确认 settings.json 格式正确
 3. 重启 Claude 应用
 
-### 问题：静默模式过于敏感
+### 问题：自动检测过于敏感
 
 **解决方案：**
 1. 调整 `minKeywordCount` 为更高的值（如 3）

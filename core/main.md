@@ -26,7 +26,24 @@
 
 **重要**：首次引导只执行一次，之后不再加载 onboarding。
 
-3. 项目恢复（skill-state.yaml 存在时执行）：
+3. **更新检查（每次调用时执行）**：
+   ```
+   a. 读取 ~/.myknowledge/config/skill-state.yaml 中的 update_check 配置
+   b. 获取今天日期（YYYY-MM-DD 格式）
+   c. 检查是否需要执行更新检查：
+      - 如果 update_check 不存在或 last_check 不存在 → 执行更新检查（首次）
+      - 如果 last_check 存在 → 计算距离今天的天数
+        - 如果 ≥ interval_days（默认 7 天）→ 执行更新检查
+        - 如果 < interval_days → 跳过检查
+   d. 执行更新检查：
+      - 加载 one-time/setup/update-checker.md 获取检查指令
+      - 根据安装源执行对应的检查策略
+      - 如果发现新版本 → 礼貌提示用户更新
+      - 如果检查失败 → 静默忽略，不影响正常使用
+   e. 检查完成后（无论成功失败），更新 last_check 为今天日期
+   ```
+
+4. 项目恢复（skill-state.yaml 存在时执行）：
    a. 检测当前工作目录是否有 .myknowledge/ 
       → 有：跳过 projects.yaml，直接读 PROJECT-STATUS.md 恢复上下文
       → 无：继续步骤 b

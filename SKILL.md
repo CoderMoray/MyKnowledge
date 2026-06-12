@@ -3,7 +3,7 @@ name: myknowledge
 slug: my-knowledge
 displayName: MyKnowledge
 description: 创建知识库、管理项目文档、记录需求、整理个人知识。Create knowledge bases, manage project docs, track requirements, and organize personal knowledge.
-version: "1.4.5"
+version: "1.4.6"
 author: CoderMoray
 tags: 
   - "knowledge-base"
@@ -85,10 +85,12 @@ AI：是否开启「自动记录」？
 **步骤 5：引导结束**
 
 ```
-AI：🎉 设置完成！记住这 3 句话：
+AI：🎉 设置完成！记住这几句话：
 • "创建知识库" - 开始新项目
 • "项目进展如何？" - 查看状态
 • "继续之前的项目" - 恢复工作
+• "导入知识库" - 导入别人分享的知识包
+  （说"导入知识库"然后提供对应的知识文件给我即可）
 
 ✅ 引导已完成，下次不再显示
 💡 如需重新查看，说"重新初始化"

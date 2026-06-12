@@ -74,7 +74,7 @@ platform: "{user_platform}"
 auto_record: true
 onboarding_completed: true
 first_use: "{date}"
-version: "1.4.5"
+version: "1.4.6"
 ```
 
 创建 `~/.myknowledge/config/install-source`：
@@ -95,10 +95,12 @@ projects: []
 > **前置校验**：执行前必须确认 `skill-state.yaml` 已写入且 `onboarding_completed: true`。若未写入，回到步骤 4。
 
 ```
-🎉 设置完成！记住这 3 句话：
+🎉 设置完成！记住这几句话：
 • "创建知识库" - 开始新项目
 • "项目进展如何？" - 查看状态
 • "继续之前的项目" - 恢复工作
+• "导入知识库" - 导入别人分享的知识包
+  （说"导入知识库"然后提供对应的知识文件给我即可）
 
 ✅ 引导已完成，下次不再显示
 ```

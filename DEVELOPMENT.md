@@ -108,10 +108,11 @@ Skill 文件（随更新替换）: ~/.codebuddy/skills/myknowledge/
 2. bash scripts/bump-version.sh X.Y.Z
 3. bash scripts/lint-paths.sh              ← 必须全绿
 4. bash scripts/build-skillhub.sh          ← 生成 SkillHub zip
-5. clawhub publish ...                     ← 推 ClawHub
-6. git add -A && git commit -m "release: vX.Y.Z"
-7. git push origin main
-8. git tag vX.Y.Z && git push origin vX.Y.Z
+5. bash scripts/check-file-size.sh 200     ← 检查超大文件
+6. clawhub publish ...                     ← 推 ClawHub
+7. git add -A && git commit -m "release: vX.Y.Z"
+8. git push origin main
+9. git tag vX.Y.Z && git push origin vX.Y.Z
 ```
 
 ### 发布检查清单
@@ -120,6 +121,7 @@ Skill 文件（随更新替换）: ~/.codebuddy/skills/myknowledge/
 - [ ] CHANGELOG.md 更新
 - [ ] `bash scripts/lint-paths.sh` 全绿
 - [ ] `bash scripts/build-skillhub.sh`
+- [ ] `bash scripts/check-file-size.sh 200`（无异常大文件）
 - [ ] `clawhub publish`
 - [ ] git commit + push + tag + push tag
 - [ ] 确认 GitHub Actions 通过

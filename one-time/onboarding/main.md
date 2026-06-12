@@ -34,21 +34,14 @@
 
 ### 步骤 2：平台确认 <!-- @阻塞性 -->
 
-<!-- @auto-detect：可通过环境变量自动确定平台则自动填入并展示确认，无需用户手动选择 -->
+<!-- @auto-detect：先问用户，用户不确定时再尝试自动检测 -->
 
 ```
 你使用什么 AI 助手？
-[CodeBuddy] [WorkBuddy] [OpenClaw] [Claude] [其他]
+[CodeBuddy] [WorkBuddy] [OpenClaw] [Claude] [其他] [帮我检测]
 ```
 
-**自动检测规则**：
-- 当前环境有 `CODEBUDDY_*` 环境变量 → 自动选 `CodeBuddy`
-- 当前环境有 `WORKBUDDY_*` 环境变量 → 自动选 `WorkBuddy`
-- 当前环境有 `OPENCLAW_*` 环境变量 → 自动选 `OpenClaw`
-- 在 Claude 对话中 → 自动选 `Claude`
-- 无法确定 → 展示选项让用户选择
-
-**完成条件**：平台已确定（自动或手动），展示确认信息"已检测到平台：{platform}"。
+**完成条件**：平台已确定（用户选择或选择"帮我检测"后自动检测），展示确认信息"已确认平台：{platform}"。
 
 ---
 
@@ -81,7 +74,7 @@ platform: "{user_platform}"
 auto_record: true
 onboarding_completed: true
 first_use: "{date}"
-version: "1.4.4"
+version: "1.4.5"
 ```
 
 创建 `~/.myknowledge/config/install-source`：

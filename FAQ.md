@@ -36,7 +36,7 @@
 |------|-------------|------|
 | **CodeBuddy** | 意图识别 | AI 根据对话内容判断是否创建，会提示用户 |
 | **WorkBuddy** | 意图识别 | 同上 |
-| **OpenClaw** | Hook + 意图识别 | 可通过 Hook 实现真正静默（无感知），也可使用意图识别 |
+| **OpenClaw** | Hook + 意图识别 | 支持 Hook 事件驱动（操作后告知），也可使用意图识别 |
 
 **建议**：CodeBuddy/WorkBuddy 用户首次使用时关闭自动模式，熟悉后再开启。
 
@@ -66,8 +66,8 @@ features:
 
 **A**: 核心功能一致，但静默模式实现不同：
 
-- **OpenClaw** 支持 Hook 实现真正静默
-- **CodeBuddy/WorkBuddy** 依赖 AI 意图识别，会有提示
+- **OpenClaw** 支持 Hook 事件驱动（操作后告知用户）
+- **CodeBuddy/WorkBuddy** 依赖 AI 意图识别，操作前会提示
 
 ### Q6: 如何知道当前使用的是什么平台？
 

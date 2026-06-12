@@ -3,7 +3,7 @@ name: myknowledge
 slug: my-knowledge
 displayName: MyKnowledge
 description: 创建知识库、管理项目文档、记录需求、整理个人知识。Create knowledge bases, manage project docs, track requirements, and organize personal knowledge.
-version: "1.4.4"
+version: "1.4.5"
 author: CoderMoray
 tags: 
   - "knowledge-base"
@@ -56,7 +56,7 @@ AI：👋 欢迎使用 MyKnowledge！
 
 ```
 AI：你使用什么 AI 助手？
-[CodeBuddy] [WorkBuddy] [OpenClaw] [其他]
+[CodeBuddy] [WorkBuddy] [OpenClaw] [其他] [帮我检测]
 ```
 
 **步骤 3：自动记录设置**

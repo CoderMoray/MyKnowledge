@@ -72,7 +72,7 @@ touch .claude/settings.json
 ```json
 {
   "name": "myknowledge",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "events": ["message:received"],
   "enabled": false,
   "config": {
@@ -119,10 +119,10 @@ Claude：（自动检测到复杂任务）
 
 | 平台 | 静默能力 | 实现方式 |
 |------|----------|----------|
-| CodeBuddy | 伪静默 | 意图识别 |
-| WorkBuddy | 伪静默 | 意图识别 |
-| OpenClaw | 真静默 | Hook 事件驱动 |
-| **Claude** | **伪静默** | **意图识别 / Hooks** |
+| CodeBuddy | 意图识别 | 操作前提示用户 |
+| WorkBuddy | 意图识别 | 操作前提示用户 |
+| OpenClaw | Hook 驱动 | 事件触发，操作后告知 |
+| **Claude** | **意图识别 / Hooks** | **操作前提示用户** |
 
 > **注意**：Claude 的 Hook 支持取决于具体实现和环境，目前主要通过意图识别实现伪静默模式。
 

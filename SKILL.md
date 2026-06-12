@@ -1,7 +1,7 @@
 ---
 name: myknowledge
 description: 创建知识库、管理项目文档、记录需求、整理个人知识。Create knowledge bases, manage project docs, track requirements, and organize personal knowledge.
-version: "1.3.3"
+version: "1.4.0"
 author: CoderMoray
 tags: 
   - "knowledge-base"
@@ -25,6 +25,7 @@ MyKnowledge 是一个通用的知识库管理 Skill，帮助用户：
 - 创建标准化的知识库目录结构
 - 管理需求生命周期（创建、更新、归档）
 - 维护 PROJECT-STATUS.md 项目状态快照
+- 导出/导入知识库（跨用户分享、备份迁移）
 - 支持个人知识管理和项目文档管理
 
 ## 首次使用引导

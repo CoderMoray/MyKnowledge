@@ -81,7 +81,7 @@ platform: "{user_platform}"
 auto_record: true
 onboarding_completed: true
 first_use: "{date}"
-version: "1.4.2"
+version: "1.4.3"
 ```
 
 创建 `~/.myknowledge/config/install-source`：

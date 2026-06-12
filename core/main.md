@@ -31,7 +31,15 @@
    a. 读取 ~/.myknowledge/config/skill-state.yaml 中的 update_check 配置
    b. 获取今天日期（YYYY-MM-DD 格式）
    c. 检查是否需要执行更新检查：
-      - 如果 update_check 不存在或 last_check 不存在 → 执行更新检查（首次）
+      - 如果 update_check 不存在 → **冷静期规则**（刚安装/升级）
+        - 写入 update_check 字段：
+            update_check:
+              source: "{自动检测}"
+              last_check: "{今日}"
+              interval_days: 7
+              enabled: true
+        - **跳过本次检查**（刚装/刚升级，无需立检）
+      - 如果 update_check 存在但 last_check 不存在 → 写入 last_check: {今日}，跳过本次检查
       - 如果 last_check 存在 → 计算距离今天的天数
         - 如果 ≥ interval_days（默认 7 天）→ 执行更新检查
         - 如果 < interval_days → 跳过检查

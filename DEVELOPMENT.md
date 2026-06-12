@@ -34,7 +34,7 @@ MyKnowledge/
 │   ├── main.md
 │   └── templates/
 ├── modules/              # 可选模块（懒加载）
-│   ├── commands/  management/  error/  export/  silent/
+│   ├── commands/  management/  error/  export/  auto-track/
 ├── one-time/             # 一次性配置（首次/特定场景）
 │   ├── onboarding/  setup/
 ├── hooks/                # 平台集成

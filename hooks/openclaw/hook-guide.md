@@ -80,7 +80,7 @@ AI：✅ 已创建 Hook 文件
 ```yaml
 ---
 name: myknowledge
-version: "1.4.80"
+version: "1.4.81"
 events:
   - message:received
 description: |

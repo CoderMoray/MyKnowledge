@@ -47,7 +47,7 @@
       - 加载 one-time/setup/update-checker.md 获取检查指令
       - 根据安装源执行对应的检查策略
       - 如果发现新版本 → 礼貌提示用户更新
-      - 如果检查失败 → 静默忽略，不影响正常使用
+      - 如果检查失败 → 自动忽略，不影响正常使用
    e. 检查完成后（无论成功失败），更新 last_check 为今天日期
    ```
 
@@ -56,7 +56,7 @@
       → 有：跳过 projects.yaml，直接读 PROJECT-STATUS.md 恢复上下文
       → 无：继续步骤 b
    b. 检查 ~/.myknowledge/config/projects.yaml 是否存在
-      → 不存在：首次使用，不提示（等用户说"创建知识库"或静默触发）
+      → 不存在：首次使用，不提示（等用户说"创建知识库"或自动触发）
       → 存在且非空：读取项目列表，礼貌询问"要恢复哪个项目？"
         列出格式：项目名（路径），用户选择后读对应 PROJECT-STATUS.md
    c. 用户选择了项目 → 更新 projects.yaml 中该项目的 last_access
@@ -65,7 +65,7 @@
 
 ## 加载时自检（AI 透明验证）
 
-> 每次加载本 Skill 时，**静默执行**以下检查。如有异常，按指示处理。
+> 每次加载本 Skill 时，**后台执行**以下检查。如有异常，按指示处理。
 > 目的：让用户无需手动操作即可获得"Skill 完整性"保障。
 
 **重要设计原则**（v1.1.4+）：
@@ -81,7 +81,7 @@
    - modules/commands/main.md ✓
    - modules/management/main.md ✓
    - modules/error/main.md ✓
-   - modules/silent/main.md ✓
+   - modules/auto-track/main.md ✓
    - one-time/onboarding/main.md ✓
    - hooks/ 目录至少有一个子目录 ✓
    缺失任何一个 → 提示用户："Skill 文件不完整，建议重新安装"
@@ -91,13 +91,13 @@
    - settings.yaml 可被解析
    缺失或损坏 → 提示用户："Skill 配置文件可能损坏，建议重新安装"
 
-3. 检查 install-source 格式（静默）：
+3. 检查 install-source 格式（后台）：
    - 读 ~/.myknowledge/config/install-source
    - 如果是纯文本（非 YAML，不以 "source:" 开头）→ 加载 one-time/setup/install-source.md 触发重新检测
    - 检测完成后写入新 YAML 格式
    - 已经是 YAML 格式 → 跳过
 
-4. 检查项目迁移需求（静默，skill-state.yaml 存在时执行）：
+4. 检查项目迁移需求（后台，skill-state.yaml 存在时执行）：
    - 读 projects.yaml，筛选 type: "project" 的旧条目
    - 发现旧条目 → 提示"检测到 {N} 个项目级知识库，v1.3.0 起默认使用全局知识库。是否迁移到 ~/.myknowledge/global/？"
    - 用户确认 → 搬移文件到 global/ + 更新 projects.yaml（type 改为 global）
@@ -107,13 +107,13 @@
       - 有 → 说明已有知识库但未注册，提示"检测到未注册的知识库，是否重新索引？"
       - 无 → 跳过（真正首次使用）
 
-5. 自检通过 → 静默继续，不向用户报告
+5. 自检通过 → 后台继续，不向用户报告
    自检失败 → 礼貌提示，但不阻断正常使用（缺失文件可能懒加载修复）
 ```
 
 **原则**：
 - ✅ 自检是**用户友好的**——失败时清晰提示
-- ✅ 自检是**静默的**——通过时不打扰
+- ✅ 自检是**后台的**——通过时不打扰
 - ✅ 自检是**独立**的——不依赖 manifest 等"声明性"文件
 - ❌ 自检**不替代**完整 lint（lint 是开发者/平台侧）
 
@@ -148,7 +148,7 @@ IF 用户问更新:
 - ✅ 在 `~/.myknowledge/` 范围内创建/读取/修改文件
 - ✅ 按 `modules/commands/main.md` 的命令表响应用户请求
 - ✅ 跟踪 `REQ-YYYYMMDD-XXX` 格式的需求
-- ✅ 按 `settings.yaml` 的 `complex_task_detection` 规则静默记录
+- ✅ 按 `settings.yaml` 的 `complex_task_detection` 规则自动记录
 
 **不做**（遇到此类请求要礼貌拒绝并说明）：
 - ❌ 联网、调用外部 API、上传数据
@@ -245,7 +245,7 @@ IF 用户请求导出/导入/分享/备份知识库:
 
 ### 5. 自动检测模式
 
-> **详细说明**：`modules/silent/main.md`
+> **详细说明**：`modules/auto-track/main.md`
 
 当检测到复杂任务时，自动创建知识库并告知用户。
 
@@ -373,12 +373,12 @@ IF 用户提到需求 ID (REQ-XXX):
 | 归档需求 | `📦 已归档 {id}：{title}` | 批量归档时列出所有 ID |
 | 删除需求 | `🗑️ 已删除 {id}：{title}` | 删除前已确认，此反馈仅告知完成 |
 | 自动会话记录 | `📋 已记录本次会话到 {id}` | 追加到需求文件后告知，不中断对话 |
-| 静默创建 | `🔇 检测到复杂任务，已自动创建知识库「{name}」和需求 {id}` | 静默触发后的统一告知 |
+| 自动创建 | `🔇 检测到复杂任务，已自动创建知识库「{name}」和需求 {id}` | 自动触发后的统一告知 |
 
 **不需要单独反馈的操作（伴随上述操作自动完成）：**
 - PROJECT-STATUS.md 的例行更新（已在上述反馈中覆盖）
 - projects.yaml 的 last_access 更新（纯技术维护）
-- 自检通过（静默）
+- 自检通过（后台）
 
 ---
 
@@ -406,7 +406,7 @@ IF 遇到错误:
 | 需求管理 | `modules/management/main.md` |
 | 错误处理 | `modules/error/main.md` |
 | 导出/导入 | `modules/export/main.md` |
-| 静默模式 | `modules/silent/main.md` |
+| 智能任务追踪 | `modules/auto-track/main.md` |
 | 命令速查 | `modules/commands/main.md` |
 | 模板 | `core/templates/`（共6个） |
 | 　├ 项目状态 | `core/templates/project-status-template.md` |

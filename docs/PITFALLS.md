@@ -11,7 +11,7 @@
 |------|------|
 | [首次使用](#首次使用) | 3 |
 | [需求管理](#需求管理) | 4 |
-| [静默模式](#静默模式) | 2 |
+| [智能任务追踪](#智能任务追踪) | 2 |
 | [迁移与备份](#迁移与备份) | 2 |
 | [权限与错误](#权限与错误) | 3 |
 | [平台差异](#平台差异) | 2 |
@@ -37,13 +37,13 @@
 
 💡 全局知识库永远在 `~/.myknowledge/global/`。
 
-### 坑 3：混淆"静默"和"完全静默"
+### 坑 3：混淆"智能任务追踪"的行为
 
-❌ 以为开了静默模式 AI 就完全不说话——结果 CodeBuddy 还是提示"已自动记录"。
+❌ 以为开了智能任务追踪 AI 就完全不说话——结果 CodeBuddy 还是提示"已自动记录"。
 
 ✅ 理解平台差异：
-- CodeBuddy/WorkBuddy/Claude：伪静默（AI 会告知）
-- OpenClaw + Hook：真静默（无提示），参考 `hooks/openclaw/hook-guide.md`
+- CodeBuddy/WorkBuddy/Claude：操作前提示用户（AI 会告知）
+- OpenClaw + Hook：后台运行（操作后告知），参考 `hooks/openclaw/hook-guide.md`
 
 ---
 
@@ -81,11 +81,11 @@
 
 ---
 
-## 静默模式
+## 智能任务追踪
 
 ### 坑 8：检测灵敏度不符合个人偏好
 
-💡 静默模式的默认检测阈值适合大多数场景。如果你的工作风格不同，可以微调：
+💡 智能任务追踪的默认检测阈值适合大多数场景。如果你的工作风格不同，可以微调：
 
 - 觉得**太敏感**（简单对话也触发）→ 提高 `min_keyword_count`（默认 3 → 4-5），或加 `exclude_patterns`
 - 觉得**不够敏感**（复杂任务没触发）→ 降低 `min_keyword_count`（默认 3 → 2），或在 `keywords` 加常用术语
@@ -94,7 +94,7 @@
 
 ### 坑 9：首次确认被跳过
 
-❌ 以为开了静默就无需确认——首次触发时 AI 仍然会问。
+❌ 以为开了智能任务追踪就无需确认——首次触发时 AI 仍然会问。
 
 ✅ 这是设计上的安全机制。选择"开启"后不再问。改主意说"开启/关闭自动记录"。
 
@@ -165,23 +165,23 @@ rm ~/.myknowledge/config/skill-state.yaml
 
 ### 坑 15：从 CodeBuddy 切到 OpenClaw，自动记录行为变了
 
-❌ 习惯了 CodeBuddy 的"AI 告知"，换到 OpenClaw 后突然静默，以为坏了。
+❌ 习惯了 CodeBuddy 的"AI 告知"，换到 OpenClaw 后以为行为变了，以为坏了。
 
 ✅ 提前了解平台差异：
-| 平台 | 静默方式 | 用户感知 |
+| 平台 | 检测方式 | 用户告知 |
 |------|---------|---------|
-| CodeBuddy | 意图识别 | 会告知 |
-| WorkBuddy | 意图识别 | 会告知 |
-| Claude | 意图识别 | 会告知 |
-| OpenClaw | Hook（可选） | 可完全静默 |
+| CodeBuddy | 意图识别 | 操作前提示 |
+| WorkBuddy | 意图识别 | 操作前提示 |
+| Claude | 意图识别 | 操作前提示 |
+| OpenClaw | Hook（可选） | 操作后告知 |
 
-💡 OpenClaw 的真静默需手动启用 Hook：`openclaw hooks enable myknowledge`。
+💡 OpenClaw 的后台运行（操作后告知）需手动启用 Hook：`openclaw hooks enable myknowledge`。
 
 ### 坑 16：Claude 的 Hook 没生效
 
 ❌ 看了文档以为 Claude 支持 Hook，配置了没反应。
 
-✅ Claude 的 Hook 支持取决于具体环境。目前主要通过意图识别（伪静默）工作。`hooks/claude/hooks.json` 的 `enabled` 默认为 `false`。
+✅ Claude 的 Hook 支持取决于具体环境。目前主要通过意图识别（操作前提示用户）工作。`hooks/claude/hooks.json` 的 `enabled` 默认为 `false`。
 
 ---
 

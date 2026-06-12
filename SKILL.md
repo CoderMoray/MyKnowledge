@@ -3,7 +3,7 @@ name: myknowledge
 slug: my-knowledge
 displayName: MyKnowledge
 description: 创建知识库、管理项目文档、记录需求、整理个人知识。Create knowledge bases, manage project docs, track requirements, and organize personal knowledge.
-version: "1.4.80"
+version: "1.4.81"
 author: CoderMoray
 tags: 
   - "knowledge-base"
@@ -231,7 +231,7 @@ AI：读取 PROJECT-STATUS.md...
 | `SKILL.md` | 本文件，Skill 主入口 |
 | `settings.yaml` | Skill 配置 |
 | `core/` | 核心功能（主逻辑、模板） |
-| `modules/` | 可选模块（懒加载：管理、更新、错误处理、静默模式） |
+| `modules/` | 可选模块（懒加载：管理、更新、错误处理、智能任务追踪） |
 | `one-time/` | 一次性配置（首次引导、安装源检测） |
 | `hooks/` | 平台 Hook（OpenClaw、Claude） |
 | `test/` | 测试套件（开发用，AI 忽略） |
@@ -244,7 +244,7 @@ AI：读取 PROJECT-STATUS.md...
 
 | 用户遇到... | 引导查看 |
 |------------|---------|
-| 常见使用问题 | `FAQ.md` — 按主题分类的问答（静默模式、平台差异、备份等） |
+| 常见使用问题 | `FAQ.md` — 按主题分类的问答（智能任务追踪、平台差异、备份等） |
 | 踩坑了 | `docs/PITFALLS.md` — 19 个真实使用坑及正确做法 |
 | 不知道怎么用 | `README.md` — 快速开始 + 使用场景 + 高手技巧 |
 | 需要重新初始化 | 说"重新初始化 MyKnowledge"即可重置 |

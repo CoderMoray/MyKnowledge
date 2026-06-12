@@ -1,6 +1,6 @@
 {
   "name": "myknowledge",
-  "version": "1.4.80",
+  "version": "1.4.81",
   "description": "路径清单 - 单一真理来源。lint-paths.sh 据此检查文档和配置里引用的所有路径。",
   "_doc": "本文件由 scripts/lint-paths.sh 读取。修改时记得同步运行 lint 验证。",
 
@@ -39,7 +39,7 @@
     "modules/management/main.md",
     "modules/error/main.md",
     "modules/export/main.md",
-    "modules/silent/main.md",
+    "modules/auto-track/main.md",
 
     "one-time/onboarding/main.md",
     "one-time/setup/install-source.md",
@@ -79,7 +79,8 @@
     "templates/": "core/templates/",
     "prompts/main.md": "core/main.md",
     "prompts/onboarding.md": "one-time/onboarding/main.md",
-    "prompts/silent-mode.md": "modules/silent/main.md",
+    "prompts/auto-track.md": "modules/auto-track/main.md",
+    "prompts/silent-mode.md": "modules/auto-track/main.md",
     "hooks/handler.ts": "hooks/openclaw/handler.ts",
     "helpers/": "one-time/setup/",
     "docs/": "（根目录的用户文档，无子目录）"

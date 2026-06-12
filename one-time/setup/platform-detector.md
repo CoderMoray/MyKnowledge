@@ -30,7 +30,7 @@ AI_PLATFORM=workbuddy → WorkBuddy
 
 | 特性 | CodeBuddy | WorkBuddy | OpenClaw |
 |------|-----------|-----------|----------|
-| 静默模式 | 意图识别 | 意图识别 | Hook + 意图识别 |
+| 智能任务追踪 | 意图识别 | 意图识别 | Hook + 意图识别 |
 | 后台运行（操作后告知） | ✅ | ✅ | ✅（Hook 驱动） |
 | Hook 支持 | ❌ | ❌ | ✅ |
 | 企业功能 | 部分 | 完整 | 自定义 |
@@ -58,10 +58,10 @@ ELSE:
 
 IF platform == "openclaw":
    提及 Hook 功能可用
-   询问是否启用完全静默模式
+   询问是否启用完全智能任务追踪
 
 IF platform IN ["codebuddy", "workbuddy"]:
-   说明使用意图识别实现静默
+   说明使用意图识别实现智能任务追踪
    首次触发时询问是否开启自动记录
 ```
 

@@ -422,7 +422,7 @@ CONFIG_OK=1
 MIN_KW=$(grep -h "min_keyword_count" settings.yaml 2>/dev/null | head -1 | grep -o '[0-9]\+')
 if [ -n "$MIN_KW" ]; then
   # 检查核心模块
-  if grep -q "满足 ${MIN_KW} 个及以上" modules/silent/main.md 2>/dev/null; then
+  if grep -q "满足 ${MIN_KW} 个及以上" modules/auto-track/main.md 2>/dev/null; then
     :
   else
     echo "  ❌ modules/silent/main.md: min_keyword_count 阈值与 settings.yaml (${MIN_KW}) 不一致"

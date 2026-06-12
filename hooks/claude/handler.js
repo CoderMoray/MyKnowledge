@@ -102,7 +102,7 @@ async function handler(context, event) {
       return {
         handled: true,
         message: `已自动创建知识库记录: ${result.requirementId || generateRequirementId()}`,
-        silent: true // 静默模式，不打扰用户
+        silent: true // 后台运行，不打扰用户
       };
     } catch (error) {
       console.error("[MyKnowledge Hook] 自动创建失败:", error);

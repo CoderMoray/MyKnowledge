@@ -73,6 +73,6 @@ AI：检测到您正在处理复杂任务「{任务描述}」，
 修改 `settings.yaml`：
 ```yaml
 features:
-  silent_mode:
+  smart_tracking:
     enabled: false
 ```

@@ -95,11 +95,11 @@ Skill 文件（随更新替换）: ~/.codebuddy/skills/myknowledge/
 
 ### 3 个分发渠道
 
-| 渠道 | 命令 | 产出 |
-|------|------|------|
-| ClawHub | `clawhub publish` | 在线注册 |
-| SkillHub | `bash scripts/build-skillhub.sh` | zip 包 |
-| GitHub | `git tag + push` | Release 页面 |
+| 渠道 | 命令 | 产出 | 注意 |
+|------|------|------|------|
+| ClawHub | `clawhub publish` | 在线注册 | 读 SKILL.md frontmatter |
+| SkillHub | `skillhub publish releases/*.zip` | zip 推送 | 需要 login；SKILL.md 须含 `slug` + `displayName` |
+| GitHub | `git tag + push` | Release 页面 | 触发 Actions 自动创建 |
 
 ### 发布步骤
 
@@ -109,20 +109,24 @@ Skill 文件（随更新替换）: ~/.codebuddy/skills/myknowledge/
 3. bash scripts/lint-paths.sh              ← 必须全绿
 4. bash scripts/build-skillhub.sh          ← 生成 SkillHub zip
 5. bash scripts/check-file-size.sh 200     ← 检查超大文件
-6. clawhub publish ...                     ← 推 ClawHub
-7. git add -A && git commit -m "release: vX.Y.Z"
-8. git push origin main
+6. skillhub publish releases/MyKnowledge-X.Y.Z-skillhub.zip --dry-run  ← SkillHub 预检
+7. skillhub publish releases/MyKnowledge-X.Y.Z-skillhub.zip             ← 推 SkillHub
+8. clawhub publish ...                     ← 推 ClawHub
+9. git add -A && git commit -m "release: vX.Y.Z"
+10. git push origin main
 9. git tag vX.Y.Z && git push origin vX.Y.Z
 ```
 
 ### 发布检查清单
 
 - [ ] `bash scripts/bump-version.sh X.Y.Z`
-- [ ] CHANGELOG.md 更新
+- [ ] CHANGELOG.md 更新（**先写 CHANGELOG 再 publish**）
 - [ ] `bash scripts/lint-paths.sh` 全绿
 - [ ] `bash scripts/build-skillhub.sh`
 - [ ] `bash scripts/check-file-size.sh 200`（无异常大文件）
-- [ ] `clawhub publish`
+- [ ] `skillhub publish --dry-run`（预检）
+- [ ] `skillhub publish`（推 SkillHub）
+- [ ] `clawhub publish`（推 ClawHub）
 - [ ] git commit + push + tag + push tag
 - [ ] 确认 GitHub Actions 通过
 

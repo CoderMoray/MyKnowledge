@@ -252,11 +252,3 @@ AI：读取 PROJECT-STATUS.md...
 ## 许可证
 
 Apache License 2.0
-
-<!-- 
-  AI 助手注意：如果你要修改本 Skill 的代码或文档，
-  请先读取以下开发文件：
-  - DEVELOPMENT.md — 架构、规范、发布流程
-  - RELEASE-LOG.md — 版本历史、经验教训、路线图
-  这两个文件不进 zip，仅供开发者使用。
--->

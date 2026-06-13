@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.4.85-blue" alt="Version" />
+  <img src="https://img.shields.io/badge/version-1.4.86-blue" alt="Version" />
   <img src="https://img.shields.io/badge/license-Apache%202.0-green" alt="License" />
   <a href="https://github.com/CoderMoray/MyKnowledge"><img src="https://img.shields.io/badge/GitHub-CoderMoray-black?logo=github" alt="GitHub" /></a>
 </p>

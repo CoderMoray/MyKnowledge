@@ -38,6 +38,10 @@
 | 2026-06-12 | 1.4.71/1.4.72 | 版本号误用（把修订号当成次版本号用） | 严格遵循 SemVer，修订号 Z 从 0 递增，不要用 71/72 这样的数字 |
 | 2026-06-14 | 1.4.82 | 审计报告发现错误提示不够友好 | 错误提示应使用通俗语言，避免技术术语；提供具体解决方案而非让用户自查 |
 | 2026-06-14 | 1.4.85 | 审计报告第一批修复 | 问题1：明确区分工作目录和导出目录；问题4：增加数据存储声明；问题3：创建隐私声明文档 |
+| 2026-06-14 | 1.4.86 | 发布时忘记使用 releases/ 目录的 ZIP 文件 | SkillHub 发布必须使用 `releases/*-skillhub.zip`，这是 `build-skillhub.sh` 的产出；不要尝试从源码目录直接发布 |
+| 2026-06-14 | 1.4.86 | 发布流程优化 | 创建 `scripts/release.sh` 统一发布脚本，降低 Token 消耗约 90%；支持 `--skip-github`/`--skip-clawhub`/`--skip-skillhub`/`--dry-run` 参数 |
+| 2026-06-14 | 1.4.86 | 新增 skills.sh 平台支持 | 在 `README.md` 中添加 `npx skills add` 安装说明；skills.sh 无需发布，CLI 自动扫描 GitHub 仓库 |
+| 2026-06-14 | 1.4.86 | 新增 agentskill.sh 平台支持 | 创建 `docs/submit-to-agentskill.sh.md` 手动提交指南；访问 agentskill.sh/submit 提交 GitHub 仓库 URL |
 
 ---
 

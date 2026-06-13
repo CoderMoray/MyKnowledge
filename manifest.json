@@ -138,6 +138,10 @@
     "core/templates/archive-readme-template.md": {
       "_doc": "归档模板引用用户知识库内的路径，不是 Skill 自身",
       "patterns": ["requirements/"]
+    },
+    "RELEASE-LOG.md": {
+      "_doc": "发布日志记录历史问题和解决方案，引用了 scripts/ 目录下的文件（不进 zip）",
+      "patterns": ["scripts/", "build-skillhub.sh", "lint-paths.sh", "bump-version.sh", "check-file-size.sh", "release.sh"]
     }
   }
 }

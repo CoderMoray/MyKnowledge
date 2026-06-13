@@ -88,7 +88,22 @@
 
 > 💡 **更新也一样**：对 AI 说"检查 MyKnowledge 更新"，或直接重新说"安装 my-knowledge 技能"即可覆盖为新版。**用户数据不会丢失。**
 
-### 方式二：Git 下载（备选，需要终端）
+### 方式二：通过 skills.sh CLI 安装（推荐，支持 30+ AI 工具）
+
+```bash
+# 安装 MyKnowledge 到当前项目
+npx skills add CoderMoray/MyKnowledge
+
+# 安装到特定 AI 工具（如 Claude Code）
+npx skills add CoderMoray/MyKnowledge -a claude-code -y
+
+# 查看已安装的技能
+npx skills list
+```
+
+> 📖 **了解更多**：访问 [skills.sh](https://skills.sh) 查看完整的技能目录和 CLI 使用指南。
+
+### 方式三：Git 下载（备选，需要终端）
 
 ```bash
 git clone https://github.com/CoderMoray/MyKnowledge.git ~/.codebuddy/skills/myknowledge

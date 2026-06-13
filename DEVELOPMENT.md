@@ -93,15 +93,32 @@ Skill 文件（随更新替换）: ~/.codebuddy/skills/myknowledge/
 
 ## 发布流程
 
-### 3 个分发渠道
+### 4 个分发渠道
 
-| 渠道 | 命令 | 产出 | 注意 |
-|------|------|------|------|
+| 渠道 | 命令/方式 | 产出 | 注意 |
+|------|------------|------|------|
+| **skills.sh** | 无需发布，CLI 自动扫描 GitHub | CLI 可发现 | MyKnowledge 已在 GitHub 上，自动支持；用户执行 `npx skills add CoderMoray/MyKnowledge` 即可安装 |
+| **agentskill.sh** | 手动提交（从 GitHub 导入） | 在线目录 | 访问 [agentskill.sh/submit](https://agentskill.sh/submit) 提交；支持自动同步（Webhook） |
 | ClawHub | `clawhub publish --no-input` | 在线注册 | 读 SKILL.md frontmatter |
 | SkillHub | `skillhub publish releases/*.zip --host https://api.skillhub.cn` | zip 推送 | 需要 `skillhub auth login --token skh_xxx`；SKILL.md 须含 `slug` + `displayName`；host 必须用 `api.skillhub.cn` |
 | GitHub | `git tag + push` | Release 页面 | 触发 Actions 自动创建 |
 
-### 发布步骤
+### 发布步骤（简化）
+
+**推荐使用统一发布脚本** `scripts/release.sh`，自动完成所有步骤：
+
+```bash
+# 完整发布（三个渠道）
+bash scripts/release.sh X.Y.Z
+
+# 只发布到某些渠道
+bash scripts/release.sh X.Y.Z --skip-github --skip-clawhub
+
+# Dry-run（只检查，不实际发布）
+bash scripts/release.sh X.Y.Z --dry-run
+```
+
+**手动发布步骤**（不推荐）：
 
 ```
 1. 修改代码
@@ -114,7 +131,7 @@ Skill 文件（随更新替换）: ~/.codebuddy/skills/myknowledge/
 8. clawhub publish --no-input ...        ← 推 ClawHub
 9. git add -A && git commit -m "release: vX.Y.Z"
 10. git push origin main
-9. git tag vX.Y.Z && git push origin vX.Y.Z
+11. git tag vX.Y.Z && git push origin vX.Y.Z
 ```
 
 ### 发布检查清单

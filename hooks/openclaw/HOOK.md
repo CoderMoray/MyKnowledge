@@ -1,6 +1,6 @@
 ---
 name: myknowledge
-version: "1.4.83"
+version: "1.4.84"
 events:
   - message:received
 description: |

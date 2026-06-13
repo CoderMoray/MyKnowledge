@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.4.84-blue" alt="Version" />
+  <img src="https://img.shields.io/badge/version-1.4.85-blue" alt="Version" />
   <img src="https://img.shields.io/badge/license-Apache%202.0-green" alt="License" />
   <a href="https://github.com/CoderMoray/MyKnowledge"><img src="https://img.shields.io/badge/GitHub-CoderMoray-black?logo=github" alt="GitHub" /></a>
 </p>
@@ -19,6 +19,7 @@
 | 学会常用命令 | → [QUICKSTART.md](QUICKSTART.md) |
 | 遇到问题 | → [FAQ.md](FAQ.md) 或 [docs/PITFALLS.md](docs/PITFALLS.md) |
 | 深入了解 / 进阶技巧 | → [USAGE.md](USAGE.md) 或 [💡 高手技巧](#-高手技巧) |
+| 查看隐私声明 | → [PRIVACY.md](PRIVACY.md) |
 
 ---
 
@@ -44,7 +45,7 @@
 | ❌ 多用户实时协作 | 单机文件；团队请用 Notion / Confluence |
 | ❌ 富文本 / 所见即所得编辑 | Markdown 优先；需要 WYSIWYG 请用 Typora |
 | ❌ 自动备份到云端 | 手动 cp -r 或 git commit 即可 |
-| ❌ 修改 `~/.myknowledge/` 之外的文件 | 严格沙箱，保护你的数据 |
+| ❌ 自动修改 `~/.myknowledge/` 之外的文件 | 严格沙箱，保护你的数据（导出功能需显式授权） |
 | ❌ 执行任意 shell 命令 | 不在 Skill 职责内，避免误操作 |
 | ❌ 跨平台配置同步 | 每个平台独立安装（轻量级） |
 
@@ -59,7 +60,6 @@
 | 指标 | 1.0.0 | 1.1.x | 1.2.x | 1.3.x | 1.4.x | 变化趋势 |
 |------|--------|--------|--------|--------|--------|----------|
 | **架构设计** | 全量预加载 | 懒加载架构 | 责任分层 | 自动化验证 | 安全增强 | ✅ 持续优化 |
-| **代码量（估）** | ~800 行 | ~600 行 | ~500 行 | ~450 行 | **~400 行** | 🔻 -50% |
 | **上下文占用** | ~15K tokens | ~12K | ~9K | ~7K | **~5K** | 🔻 -67% |
 | **平台支持** | 3 个 | 3 个 | 4 个 | 4 个 | **4 个** | ✅ Claude 新增 |
 | **错误处理** | 分散描述 | 表格化 | 兜底机制 | 自助修复 | **友好提示** | ✅ 持续增强 |

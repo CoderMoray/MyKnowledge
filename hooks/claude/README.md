@@ -72,7 +72,7 @@ touch .claude/settings.json
 ```json
 {
   "name": "myknowledge",
-  "version": "1.4.84",
+  "version": "1.4.85",
   "events": ["message:received"],
   "enabled": false,
   "config": {

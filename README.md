@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.4.81-blue" alt="Version" />
+  <img src="https://img.shields.io/badge/version-1.4.82-blue" alt="Version" />
   <img src="https://img.shields.io/badge/license-Apache%202.0-green" alt="License" />
   <a href="https://github.com/CoderMoray/MyKnowledge"><img src="https://img.shields.io/badge/GitHub-CoderMoray-black?logo=github" alt="GitHub" /></a>
 </p>
@@ -54,7 +54,7 @@
 
 ## 📊 性能对比
 
-| 指标 | v1.0.0 | v1.4.81 | 变化 |
+| 指标 | v1.0.0 | v1.4.82 | 变化 |
 |------|--------|--------|------|
 | 主模块代码量 | 387 行 | **~250 行** | 🔻 -35% |
 | 日常上下文占用 | ~9K tokens | **~5K tokens** | 🔻 -44% |
@@ -77,6 +77,103 @@
 > 💡 **更新也一样**：对 AI 说"检查 MyKnowledge 更新"，或直接重新说"安装 my-knowledge 技能"即可覆盖为新版。**用户数据不会丢失。**
 
 ### 方式二：Git 下载（备选，需要终端）
+
+```bash
+git clone https://github.com/CoderMoray/MyKnowledge.git ~/.codebuddy/skills/myknowledge
+```
+
+---
+
+## 📚 完整使用示例
+
+> **目标**：从安装到完成第一个需求，跟着做一遍就会了。
+
+### 场景：开发一个新功能
+
+#### 步骤 1：首次使用（创建知识库）
+
+```
+用户：创建知识库
+
+AI：👋 欢迎使用 MyKnowledge！
+    这是你第一次使用，我需要了解一些信息：
+    
+    1. 你用的是哪个 AI 助手？
+       [CodeBuddy] [WorkBuddy] [OpenClaw] [Claude]
+    
+    2. 要自动记录对话吗？
+       [是，自动记录] [否，手动记录]
+    
+    ...（引导流程）...
+    
+    已创建全局知识库：~/.myknowledge/global/我的项目/
+```
+
+#### 步骤 2：创建第一个需求
+
+```
+用户：我需要开发一个用户登录功能
+
+AI：✅ 已创建需求：REQ-20260614-001 用户登录功能
+    位置：~/.myknowledge/global/我的项目/requirements/REQ-20260614-001/
+    
+    包含文件：
+    - README.md（需求描述）
+    - DESIGN.md（设计文档）
+    - TASKS.md（任务清单）
+```
+
+#### 步骤 3：更新需求状态
+
+```
+用户：登录功能开发完成了
+
+AI：✅ 需求 REQ-20260614-001 状态已更新：进行中 → 完成
+    项目状态已同步：PROJECT-STATUS.md
+```
+
+#### 步骤 4：查看项目进展
+
+```
+用户：项目进展如何
+
+AI：📊 项目状态快照
+    
+    总需求：3 个
+    - ✅ 完成：2 个
+    - 🔄 进行中：1 个
+    - 📋 待开始：0 个
+    
+    最近更新：REQ-20260614-001 用户登录功能（2 小时前）
+```
+
+#### 步骤 5：导出分享
+
+```
+用户：导出知识库
+
+AI：✅ 已导出：~/.myknowledge/exports/我的项目-20260614.zip
+    
+    分享方式：
+    1. 直接发送 ZIP 文件给同事
+    2. 同事说"导入知识库"，选择这个 ZIP 即可
+```
+
+---
+
+### 常见场景速查
+
+| 我想... | 怎么说 | 结果 |
+|----------|---------|------|
+| 开始新项目 | "创建知识库" | 初始化目录结构 |
+| 记录新需求 | "创建需求：{描述}" | 创建需求文件夹 |
+| 查看所有需求 | "查看需求列表" | 显示需求索引 |
+| 更新需求状态 | "需求 REQ-XXX 完成了" | 更新状态为"完成" |
+| 自动记录对话 | "以后都自动记录" | 设置 auto_record: true |
+| 导出项目 | "导出知识库" | 生成 ZIP 文件 |
+| 遇到问题 | "重新初始化" | 一键修复配置 |
+
+---
 
 ```bash
 # 国内用户推荐 Atomgit

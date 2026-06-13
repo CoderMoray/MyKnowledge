@@ -5,7 +5,7 @@
 
 > 📋 **TL;DR 开发速查**
 > - 改版本号：`bash scripts/bump-version.sh X.Y.Z`
-> - 发布：lint → build → clawhub publish → git commit+push → tag+push
+> - 发布：lint → build → clawhub publish --no-input → git commit+push → tag+push
 > - 新功能：core/main.md 入口 → modules/xxx/main.md → 同步 SKILL/README/CHANGELOG/路线图
 > - 别写负面标签，别让用户自己去查文档
 > - 版本历史/经验教训/路线图 → `RELEASE-LOG.md`
@@ -97,7 +97,7 @@ Skill 文件（随更新替换）: ~/.codebuddy/skills/myknowledge/
 
 | 渠道 | 命令 | 产出 | 注意 |
 |------|------|------|------|
-| ClawHub | `clawhub publish` | 在线注册 | 读 SKILL.md frontmatter |
+| ClawHub | `clawhub publish --no-input` | 在线注册 | 读 SKILL.md frontmatter |
 | SkillHub | `skillhub publish releases/*.zip --host https://api.skillhub.cn` | zip 推送 | 需要 `skillhub auth login --token skh_xxx`；SKILL.md 须含 `slug` + `displayName`；host 必须用 `api.skillhub.cn` |
 | GitHub | `git tag + push` | Release 页面 | 触发 Actions 自动创建 |
 
@@ -111,7 +111,7 @@ Skill 文件（随更新替换）: ~/.codebuddy/skills/myknowledge/
 5. bash scripts/check-file-size.sh 200     ← 检查超大文件
 6. skillhub publish releases/MyKnowledge-X.Y.Z-skillhub.zip --host https://api.skillhub.cn --dry-run  ← SkillHub 预检
 7. skillhub publish releases/MyKnowledge-X.Y.Z-skillhub.zip --host https://api.skillhub.cn             ← 推 SkillHub
-8. clawhub publish ...                     ← 推 ClawHub
+8. clawhub publish --no-input ...        ← 推 ClawHub
 9. git add -A && git commit -m "release: vX.Y.Z"
 10. git push origin main
 9. git tag vX.Y.Z && git push origin vX.Y.Z
@@ -126,7 +126,7 @@ Skill 文件（随更新替换）: ~/.codebuddy/skills/myknowledge/
 - [ ] `bash scripts/check-file-size.sh 200`（无异常大文件）
 - [ ] `skillhub publish --dry-run`（预检）
 - [ ] `skillhub publish`（推 SkillHub）
-- [ ] `clawhub publish`（推 ClawHub）
+- [ ] `clawhub publish --no-input`（推 ClawHub）
 - [ ] git commit + push + tag + push tag
 - [ ] 确认 GitHub Actions 通过
 
